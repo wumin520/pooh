@@ -1,3 +1,9 @@
+// Polyfill
+import 'whatwg-fetch'
+import assign from 'object-assign'
+Object.assign = assign
+
+// Underground
 import Vue from 'vue'
 import App from './App'
 import router from './router'
