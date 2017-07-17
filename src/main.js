@@ -1,3 +1,6 @@
+import 'normalize.css/normalize.css'
+import 'element-ui/lib/theme-default/index.css'
+
 // Polyfill
 import 'whatwg-fetch'
 import assign from 'object-assign'
