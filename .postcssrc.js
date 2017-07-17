@@ -3,6 +3,8 @@
 module.exports = {
   "plugins": {
     // to edit target browsers: use "browserslist" field in package.json
-    "autoprefixer": {}
+    "autoprefixer": {
+      "browsers": ['last 3 versions', 'safari >= 7']
+    }
   }
 }
