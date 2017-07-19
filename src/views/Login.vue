@@ -142,7 +142,7 @@
         }).then(res => {
           console.info('[INFO] 登录成功')
 
-          this.$router.push('/dashboard')
+          this.$router.push('/d/home')
         }).catch(err => {
           console.log(err)
         })
