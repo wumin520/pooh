@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1> dashboard goes here.</h1>
+  <div class="container">
+    <p>用户首页</p>
 
     <el-button @click="onClick">默认按钮</el-button>
   </div>
