@@ -58,6 +58,7 @@
               margin-bottom: 30px;
               padding: 30px 35px;
               background: #fff;
+              text-align: center;
 
               .logo{
                 width: 30px;
@@ -79,6 +80,7 @@
                 color: #B5B5B5;
                 margin-top: 30px;
                 margin-bottom: 0px;
+                text-align: center;
                 
                 a {
                   color: #4A90E2;
@@ -87,6 +89,7 @@
             }
 
             .copyright {
+              text-align: center;
               opacity: 0.2;
               font-family: Lato-Bold;
               font-size: 12px;
