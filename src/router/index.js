@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/views/Login'
+import Register from '@/views/Register'
+
 import Layout from '@/views/Layout'
 import Home from '@/views/Home'
 import AdNew from '@/views/AdNew'
@@ -15,6 +17,11 @@ export default new Router({
       path: '/',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     },
     {
       path: '/d',
