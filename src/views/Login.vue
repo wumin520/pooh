@@ -31,7 +31,7 @@
     </div>
   </div>
 </template>
- 
+
 <style lang="scss" scoped>
   #page {
     width: 100%;
@@ -99,6 +99,10 @@
 
 <script>
   export default {
+    name: 'login',
+
+    fullscreen: true,
+
     data () {
       // 自定义校验规则
       var validateEmail = (rule, value, callback) => {

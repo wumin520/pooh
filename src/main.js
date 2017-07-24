@@ -10,6 +10,7 @@ import assign from 'object-assign'
 Object.assign = assign
 
 // Underground
+import './mixins'
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import App from './App'
@@ -23,7 +24,7 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  el: '[app]',
   router,
   store,
   template: '<App/>',

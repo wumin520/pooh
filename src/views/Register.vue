@@ -14,7 +14,7 @@
                 <el-form-item class="qk-form-item"  label="" prop="displayName">
                   <el-input class="qk-input__border-bottom"  v-model="form.displayName" placeholder="姓名/公司"></el-input>
                 </el-form-item>
-                
+
                 <el-form-item class="qk-form-item"  label="" prop="password">
                   <el-input class="qk-input__border-bottom" type="password" v-model="form.password" placeholder="请输入登录密码"></el-input>
                 </el-form-item>
@@ -81,7 +81,7 @@
                 margin-top: 30px;
                 margin-bottom: 0px;
                 text-align: center;
-                
+
                 a {
                   color: #4A90E2;
                 }
@@ -104,6 +104,8 @@
 
 <script>
   export default {
+    fullscreen: true,
+
     data () {
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
