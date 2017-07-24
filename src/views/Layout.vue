@@ -29,14 +29,12 @@
 
           <el-menu-item index="2-1" style="padding-left:44px;">添加新广告</el-menu-item>
 
-          <!--<el-submenu index="2">
+          <!-- <el-submenu index="2">
             <template slot="title"><i class="el-icon-square"></i>iOS 广告</template>
             <el-menu-item-group>
               <el-menu-item index="2-1">添加新广告</el-menu-item>
-              <el-menu-item index="2-2">备选项</el-menu-item>
-              <el-menu-item index="2-3">备选项</el-menu-item>
             </el-menu-item-group>
-          </el-submenu> --> 
+          </el-submenu> -->
 
           <el-menu-item index="3"><i class="el-icon-square"></i>财务管理</el-menu-item>
 
