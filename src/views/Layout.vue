@@ -25,14 +25,18 @@
           style="width: 180px; padding-top: 32px;">
           <el-menu-item index="1"><i class="el-icon-square"></i>账户首页</el-menu-item>
 
-          <el-submenu index="2">
+          <el-menu-item index="2"><i class="el-icon-square"></i>iOS广告</el-menu-item>
+
+          <el-menu-item index="2-1" style="padding-left:44px;">添加新广告</el-menu-item>
+
+          <!--<el-submenu index="2">
             <template slot="title"><i class="el-icon-square"></i>iOS 广告</template>
             <el-menu-item-group>
               <el-menu-item index="2-1">添加新广告</el-menu-item>
               <el-menu-item index="2-2">备选项</el-menu-item>
               <el-menu-item index="2-3">备选项</el-menu-item>
             </el-menu-item-group>
-          </el-submenu>
+          </el-submenu> --> 
 
           <el-menu-item index="3"><i class="el-icon-square"></i>财务管理</el-menu-item>
 
@@ -84,6 +88,9 @@
         switch (keyPath[keyPath.length - 1]) {
           case '1':
             this.$router.push('/d/home')
+            break
+          case '2':
+            this.$router.push('/d/ad')
             break
           case '2-1':
             this.$router.push('/d/ad/new')

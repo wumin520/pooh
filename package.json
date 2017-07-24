@@ -19,7 +19,7 @@
     "vuex": "^2.3.1",
     "vuex-router-sync": "^4.2.0",
     "whatwg-fetch": "^2.0.3",
-    "element-theme-qianka": "git+ssh://git@git.corp.qianka.com:qianka/element-theme-qianka.git#v0.1.8"
+    "element-theme-qianka": "git+ssh://git@git.corp.qianka.com:qianka/element-theme-qianka.git#v0.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
