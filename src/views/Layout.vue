@@ -28,8 +28,8 @@
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-square"></i>iOS 广告</template>
             <el-menu-item-group>
-              <el-menu-item index="2-1">添加新广告</el-menu-item>
-              <el-menu-item index="2-2">备选项</el-menu-item>
+              <el-menu-item index="2-1">iOS广告</el-menu-item>
+              <el-menu-item index="2-2">新加广告</el-menu-item>
               <el-menu-item index="2-3">备选项</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
@@ -86,6 +86,9 @@
             this.$router.push('/d/home')
             break
           case '2-1':
+            this.$router.push('/d/ad')
+            break
+          case '2-2':
             this.$router.push('/d/ad/new')
             break
           case '3':

@@ -5,6 +5,7 @@ import Register from '@/views/Register'
 
 import Layout from '@/views/Layout'
 import Home from '@/views/Home'
+import Ad from '@/views/Ad'
 import AdNew from '@/views/AdNew'
 import Finance from '@/views/Finance'
 import Account from '@/views/Account'
@@ -30,6 +31,10 @@ export default new Router({
         {
           path: 'home',
           component: Home
+        },
+        {
+          path: 'ad',
+          component: Ad
         },
         {
           path: 'ad/new',
