@@ -3,16 +3,16 @@
     <div class="title">iOS广告</div>
 
     <div class="search-wrapper">
-      <el-select class="select-search" v-model="searchSelect" slot="prepend" @change="searchChange()">
+      <el-select class="select-search" v-model="searchSelect" slot="prepend" @change="searchChange(searchSelect)">
         <el-option label="按时间搜索" value="time"></el-option>
         <el-option label="按标题搜索" value="title"></el-option>
       </el-select>
       <el-form :model="searchForm">
         <div class="block form-search">
-          <el-date-picker v-show="select == 'time'" type="daterange" align="right" placeholder="选择日期范围" :picker-options="pickerOptions2"
-            style="width:426px;">
-            </el-date-picker>
-            <el-input class="form-search-title-input" style="width: 425.99px" v-show="select == 'title'" v-model="app_name" placeholder="请输入标题"></el-input>
+          <el-date-picker v-show="searchSelect === 'time'" type="daterange" align="right" v-model="dateWeekTime" placeholder="选择日期范围" :picker-options="pickerOptions2"
+          style="width:426px;" format="yyyy/MM/dd">
+          </el-date-picker>
+          <el-input style="width: 425.99px" v-show="searchSelect === 'title'" v-model="app_name" placeholder="请输入标题"></el-input>
         </div>
       </el-form>
       <el-button class="searchIOS-btn" type="primary" @click="searchTask()">搜 索</el-button>
@@ -52,7 +52,7 @@
         <el-table-column prop="city" label="市区" min-width="120"></el-table-column>
         <el-table-column prop="address" label="地址" min-width="300"></el-table-column>
         <el-table-column prop="zip" label="邮编" min-width="120"></el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="100">
+        <el-table-column label="操作" min-width="150">
           <template scope="scope">
             <el-button type="text" size="small">查看</el-button>
             <el-button type="text" size="small">编辑</el-button>
@@ -163,6 +163,7 @@
         },
         select: 'time',
         activeName2: 'tab1',
+        dateWeekTime: '',
         pickerOptions2: {
           shortcuts: [{
             text: '最近一周',
@@ -224,8 +225,14 @@
     },
     methods: {
       // 搜索功能 切换时置空
-      searchChange () {
-        console.log('select')
+      searchChange (select) {
+        console.log(select)
+        if (select === 'time') {
+          this.app_name = ''
+        }
+        if (select === 'title') {
+          this.value7 = []
+        }
       },
       // 搜索 时间、标题
       searchTask () {
