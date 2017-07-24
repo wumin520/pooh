@@ -80,3 +80,25 @@
   }
 
 </style>
+<script>
+  export default {
+    data () {
+      return {}
+    },
+
+    mounted () {
+      this.getFormDate()
+    },
+
+    methods: {
+      getFormDate () {
+        fetch('/v2/api/account', {method: 'GET', credentials: 'same-origin'})
+        .then(res => {
+          return res.json()
+        }).then(data => {
+          console.log(data.message)
+        })
+      }
+    }
+  }
+</script>

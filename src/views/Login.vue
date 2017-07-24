@@ -141,13 +141,18 @@
         data.append('password', password)
         fetch('/v2/api/login', {
           method: 'POST',
+          credentials: 'same-origin',
           body: data
         }).then(res => {
-          console.info('[INFO] 登录成功')
-
-          this.$router.push('/d/home')
+          return res.json()
+        }).then(data => {
+          if (data.status === 'ok') {
+            this.$router.push('/d/home')
+          } else {
+            this.$message(data.message)
+          }
         }).catch(err => {
-          console.log(err)
+          console.log('err', err)
         })
       }
     }
