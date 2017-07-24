@@ -70,8 +70,17 @@
 <style lang="scss">
   .search-wrapper {
     .el-input .el-input__inner {
+      font-size: 12px;      
       height: 36px;
       border-right: none;
+    }
+    .el-select {
+      width: 110px;
+    }
+    .el-form .form-search{
+      .el-input {
+        width: 200px !important;
+      }
     }
   }
 </style>
@@ -98,6 +107,14 @@
     height: 36px;
     box-sizing: border-box;
 
+    .el-select {
+      // width: 110px;
+    }
+
+    .el-form {
+      // width: 200px;
+    }
+
     .el-select, .el-form, .el-button {
       display: inline-block;
     }
@@ -108,8 +125,6 @@
       padding: 10px;
       line-height: 14px;
       font-size: 12px;
-      position: relative;
-      top: -1px;
     }
     .addAd-btn {
       border-color: #F5A623; 
@@ -120,8 +135,7 @@
       padding: 10px;
       line-height: 14px;
       font-size: 12px;
-      position: relative;
-      top: -1px;
+    
       .add-logo {
         position: relative;
         right: 5px;
