@@ -108,6 +108,8 @@
       let checkPhone = (rule, value, callback) => {
         if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
           callback(new Error('手机号格式不正确'))
+        } else {
+          callback()
         }
       }
       return {
@@ -115,10 +117,10 @@
           title: [
             { required: true, message: '请输入姓名/公司', trigger: 'change' }
           ],
-          password: [{ required: false, message: '请输入当前密码', trigger: 'blur' }],
-          new_password: [{ required: false, validator: checkNewPassword, trigger: 'blur' }],
-          confirm: [{ required: false, validator: checkConfirm, trigger: 'blur' }],
-          phone: [{required: false, validator: checkPhone, trigger: 'blur'}]
+          password: [{ required: true, message: '请输入当前密码', trigger: 'blur' }],
+          new_password: [{ required: true, validator: checkNewPassword, trigger: 'blur' }],
+          confirm: [{ required: true, validator: checkConfirm, trigger: 'blur' }],
+          phone: [{required: true, validator: checkPhone, trigger: 'blur'}]
         }
       }
     },
@@ -144,12 +146,12 @@
       ]),
 
       submitForm (formName) {
-        let valid = true
+        let isValid = true
         // 填了手机号就验证手机号格式
         if (this.info.phone !== '') {
           this.$refs[formName].validateField('phone', (err) => {
             if (err) {
-              valid = false
+              isValid = false
             }
           })
         }
@@ -157,15 +159,20 @@
         if (this.info.password === '') {
           this.$refs[formName].validateField('title', (err) => {
             if (err) {
-              valid = false
+              isValid = false
             }
           })
         } else {
-          this.$refs[formName].validate((isValid) => {
-            valid = isValid
+          this.$refs[formName].validate((valid) => {
+            isValid = valid
+            if (valid) {
+            } else {
+              console.log('error submit!!')
+              return false
+            }
           })
         }
-        if (valid) {
+        if (isValid) {
           this.submitInfo(this.info).then(() => {
             this.$router.push('/d/home')
           })

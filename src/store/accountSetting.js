@@ -32,8 +32,6 @@ const actions = {
     })
       .then(res => res.json())
       .then(res => {
-        console.log('res')
-        console.log(res)
         let payload = res.payload
         if (payload) commit(types.SYNC, payload)
         return res
@@ -43,7 +41,6 @@ const actions = {
   submitInfo ({ commit }, payload) {
     let params = ''
     for (let key in payload) {
-      console.log(key)
       params += key + '=' + payload[key] + '&'
     }
     return fetch(URI_ACCOUNTSETTING, {
