@@ -98,6 +98,8 @@
 </style>
 
 <script>
+  import api from '@/fetch'
+  
   export default {
     data () {
       // 自定义校验规则
@@ -137,22 +139,17 @@
     methods: {
       login (username, password) {
         let data = new FormData()
+
         data.append('username', username)
         data.append('password', password)
-        fetch('/v2/api/login', {
+
+        api('/v2/api/login', {
           method: 'POST',
-          credentials: 'same-origin',
           body: data
-        }).then(res => {
-          return res.json()
         }).then(data => {
-          if (data.status === 'ok') {
-            this.$router.push('/d/home')
-          } else {
-            this.$message(data.message)
-          }
+          this.$router.push('/d/home')
         }).catch(err => {
-          console.log('err', err)
+          this.$message(err.message)
         })
       }
     }
