@@ -22,12 +22,12 @@
       <!-- 侧栏 -->
       <div class="sidebar">
         <el-menu mode="vertical" default-active="2" @open="handleOpen" @close="handleClose" @select="handleSelect"
-          style="width: 180px; padding-top: 32px;">
-          <el-menu-item index="1"><i class="el-icon-square"></i>账户首页</el-menu-item>
+          style="width: 180px; padding-top: 32px; height: 100%;">
+          <el-menu-item index="1"><i class="el-icon-square"></i>账户首页<div class="el-icon-triangle"></div></el-menu-item>
 
-          <el-menu-item index="2"><i class="el-icon-square"></i>iOS广告</el-menu-item>
+          <el-menu-item index="2"><i class="el-icon-square"></i>iOS广告<div class="el-icon-triangle"></div></el-menu-item>
 
-          <el-menu-item index="2-1" style="padding-left:44px;">添加新广告</el-menu-item>
+          <el-menu-item index="2-1" style="padding-left:44px;">添加新广告<div class="el-icon-triangle"></div></el-menu-item>
 
           <!-- <el-submenu index="2">
             <template slot="title"><i class="el-icon-square"></i>iOS 广告</template>
@@ -36,9 +36,9 @@
             </el-menu-item-group>
           </el-submenu> -->
 
-          <el-menu-item index="3"><i class="el-icon-square"></i>财务管理</el-menu-item>
+          <el-menu-item index="3"><i class="el-icon-square"></i>财务管理<div class="el-icon-triangle"></div></el-menu-item>
 
-          <el-menu-item index="4"><i class="el-icon-square"></i>账户信息</el-menu-item>
+          <el-menu-item index="4"><i class="el-icon-square"></i>账户信息<div class="el-icon-triangle"></div></el-menu-item>
         </el-menu>
       </div>
 
