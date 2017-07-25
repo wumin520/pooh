@@ -16,7 +16,7 @@
                   <el-input class="qk-input__border-bottom" v-model="form.password" placeholder="密码"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" class="btn-login" @click="login(form.username, form.password)">登录</el-button>
+                  <el-button type="primary" class="btn-login" @click="login()">登录</el-button>
                 </el-form-item>
               </el-form>
 
@@ -137,15 +137,15 @@
     },
 
     methods: {
-      login (username, password) {
-        let data = new FormData()
+      login () {
+        // let data = new FormData()
 
-        data.append('username', username)
-        data.append('password', password)
+        // data.append('username', username)
+        // data.append('password', password)
 
         api('/v2/api/login', {
           method: 'POST',
-          body: data
+          body: this.form
         }).then(data => {
           this.$router.push('/d/home')
         }).catch(err => {

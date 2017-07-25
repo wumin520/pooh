@@ -268,6 +268,7 @@
 
         .el-input__inner {
           border: 1px solid #dddddd;
+          text-align: center;
         }
       }
 

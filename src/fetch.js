@@ -1,3 +1,5 @@
+
+import qs from 'qs'
 import 'whatwg-fetch'
 
 function checkStatus (response) {
@@ -13,6 +15,12 @@ function checkStatus (response) {
 const api = (url, options) => {
   const defer = new Promise((resolve, reject) => {
     let opt = options || {}
+
+    if (opt.method.toLowerCase() === 'post' && opt.body) {
+      opt.body = qs.stringify(opt.body)
+      opt.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+    }
+
     fetch(url, {credentials: 'same-origin', ...opt})
       .then(checkStatus)
       .then(response => {
