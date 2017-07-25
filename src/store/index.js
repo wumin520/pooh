@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './user'
+import accountSetting from './accountSetting'
 Vue.use(Vuex)
 
 const state = {
@@ -22,7 +23,8 @@ const actions = {
 export default new Vuex.Store({
   namespaced: true,
   modules: {
-    user
+    user,
+    accountSetting
   },
   state,
   mutations,
