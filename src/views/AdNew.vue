@@ -471,7 +471,7 @@
           postData.platform === 1 ? postData.platform = '仅 iPhone' : (postData.platform === 2 ? postData.platform = '仅 iPad' : postData.platform = '两者都是')
           postData.appstore_type === 0 ? postData.appstore_type = '免费' : postData.appstore_type = '付费'
           setTimeout(() => {
-            this.$router.push({ path: '/d/ad' })
+            this.$router.push('/d/ad/ios/pending')
           }, 500)
         })
         .catch((e) => {

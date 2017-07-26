@@ -102,11 +102,11 @@
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-left:6px" @click="addNumber(scope.row)">续总数</a>
             <!-- 待审核 pending-->
             <!-- <a class="link-go"  href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-right:6px" @click="checkTask(row)">查看</a>-->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-left:6px" @click="removeTask($index, scope.row)">删除</a>
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-left:6px" @click="removeTask(scope.$index, scope.row)">删除</a>
             <!-- 审核失败 rejected-->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-left:6px" @click="editTask(scope.row)">编辑</a>
             <!-- </router-link> -->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-left:6px" @click="removeTask($index,scope.row)">删除</a>
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-left:6px" @click="removeTask(scope.$index,scope.row)">删除</a>
             <!-- 暂停 paused-->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && scope.row.button[0] == 1 " size="small" type="info"
             style="margin-left:6px" @click="resumeTask(scope.row)">开启</a>
@@ -148,6 +148,16 @@
       :total="totalTasks"
       >
     </el-pagination>
+
+    <!--删除-->
+    <el-dialog title="删除" :show-close="false" v-model="dialogDeleteVisible" custom-class="posi" style="top: 30%;">
+      <img class="logo-waring" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
+      <span class="qk-title">此操作将删除该信息，是否继续？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogDeleteVisible = false" is-plaint>取消</el-button>
+        <el-button size="small" type="primary" @click="handleDelete()">继续</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <style lang="scss">
@@ -168,6 +178,40 @@
   }
   .el-date-range-picker {
     z-index: 10001 !important;
+  }
+
+  .posi {
+    width: 390px;
+    .el-dialog__body {
+      padding-left: 45px;
+      padding-top: 35px;
+      position: relative;
+      .logo-waring {
+        position: absolute;
+        left: 0px;
+        top: 30px;
+      }
+      .qk-title {
+        color: #3A3A3A;
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        line-height: 21px;
+      }
+    }
+    .el-dialog__footer {
+      padding-top: 13px;
+      .dialog-footer {
+        font-size: 0px;
+
+        .el-button {
+          width: 70px;
+        }
+
+        .el-button:last-child {
+          margin-left: 8px;
+        }
+      }
+    }
   }
 </style>
 <style lang="scss" scoped>
@@ -611,8 +655,8 @@
       },
       handleDelete () {
         api('/v2/api/task/delete/' + this.deleting.id, {method: 'GET'})
-          .then(res => res.payload)
           .then((data) => {
+            console.log(data)
             this.$message(data.message)
             this.tableData.splice(this.deleting.index, 1)
             this.dialogDeleteVisible = false
