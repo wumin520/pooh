@@ -20,6 +20,10 @@ const api = (url, options) => {
       opt.body = qs.stringify(opt.body)
       opt.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     }
+    // application/json
+    if (opt.method.toLowerCase() === 'get') {
+      opt.headers = {'Content-Type': 'application/json'}
+    }
 
     fetch(url, {credentials: 'same-origin', ...opt})
       .then(checkStatus)

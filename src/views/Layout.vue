@@ -116,7 +116,7 @@
             this.$router.push('/d/home')
             break
           case '2':
-            this.$router.push('/d/ad')
+            this.$router.push('/d/ad/ios/ok')
             break
           case '2-1':
             this.$router.push('/d/ad/new')
