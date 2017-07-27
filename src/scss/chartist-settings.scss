@@ -1,1 +1,26 @@
-/* nothing here */
+$ct-grid-color: #DDD !default;
+$ct-grid-dasharray: 2px !default;
+$ct-grid-width: 1px !default;
+$ct-grid-background-fill: none !default;
+
+$ct-line-width: 2px !default;
+$ct-point-size: 8px !default;
+
+$ct-series-colors: (
+  #4A90E2,
+  #d70206,
+  #f05b4f,
+  #f4c63d,
+  #d17905,
+  #453d3f,
+  #59922b,
+  #0544d3,
+  #6b0392,
+  #f05b4f,
+  #dda458,
+  #eacf7d,
+  #86797d,
+  #b2c326,
+  #6188e2,
+  #a748ca
+) !default;

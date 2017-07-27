@@ -5,6 +5,15 @@
 @import "./chartist-settings.scss";
 @import "~chartist/dist/scss/chartist.scss";
 
+// .ct-series-a .ct-point {
+//   stroke: #FFF !important;
+// }
+
+.ct-label {
+  -webkit-transform: translate3d(0, 6px, 0);
+  transform: translate3d(0, 6px, 0);
+}
+
 * {
   font-family: $font-stack;
 }

@@ -88,7 +88,6 @@
         :data="tableData"
         border
         stripe
-        max-height="414"
         style="width: 100%;"
       >
         <el-table-column
@@ -172,6 +171,7 @@
       }
     }
 
+    /*
     .qk-tabs-text {
       height: 60px;
 
@@ -179,9 +179,11 @@
         margin-bottom: 0 !important;
       }
     }
+    */
 
     .chart-wrapper {
       height: 440px;
+      margin-bottom: 72px;
     }
   }
 </style>
@@ -260,6 +262,8 @@
           content: tab.name,
           dayCnt: this.dayCnt
         })
+
+        this.drawChart()
       },
 
       onSelect () {
@@ -285,7 +289,14 @@
               this.chartData
             ]
           }, {
-            height: 440
+            height: 440,
+            // lineSmooth: Chartist.Interpolation.simple({
+            //   divisor: 100
+            // }),
+            lineSmooth: false,
+            axisX: {
+              showGrid: false
+            }
           })
         })
       },
