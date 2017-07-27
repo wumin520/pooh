@@ -1,44 +1,186 @@
+/* eslint no-unused-vars: off */
+import { Message } from 'element-ui'
+
 import {
-  URI_DASHBOARD
+  LW,
+  L60D,
+  L90D,
+  URI_LOGOUT,
+  URI_DASHBOARD,
+  URI_REPORT
 } from '@/constants'
 
 const types = {
-  SYNC: 'sync'
+  SYNC_DASHBOARD: 'sync_dashboard',
+  SYNC_CHART: 'sync_chart',
+  SYNC_TABLE: 'sync_table'
 }
 
 const initState = () => ({
-  dashboard: {
+  navbar: {
     username: '',
     balance: '0.00',
-    portals: []
+    balance_threshold: '0.00'
+  },
+
+  indices: { // 依次为消费、展示、点击、完成
+    last_day: [ // 昨天
+      '0.00',
+      0,
+      0,
+      0
+    ],
+
+    dby: [ // 前天
+      '0.00',
+      0,
+      0,
+      0
+    ]
+  },
+
+  reportType: LW,
+
+  // 图表数据
+  chart: {
+    data: [],
+    labels: []
+  },
+
+  table: {
+    data: [],
+    summary: {
+      cost: 0,
+      impression: 0,
+      clicks: 0,
+      click_rate: '0.00%',
+      effect_actions: 0,
+      effect_rate: '0.00%',
+      zs_done_count: 0
+    }
   }
 })
 
 const state = initState()
 
 const getters = {
-  // TODO:
+  username: state => {
+    return state.navbar.username
+  },
+
+  balance: state => {
+    return state.navbar.balance
+  },
+
+  balanceThreshold: state => {
+    return state.navbar.balance_threshold
+  },
+
+  indicesLastday: state => {
+    return state.indices.last_day
+  },
+
+  indicesDBY: state => {
+    return state.indices.dby
+  },
+
+  reportTypes: state => ([
+    { label: '最新7天', value: LW },
+    { label: '60天', value: L60D },
+    { label: '90天', value: L90D }
+  ]),
+
+  chartData: state => {
+    return state.chart
+  },
+
+  reportSummary: state => {
+    return state.table.summary
+  },
+
+  tableData: state => {
+    return state.table.data
+  }
 }
 
 const mutations = {
-  [types.SYNC] (state, payload) {
-    // TODO: 入口逻辑
+  [types.SYNC_DASHBOARD] (state, payload) {
+    // 用户名、余额、最大可透支金额
+    state.navbar = payload.navbar
 
-    Object.assign({}, {
-      username: payload.username,
-      balance: payload.balance
-    })
+    // 首页汇总信息
+    state.indices = payload.portlet
+  },
+
+  [types.SYNC_CHART] (state, payload) {
+    state.chart = payload
+  },
+
+  [types.SYNC_TABLE] (state, payload) {
+    state.table = payload
   }
 }
 
 const actions = {
-  dashboard ({commit}) {
-    return fetch(URI_DASHBOARD)
-      .then(res => {
-        let payload = res && res.data && res.data.payload
-        if (payload) commit(types.SYNC, res)
-        return res
-      })
+  logout () {
+    fetch(URI_LOGOUT, {
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(res => {
+      $router.push('/login')
+    })
+    .catch(err => {
+      Message(err.message)
+    })
+  },
+
+  getDashboardData ({ commit }) {
+    return fetch(URI_DASHBOARD, {
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(data => {
+      let payload = data && data.payload
+      if (payload) commit(types.SYNC_DASHBOARD, payload)
+      return data
+    })
+  },
+
+  getChartData ({ commit }, payload) { // 按天数、按指标类型取图表数据
+    let { content, dayCnt } = payload
+    let now = parseInt((new Date()).getTime() / 1000)
+    let startTime = now - dayCnt * 86400
+    let endTime = now - 86400
+    let url = `${URI_REPORT}?action=chart&content=${content}&day_cnt=${dayCnt}&ts_start=${startTime}&ts_end=${endTime}`
+
+    return fetch(url, {
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(data => {
+      let payload = data && data.payload
+      commit(types.SYNC_CHART, payload)
+      return data
+    })
+  },
+
+  getTableData ({ commit }, payload) {
+    let { content, dayCnt } = payload
+    let now = parseInt((new Date()).getTime() / 1000)
+    let startTime = now - dayCnt * 86400
+    let endTime = now - 86400
+    let url = `${URI_REPORT}?action=table&content=${content}&ts_start=${startTime}&ts_end=${endTime}`
+
+    return fetch(url, {
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(data => {
+      let payload = data && data.payload
+      commit(types.SYNC_TABLE, payload)
+      return data
+    })
   }
 }
 

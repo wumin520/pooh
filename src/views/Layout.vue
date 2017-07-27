@@ -3,18 +3,18 @@
     <div class="head">
       <!-- 顶部导航 -->
       <el-menu theme="dark" mode="horizontal" @select="onClick">
-        <el-menu-item index="1">
-          YOUR LOGO
-        </el-menu-item>
+        <el-menu-item index="1" class="logo"></el-menu-item>
 
         <el-submenu index="2" class="pull-right">
-          <template slot="title">新利诺肉体娱乐有限公司</template>
+          <template slot="title"><span v-text="username"></span></template>
           <el-menu-item index="2-1">退出</el-menu-item>
         </el-submenu>
 
-        <el-menu-item index="3" class="pull-right"><a href="#/menu" style="text-decoration: underlined;">充值</a></el-menu-item>
+        <el-menu-item index="3" class="pull-right"><a href="" style="text-decoration: underlined;">充值</a></el-menu-item>
 
-        <el-menu-item index="4" class="pull-right">余额：¥ 999,999,999.00</el-menu-item>
+        <el-menu-item index="4" class="pull-right">余额：¥ <span v-text="balance"></span></el-menu-item>
+
+        <el-menu-item index="5" class="pull-right" v-if="balanceThreshold != '0.00'">最大可透支金额：¥ <span v-text="balanceThreshold"></span></el-menu-item>
       </el-menu>
     </div>
 
@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang='scss'>
 .main {
   width: 100%;
   padding-top: 60px;
@@ -59,6 +59,14 @@
     width: 100%;
     height: 60px;
     z-index: 1000;
+
+    .logo {
+      width: 180px;
+      background-image: url('//qianka.b0.upaiyun.com/images/7cb4c7abaf9f71631b6a7a5bbf1a26d9.png');
+      background-repeat: no-repeat;
+      background-size: 21px 24px;
+      background-position: center;
+    }
   }
 
   .content {
@@ -68,6 +76,8 @@
 </style>
 
 <script>
+  import {mapGetters} from 'vuex'
+
   export default {
     data () {
       return {
@@ -75,9 +85,21 @@
       }
     },
 
+    computed: {
+      ...mapGetters('user', [
+        'username',
+        'balance',
+        'balanceThreshold'
+      ])
+    },
+
     methods: {
       onClick (key, keyPath) {
-
+        switch (key) {
+          case '2-1':
+            this.$store.dispatch('user/logout')
+            break
+        }
       },
 
       handleSelect (key, keyPath) {

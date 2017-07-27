@@ -30,7 +30,10 @@ module.exports = {
     proxyTable: { // 测试环境下 api 代理到 tigger
       '/v2/api': {
         target: process.env.BACKEND || 'http://127.0.0.1:8081',
-        changeOrigin: true
+        changeOrigin: true,
+        cookieDomainRewrite: {
+          'http://127.0.0.1:3000': [process.env.BACKEND || 'http://127.0.0.1:8081']
+        }
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
