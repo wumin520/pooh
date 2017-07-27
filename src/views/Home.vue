@@ -79,7 +79,7 @@
 
     <!-- 图表 -->
     <el-row class="chart-wrapper">
-
+      <div class="rpt-chart"></div>
     </el-row>
 
     <!-- 表格 -->
@@ -190,6 +190,7 @@
   import {mapGetters, mapActions} from 'vuex'
   import DashboardCard from '@/components/DashboardCard.vue'
   import { LW, L60D, L90D } from '@/constants'
+  import Chartist from 'chartist'
 
   export default {
     components: {
@@ -213,7 +214,8 @@
     data () {
       return {
         reportType: LW,
-        reportContent: 'cost'
+        reportContent: 'cost',
+        chart: undefined
       }
     },
 
@@ -225,7 +227,9 @@
         'indicesDBY',
         'reportTypes',
         'reportSummary',
-        'tableData'
+        'tableData',
+        'chartLabels',
+        'chartData'
       ]),
 
       'dayCnt': function () {
@@ -241,10 +245,13 @@
     },
 
     created () {
+      // 表格数据
       this.getTableData({
         content: this.reportContent,
         dayCnt: this.dayCnt
       })
+
+      this.drawChart()
     },
 
     methods: {
@@ -259,6 +266,27 @@
         this.getTableData({
           content: this.reportContent,
           dayCnt: this.dayCnt
+        })
+
+        this.drawChart()
+      },
+
+      drawChart () {
+        this.getChartData({
+          content: this.reportContent,
+          dayCnt: this.dayCnt
+        }).then(_ => {
+          if (this.chart) {
+            this.chart.detach()
+          }
+          this.chart = new Chartist.Line('.rpt-chart', {
+            labels: this.chartLabels,
+            series: [
+              this.chartData
+            ]
+          }, {
+            height: 440
+          })
         })
       },
 

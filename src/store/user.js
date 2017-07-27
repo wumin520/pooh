@@ -90,16 +90,20 @@ const getters = {
     { label: '90天', value: L90D }
   ]),
 
-  chartData: state => {
-    return state.chart
-  },
-
   reportSummary: state => {
     return state.table.summary
   },
 
   tableData: state => {
     return state.table.data
+  },
+
+  chartLabels: state => {
+    return state.chart.labels
+  },
+
+  chartData: state => {
+    return state.chart.data
   }
 }
 

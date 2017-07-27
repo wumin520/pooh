@@ -1,6 +1,10 @@
 @import './variable.scss';
 @import './base.scss';
 
+/* chartist */
+@import "./chartist-settings.scss";
+@import "~chartist/dist/scss/chartist.scss";
+
 * {
   font-family: $font-stack;
 }
