@@ -9,6 +9,7 @@ import Ad from '@/views/Ad'
 import AdNew from '@/views/AdNew'
 import Finance from '@/views/Finance'
 import Account from '@/views/Account'
+import Charge from '@/views/Charge'
 
 Vue.use(Router)
 
@@ -43,6 +44,10 @@ export default new Router({
         {
           path: 'finance',
           component: Finance
+        },
+        {
+          path: 'finance/charge',
+          component: Charge
         },
         {
           path: 'account',
