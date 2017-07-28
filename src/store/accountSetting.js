@@ -26,14 +26,17 @@ const mutations = {
 }
 
 const actions = {
-  getInfo ({commit}) {
+  getInfo ({commit, dispatch}) {
     return fetch(URI_ACCOUNTSETTING, {
       credentials: 'include'
     })
       .then(res => res.json())
       .then(res => {
         let payload = res.payload
-        if (payload) commit(types.SYNC, payload)
+        if (payload) {
+          commit(types.SYNC, payload)
+          if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+        }
         return res
       })
   },

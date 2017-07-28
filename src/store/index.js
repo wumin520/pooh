@@ -6,7 +6,7 @@ import charge from './charge'
 Vue.use(Vuex)
 
 const state = {
-  menuIndex: ''
+
 }
 
 const getters = {

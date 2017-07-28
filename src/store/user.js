@@ -15,7 +15,8 @@ import {
 const types = {
   SYNC_DASHBOARD: 'sync_dashboard',
   SYNC_CHART: 'sync_chart',
-  SYNC_TABLE: 'sync_table'
+  SYNC_TABLE: 'sync_table',
+  SYNC_NAVBAR: 'sync_navbar'
 }
 
 const initState = () => ({
@@ -140,6 +141,10 @@ const mutations = {
 
   [types.SYNC_TABLE] (state, payload) {
     state.table = payload
+  },
+
+  [types.SYNC_NAVBAR] (state, payload) {
+    state.navbar = payload.navbar
   }
 }
 
@@ -211,6 +216,10 @@ const actions = {
     let startTime = now - dayCnt * 86400
     let endTime = now - 86400
     location.href = `${URI_REPORT_DOWNLOAD}?ts_start=${startTime}&ts_end=${endTime}`
+  },
+
+  updateNavbar ({ commit }, payload) {
+    commit(types.SYNC_NAVBAR, payload)
   }
 }
 
