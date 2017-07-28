@@ -46,7 +46,13 @@ export default new Router({
           component: Finance
         },
         {
+          name: 'charge',
           path: 'finance/charge',
+          component: Charge
+        },
+        {
+          name: 'edit',
+          path: 'finance/edit/:id',
           component: Charge
         },
         {

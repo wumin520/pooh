@@ -2,7 +2,7 @@
   <div class="container">
   <el-breadcrumb separator=">">
     <el-breadcrumb-item>财务管理</el-breadcrumb-item>
-    <el-breadcrumb-item>充值</el-breadcrumb-item>
+    <el-breadcrumb-item>{{this.currentPageTitle}}</el-breadcrumb-item>
   </el-breadcrumb>
     <el-tabs v-model="activeTabName" type="border-card">
       <el-tab-pane :name="'chinabank'">
@@ -48,39 +48,39 @@
           </el-row>
           <div class="fs16-c88 mrg-t60 mrg-b19">第一步：在线提交付款信息</div>
           <el-form ref="form" :model="info" :rules="rules">
-            <el-form-item prop="coast" class="w214" label="充值金额">
-              <el-input v-model="info.coast" placeholder="请输入充值金额"></el-input>元
+            <el-form-item prop="amount" class="w214" label="充值金额">
+              <el-input v-model="info.amount" placeholder="请输入充值金额"></el-input>元
             </el-form-item>
-            <el-form-item prop="coast_confirm" class="w214" label="确认金额">
-              <el-input v-model="info.coast_confirm" placeholder="请再次输入充值金额"></el-input>元
+            <el-form-item prop="amount_check" class="w214" label="确认金额">
+              <el-input v-model="info.amount_check" placeholder="请再次输入充值金额"></el-input>元
             </el-form-item>
             <el-form-item prop="drawee" class="w214" label="付款人">
               <el-input v-model="info.drawee" placeholder="请输入付款人/公司名称"></el-input>元
             </el-form-item>
             <el-form-item class="w190" label="是否开票">
-              <el-radio-group v-model="isNeedInvoice">
-                <el-radio-button class="el-icon-check" label="false">不需要</el-radio-button>
-                <el-radio-button class="el-icon-check" label="true">需要</el-radio-button>
+              <el-radio-group v-model="info.invoice_status">
+                <el-radio-button class="el-icon-check" label="0">不需要</el-radio-button>
+                <el-radio-button class="el-icon-check" label="1">需要</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <!--<template>-->
-              <div v-if="isNeedInvoice == 'true'">
-              <el-form-item label="发票抬头">
-                <el-input placeholder="请输入发票抬头"></el-input>
+              <div v-if="info.invoice_status == 1">
+              <el-form-item prop="invoice_title" label="发票抬头">
+                <el-input v-model="info.invoice_title" placeholder="请输入发票抬头"></el-input>
               </el-form-item>
-              <el-form-item label="收件人">
-                <el-input placeholder="请输入收件人"></el-input>
+              <el-form-item prop="invoice_contact_name" label="收件人">
+                <el-input v-model="info.invoice_contact_name" placeholder="请输入收件人"></el-input>
               </el-form-item>
-              <el-form-item label="联系电话">
-                <el-input placeholder="请输入联系电话"></el-input>
+              <el-form-item prop="invoice_contact_phone" label="联系电话">
+                <el-input v-model="info.invoice_contact_phone" placeholder="请输入联系电话"></el-input>
               </el-form-item>
-              <el-form-item label="快递地址">
-                <el-input placeholder="请输入快递地址"></el-input>
+              <el-form-item prop="invoice_contact_address" label="快递地址">
+                <el-input v-model="info.invoice_contact_address" placeholder="请输入快递地址"></el-input>
               </el-form-item>
               </div>
             <!--</template>-->
             <el-form-item label="备注信息（选填）">
-              <el-input class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
+              <el-input v-model="info.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
             </el-form-item>
           </el-form>
           <div class="fs16-c88 mrg-b30">第二步：请将付款款项转入以下官方账户</div>
@@ -103,7 +103,7 @@
         银行账户：3166 3803 0026 61224
         开户银行：上海银行白玉支行</div>
       <div slot="footer" class="dialog-footer">
-        <el-button class="w70-h32" type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button class="w70-h32" type="primary" @click="backTo('.')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -149,24 +149,6 @@
       border: none;
       position: relative;
       vertical-align: top;
-
-      /*.i-chinabank {*/
-        /*background: url('//qianka.b0.upaiyun.com/images/423c6b6616e14287a5797265f1547d4b.jpeg') no-repeat;*/
-        /*background-size: cover;*/
-        /*display: inline-block;*/
-        /*width: 139px;*/
-        /*height: 58px;*/
-        /*margin-top: 3px;*/
-      /*}*/
-
-      /*.i-alipay {*/
-        /*background: url('//qianka.b0.upaiyun.com/images/b45a67252420c9024ce3f7eec9a94c11.png') no-repeat;*/
-        /*background-size: cover;*/
-        /*display: inline-block;*/
-        /*width: 139px;*/
-        /*height: 58px;*/
-        /*margin-top: 1px;*/
-      /*}*/
     }
 
     .el-tabs--border-card >.el-tabs__header .el-tabs__item.is-active {
@@ -345,78 +327,132 @@
   }
 </style>
 <script>
+  import {mapState, mapActions} from 'vuex'
+  import {Message} from 'element-ui'
   export default {
     data () {
-      let checkCoast = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('充值金额不能为空'))
-        }
-        setTimeout(() => {
-          if (!/(?=^[.\d]+$)(?=^.*\.?)(?!^\d*\.\d*\.)[.\d]*$/.test(value)) {
-            callback(new Error('请输入有效金额格式'))
+      return {
+        isNeedInvoice: false,
+        activeTabName: 'chinabank',
+        dialogVisible: false
+      }
+    },
+
+    computed: {
+      currentPageTitle () {
+        return this.$router.currentRoute.name === 'charge' ? '充值' : '编辑'
+      },
+
+      CHINA_BANK_IMG () {
+        return this.activeTabName === 'chinabank'
+          ? '//qianka.b0.upaiyun.com/images/dad6498ed6cc685630beacababb08241.png'
+          : '//qianka.b0.upaiyun.com/images/39f3fed161d6e367570a677ced3be44a.png'
+      },
+
+      ALIPAY_IMG () {
+        return this.activeTabName === 'chinabank'
+          ? '//qianka.b0.upaiyun.com/images/dce2fe77ee35e1b84cb2f88012380dcc.png'
+          : '//qianka.b0.upaiyun.com/images/ceec6fa324b37e93b9676ca3e841c96a.png'
+      },
+
+      rules () {
+        let checkCoast = (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('充值金额不能为空'))
           }
-          if (value < 0) {
-            callback(new Error('金额必须大于0'))
+          setTimeout(() => {
+            if (!/(?=^[.\d]+$)(?=^.*\.?)(?!^\d*\.\d*\.)[.\d]*$/.test(value)) {
+              callback(new Error('请输入有效金额格式'))
+            }
+            if (value < 0) {
+              callback(new Error('金额必须大于0'))
+            } else {
+              callback()
+            }
+          }, 1000)
+        }
+
+        let checkCoastConfirm = (rule, value, callback) => {
+          if (value === '') {
+            callback(new Error('请再次输入金额'))
+          } else if (value !== this.info.amount) {
+            callback(new Error('两次输入金额不一致!'))
           } else {
             callback()
           }
-        }, 1000)
-      }
-
-      let checkCoastConfirm = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入金额'))
-        } else if (value !== this.info.coast) {
-          callback(new Error('两次输入金额不一致!'))
-        } else {
-          callback()
         }
-      }
-      return {
-        info: {
-          coast: '',
-          coast_confirm: '',
-          drawee: ''
-        },
-        isNeedInvoice: false,
-        activeTabName: 'chinabank',
-        dialogVisible: false,
-        rules: {
-          coast: [
+
+        let checkPhone = (rule, value, callback) => {
+          if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
+            callback(new Error('手机号格式不正确'))
+          } else {
+            callback()
+          }
+        }
+
+        let rules = {
+          amount: [
             { required: true, validator: checkCoast, trigger: 'blur' }
           ],
-          coast_confirm: [
+          amount_check: [
             { required: true, validator: checkCoastConfirm, trigger: 'blur' }
           ],
           drawee: [
             { required: true, message: '请输入付款人名称', trigger: 'change' }
           ]
         }
-      }
-    },
 
-    computed: {
-      CHINA_BANK_IMG () {
-        return this.activeTabName === 'chinabank'
-          ? '//qianka.b0.upaiyun.com/images/dad6498ed6cc685630beacababb08241.png'
-          : '//qianka.b0.upaiyun.com/images/39f3fed161d6e367570a677ced3be44a.png'
+        let rulesAdded = {...rules,
+          invoice_title: [{required: true, message: '请输入发票抬头', trigger: 'blur'}],
+          invoice_contact_name: [{required: true, message: '请输入收件人', trigger: 'blur'}],
+          invoice_contact_phone: [{required: true, validator: checkPhone, trigger: 'blur'}],
+          invoice_contact_address: [{required: true, message: '请输入快递地址', trigger: 'blur'}]
+        }
+
+        return this.invoice_status === 0 ? rules : rulesAdded
       },
-      ALIPAY_IMG () {
-        return this.activeTabName === 'chinabank'
-          ? '//qianka.b0.upaiyun.com/images/dce2fe77ee35e1b84cb2f88012380dcc.png'
-          : '//qianka.b0.upaiyun.com/images/ceec6fa324b37e93b9676ca3e841c96a.png'
-      }
+
+      ...mapState('charge', [
+        'info'
+      ])
     },
 
     mounted () {
+      if (this.$router.currentRoute.name === 'charge') {
+        this.getInvoiceInfo()
+      } else {
+        let id = this.$router.currentRoute.params.id
+        this.getInfo(id)
+      }
     },
 
     methods: {
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
+          console.log('validate result: ', valid)
+          if (valid) {
+            this.submitInfo(this.info).then((res) => {
+              console.log('submitInfo result res: ', res)
+              this.dialogVisible = true
+            }).catch((err) => {
+              Message({
+                type: 'error',
+                message: err.message
+              })
+            })
+          }
         })
-        console.log(this.info)
-      }
+      },
+
+      backTo () {
+        this.$router.push('/d/finance')
+      },
+
+      ...mapActions('charge', [
+        'getInfo',
+        'getInvoiceInfo',
+        'submitInfo'
+      ])
     }
   }
 </script>
