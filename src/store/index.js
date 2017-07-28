@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './user'
 import accountSetting from './accountSetting'
+import charge from './charge'
 Vue.use(Vuex)
 
 const state = {
@@ -24,7 +25,8 @@ export default new Vuex.Store({
   namespaced: true,
   modules: {
     user,
-    accountSetting
+    accountSetting,
+    charge
   },
   state,
   mutations,

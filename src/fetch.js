@@ -16,7 +16,7 @@ const api = (url, options) => {
   const defer = new Promise((resolve, reject) => {
     let opt = options || {}
 
-    if (opt.method.toLowerCase() === 'post' && opt.body) {
+    if (opt.method && opt.method.toLowerCase() === 'post' && opt.body) {
       opt.body = qs.stringify(opt.body)
       opt.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     }
