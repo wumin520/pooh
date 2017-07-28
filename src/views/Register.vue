@@ -103,6 +103,8 @@
 </style>
 
 <script>
+  import api from '@/fetch'
+
   export default {
     fullscreen: true,
 
@@ -135,12 +137,12 @@
           username: '',
           displayName: '',
           password: '',
-          confirm: '',
+          confirm: ''
           // 以下字段隐藏了- 0718
-          contact: '',
-          tel: '',
-          qq: '',
-          address: ''
+          // contact: '',
+          // tel: '',
+          // qq: '',
+          // address: ''
         },
         formRules: {
           username: [
@@ -171,8 +173,26 @@
     },
 
     methods: {
-      register (username, password) {
+      register () {
+        this.$refs.registerForm.validate((valid) => {
+          if (!valid) return
 
+          api('/v2/api/register', {
+            method: 'POST',
+            body: {
+              username: this.form.username,
+              display_name: this.form.displayName,
+              password: this.form.password,
+              confirm: this.form.confirm
+            }
+          }).then((res) => {
+            setTimeout(() => {
+              this.$router.push({ name: 'login' })
+            }, 3000)
+          }).catch((err) => {
+            this.$message(err.message)
+          })
+        })
       }
     }
   }
