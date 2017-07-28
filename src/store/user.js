@@ -8,7 +8,8 @@ import {
   L90D,
   URI_LOGOUT,
   URI_DASHBOARD,
-  URI_REPORT
+  URI_REPORT,
+  URI_REPORT_DOWNLOAD
 } from '@/constants'
 
 const types = {
@@ -202,6 +203,14 @@ const actions = {
       commit(types.SYNC_TABLE, payload)
       return data
     })
+  },
+
+  downloadReport (ctx, payload) {
+    let { dayCnt } = payload
+    let now = parseInt((new Date()).getTime() / 1000)
+    let startTime = now - dayCnt * 86400
+    let endTime = now - 86400
+    location.href = `${URI_REPORT_DOWNLOAD}?ts_start=${startTime}&ts_end=${endTime}`
   }
 }
 

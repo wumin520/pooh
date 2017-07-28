@@ -47,7 +47,7 @@
         </el-option>
       </el-select>
 
-      <el-button type="primary" class="btn-download" @click="downloadReport()">
+      <el-button type="primary" class="btn-download" @click="download()">
         下载报表
       </el-button>
     </el-row>
@@ -189,6 +189,7 @@
 </style>
 
 <script>
+  import _ from 'lodash'
   import {mapGetters, mapActions} from 'vuex'
   import DashboardCard from '@/components/DashboardCard.vue'
   import { LW, L60D, L90D } from '@/constants'
@@ -280,7 +281,7 @@
         this.getChartData({
           content: this.reportContent,
           dayCnt: this.dayCnt
-        }).then(_ => {
+        }).then(() => {
           if (this.chart) {
             this.chart.detach()
           }
@@ -290,10 +291,9 @@
               this.chartData
             ]
           }, {
+            high: parseInt(_.max(this.chartData) * 1.2),
+            low: 0,
             height: 440,
-            // lineSmooth: Chartist.Interpolation.simple({
-            //   divisor: 100
-            // }),
             lineSmooth: false,
             axisX: {
               showGrid: false
@@ -302,8 +302,8 @@
         })
       },
 
-      downloadReport () {
-        console.log('download report...')
+      download () {
+        this.$store.dispatch('user/downloadReport', { dayCnt: this.dayCnt })
       },
 
       ...mapActions('user', [
