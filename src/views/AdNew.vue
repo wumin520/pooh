@@ -3,7 +3,7 @@
     <!-- 面包屑 -->
     <el-breadcrumb separator=">">
       <el-breadcrumb-item :to="{ path: '/d/ad' }">iOS广告</el-breadcrumb-item>
-      <el-breadcrumb-item>添加新广告</el-breadcrumb-item>
+      <el-breadcrumb-item v-text="page_sub_title"></el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- Advertisement Form -->
@@ -248,6 +248,18 @@
     .zs-task-item {
       .sub-item {
         display: inline-block;
+        .zs_task_day {
+          display: inline-block;
+          width: 40px;
+          height: 40px;
+          background-color: #FBFBFB;
+          border: 1px solid #DDD;
+          font-family: PingFangSC-Regular;
+          text-align: center;
+          font-size: 13px;
+          color: #3A3A3A;
+          line-height: 40px;
+        }
       }
       
       .border-cd {
@@ -367,12 +379,29 @@
     },
 
     mounted () {
-      this.addtaskPre()
+      let path = this.$route.name
+      if (path === 'renew') {
+        // 续单
+        let params = this.$route.params.taskId
+        this.page_sub_title = '续单'
+        this.fetchPreRenew(params)
+      } else if (path === 'new') {
+        // 添加
+        this.page_sub_title = '添加新广告'
+        this.fetchPreNew()
+      } else {
+        // 编辑
+        let params = this.$route.params.taskId
+        this.page_sub_title = '编辑'
+        this.fetchPreEdit(params)
+      }
     },
 
     methods: {
       ...mapActions('adNew', [
-        'addtaskPre',
+        'fetchPreNew',
+        'fetchPreRenew',
+        'fetchPreEdit',
         'postForm',
         'planAnalysis',
         'rePlanAnalysis',
@@ -511,25 +540,28 @@
 
         var postData = tempForm
 
-        // var url = ''
-        // this.$route.name == 'editAdvertisement' ? url = '/V2/api/task/' + this.$route.params.taskId : (this.$route.name == 'readdAdvertisement' ? url = '/api/task/copy/' + this.$route.params.taskId : url = '/api/task')
-        this.postForm(postData)
+        let params = ''
+        this.$route.name === 'edit' ? params = this.$route.params.taskId : (this.$route.name === 'renew' ? params = this.$route.params.taskId : params = '')
+        let config = {
+          params: params,
+          postData: postData
+        }
+        this.postForm(config)
           .then(res => {
             console.log('post', res)
-            this.submitButtonDisable = false
-            this.fullscreenLoading = false
-            if (this.$route.name === 'readdAdvertisement') {
+            if (this.$route.name === 'renew') {
               this.$message('续单成功！')
             }
             //  ？TODO ？ 什么作用?
             postData.platform === 1 ? postData.platform = '仅 iPhone' : (postData.platform === 2 ? postData.platform = '仅 iPad' : postData.platform = '两者都是')
             postData.appstore_type === 0 ? postData.appstore_type = '免费' : postData.appstore_type = '付费'
             setTimeout(() => {
+              this.submitButtonDisable = false
+              this.fullscreenLoading = false
               this.$router.push('/d/ad/ios/pending')
             }, 500)
           })
           .catch((e) => {
-            console.log('err', e)
             this.submitButtonDisable = false
             this.fullscreenLoading = false
             this.$message(e.message)

@@ -1,6 +1,7 @@
 
 import qs from 'qs'
 import 'whatwg-fetch'
+import {Message} from 'element-ui'
 
 function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
@@ -34,7 +35,11 @@ const api = (url, options) => {
         resolve(data)
       })
       .catch(err => {
-        return err.response
+        if (err.response.status === 400) {
+          return err.response
+        } else {
+          Message({type: 'error', message: err.response.status + ':' + err.response.statusText + '错误，请稍后重试！'})
+        }
       })
       .then(err => {
         if (err) {

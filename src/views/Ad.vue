@@ -609,7 +609,7 @@
       },
       // 编辑
       editTask (row) {
-        // this.$router.push({ name: 'adEdit', params: { taskId: row.id } })
+        this.$router.push({ name: 'edit', params: { taskId: row.id } })
       },
       // 预览
       previewTaskInfo (row) {

@@ -1,10 +1,14 @@
 import {
-  URI_ADDTASK_PRE,
-  URI_ADDTASK
+  URI_FETCH_NEW_PRE,
+  URI_POST_TASK,
+  URI_FETCH_EDIT_PRE,
+  URI_FETCH_RENEW_PRE
 } from '@/constants'
 
 import { Message } from 'element-ui'
 import api from '@/fetch'
+import _ from 'lodash'
+import util from '@/utils'
 
 const initState = () => ({
   advertiser_id: 0, // 广告主id for 限制添加关键词
@@ -46,8 +50,10 @@ const getters = {
 }
 
 const types = {
-  SET_ADDTASK_PRE: 'set_addtask_pre',
+  RESET_FORM: 'reset_form',
+  SET_NEW_TASK_PRE: 'set_new_task_pre',
   UPDATE_REMAIN_COUNT: 'update_remain_count',
+  UPDATE_ADFORM: 'update_adform',
   UPDATE_KEYWORDS_LIST: 'update_keywords_list',
   UPDATE_ZS_LISTS: 'update_zs_lists',
   REMOVE_ZS_ITEM: 'remove_zs_item',
@@ -56,10 +62,39 @@ const types = {
 
 // 更新应用状态
 const mutations = {
-  [types.SET_ADDTASK_PRE] (state, payload) {
+  [types.RESET_FORM] (state) {
+    state.adForm = {
+      title: '',
+      download_url: '',
+      click_notify_url: '',
+      search_keyword: '',
+      begin_time: '',
+      begin_time_time: new Date(2017, 1, 1, 0, 0),
+
+      end_time: '',
+      end_time_time: new Date(2017, 1, 1, 0, 0),
+      plan_count: '',
+      plan_type: '按投放比例',
+      planlist: [],
+      appstore_type: '免费',
+      appstore_cost: '0.000',
+      platform: '仅 iPhone',
+      zs_task: [],
+
+      kw_flag_needed: '0',
+      zs_task_needed: '0',
+      remain_count: 100
+    }
+  },
+
+  [types.SET_NEW_TASK_PRE] (state, payload) {
     state.advertiser_id = payload.advertiser_id
     state.zs_free = payload.zs_free
     state.ad_price = payload.ad_price
+  },
+
+  [types.UPDATE_ADFORM] (state, form) {
+    state.adForm = form
   },
 
   [types.UPDATE_REMAIN_COUNT] (state, remain) {
@@ -67,7 +102,6 @@ const mutations = {
   },
 
   [types.UPDATE_KEYWORDS_LIST] (state, keywordsItem) {
-    console.log('addKeyWordList')
     state.adForm.planlist.push(keywordsItem)
   },
 
@@ -105,16 +139,88 @@ const mutations = {
 
 // 在 数据获取 完成后会调用 commit()来调用mutations更改 Store 中的状态。可以在组件中使用dispatch来发出 Actions。
 const actions = {
-  addtaskPre ({commit}) {
-    return api(URI_ADDTASK_PRE, {method: 'GET'})
+  fetchPreNew ({commit}) {
+    return api(URI_FETCH_NEW_PRE, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
-        commit(types.SET_ADDTASK_PRE, payload)
+        commit(types.SET_NEW_TASK_PRE, payload)
+        commit(types.RESET_FORM)
       })
   },
 
-  postForm ({commit}, postData) {
-    return api(URI_ADDTASK, {method: 'post', body: postData})
+  fetchPreRenew ({dispatch, commit}, taskId) {
+    let path = URI_FETCH_RENEW_PRE + taskId
+    return api(path, {method: 'GET'})
+      .then(res => res && res.payload)
+      .then(payload => {
+        dispatch('formatPreInfoForEditAndRenew', payload)
+      })
+      .catch(err => {
+        console.log('adnew err', err)
+      })
+  },
+
+  fetchPreEdit ({dispatch, commit}, taskId) {
+    let path = URI_FETCH_EDIT_PRE + taskId
+    return api(path, {method: 'GET'})
+      .then(res => res && res.payload)
+      .then(payload => {
+        dispatch('formatPreInfoForEditAndRenew', payload)
+      })
+  },
+
+  formatPreInfoForEditAndRenew ({commit}, payload) {
+    let info = {
+      advertiser_id: payload.advertiser_id,
+      ad_price: payload.task.ad_price,
+      zs_free: payload.zs_free
+    }
+    commit(types.SET_NEW_TASK_PRE, info)
+    _.forEach(payload.task.zs_task, function (n) {
+      n.univalent === 0 ? n.free = true : n.free = false
+    })
+    // 有单关键词 没有多关键词
+    if (!!payload.task.search_keyword && payload.task.planlist.length === 0) {
+      payload.task.planlist.push({
+        key: payload.task.search_keyword,
+        num: '100',
+        keyTime: Date.now()
+      })
+    }
+
+    for (var i = 0; i < payload.task.planlist.length; i++) {
+      payload.task.planlist[i].keyTime = Date.now() + i
+    }
+    payload.task.platform === 1 ? payload.task.platform = '仅 iPhone' : (payload.task.platform === 2 ? payload.task.platform = '仅 iPad' : payload.task.platform = '两者都是')
+    payload.task.appstore_type === 0 ? payload.task.appstore_type = '免费' : payload.task.appstore_type = '付费'
+    payload.task.plan_type = '按投放比例'
+    payload.task.remain_count = 0
+
+    var hh = util.formatTime(payload.task.begin_time).substr(11, 2)
+    var mm = util.formatTime(payload.task.begin_time).substr(14, 2)
+    payload.task.begin_time_time = new Date(2016, 9, 10, hh, mm, 0)
+
+    hh = util.formatTime(payload.task.end_time).substr(11, 2)
+    mm = util.formatTime(payload.task.end_time).substr(14, 2)
+    payload.task.end_time_time = new Date(2016, 9, 10, hh, mm, 0)
+
+    payload.task.begin_time = util.formatTime(payload.task.begin_time).substr(0, 10)
+    payload.task.end_time = util.formatTime(payload.task.end_time).substr(0, 10)
+
+    for (let i = 0; i < payload.task.zs_task.length; i++) {
+      let item = payload.task.zs_task[i]
+      payload.task.zs_task[i].key = Date.now() + i
+      item.can_delete = false
+      payload.task.zs_task[payload.task.zs_task.length - 1].can_delete = true
+    }
+
+    console.log('>>>payload.task.zs_task', payload.task.zs_task)
+    commit(types.UPDATE_ADFORM, payload.task)
+  },
+
+  postForm ({commit}, config) {
+    let path = URI_POST_TASK + config.params
+    return api(path, {method: 'post', body: config.postData})
       .then(res => res && res.payload)
       .then(payload => {
         return payload
