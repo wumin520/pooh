@@ -116,7 +116,7 @@
             this.$router.push('/d/home')
             break
           case '2':
-            this.$router.push('/d/ad')
+            this.$router.push('/d/ad/ios/ok')
             break
           case '2-1':
             this.$router.push('/d/ad/new')
@@ -146,7 +146,7 @@
           case 'dash_ad':
             this.activeIndex = '2'
             break
-          case 'dash_ad_new':
+          case 'new':
             this.activeIndex = '2-1'
             break
           case 'dash_finance':

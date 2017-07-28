@@ -2,27 +2,27 @@
   <div class="container">
     <!-- 面包屑 -->
     <el-breadcrumb separator=">">
-      <el-breadcrumb-item>iOS广告</el-breadcrumb-item>
-      <el-breadcrumb-item>添加新广告</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/d/ad' }">iOS广告</el-breadcrumb-item>
+      <el-breadcrumb-item v-text="page_sub_title"></el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- Advertisement Form -->
-    <el-form class="addAd-form" label-position="top">
+    <el-form :model="adForm" ref="adFormRef" label-position="top" class="addAd-form">
       <!-- 应用标题 -->
-      <el-form-item class="qk-form-item" label="应用标题">
+      <el-form-item class="qk-form-item" label="应用标题" prop="title">
         <el-input v-model="adForm.title"  placeholder="请输入应用标题"></el-input>
       </el-form-item>
       <!-- iTunes地址 -->      
-      <el-form-item class="qk-form-item" label="iTunes地址">
+      <el-form-item class="qk-form-item" label="iTunes地址" prop="download_url">
         <el-input v-model="adForm.download_url" placeholder="请输入iTunes地址"></el-input>
       </el-form-item>
       <!-- 跳转地址（选填） -->            
-      <el-form-item class="qk-form-item mgb-80" label="跳转地址（选填）">
+      <el-form-item class="qk-form-item mgb-80" label="跳转地址（选填）" prop="click_notify_url">
         <el-input v-model="adForm.click_notify_url" placeholder="请输入跳转链接"></el-input>
       </el-form-item>
 
       <!-- 开始 日期+时间 -->            
-      <el-form-item class="qk-form-item" label="开始时间">
+      <el-form-item class="qk-form-item" label="开始时间" prop="begin_time">
         <el-date-picker 
           type="date"
           v-model="adForm.begin_time"
@@ -39,7 +39,7 @@
         </el-time-picker>
       </el-form-item>
       <!-- 结束 日期+时间 -->                  
-      <el-form-item class="qk-form-item" label="结束时间">
+      <el-form-item class="qk-form-item" label="结束时间" prop="end_time">
         <el-date-picker 
           v-model="adForm.end_time"
           type="date"
@@ -56,14 +56,14 @@
         </el-time-picker>
       </el-form-item>
       <!-- 计划分数 -->                        
-      <el-form-item class="qk-form-item mgb-80" label="计划份数">
-        <el-input class="w190" v-model="adForm.plan_count" placeholder="300份起"></el-input>
+      <el-form-item class="qk-form-item mgb-80" label="计划份数" prop="plan_count">
+        <el-input  @change="planAnalysis" v-model="adForm.plan_count" placeholder="300份起" class="w190"></el-input>
       </el-form-item>
 
 
       <!-- 关键词添加方式 -->                              
-      <el-form-item class="qk-form-item keywords-wrapper" label="关键词">
-        <el-radio-group v-model="adForm.plan_type">
+      <el-form-item class="qk-form-item keywords-wrapper" label="关键词" >
+        <el-radio-group v-model="adForm.plan_type" @change="rePlanAnalysis">
           <el-radio-button class="el-icon-check" label="按投放比例"></el-radio-button>
           <el-radio-button class="el-icon-check" label="按计划份数"></el-radio-button>
         </el-radio-group>
@@ -71,7 +71,8 @@
       </el-form-item>
       <!-- 添加关键词 单个关键词对应投放的百分比、份数  -->
       <el-form-item v-for="(kw, index) in adForm.planlist"
-        :key="kw.keyTime">
+        :key="kw.keyTime" 
+        :prop="'planlist.' + index + '.value'">
         <template>
           <el-row :gutter="20">
             <el-col :span="24" :offset="0">
@@ -79,7 +80,7 @@
               <el-input v-if="adForm.plan_type == '按投放比例'" v-model="kw.num" class="w190 mrg-l5" placeholder="请输入投放比例"></el-input>
               <el-input v-if="adForm.plan_type == '按计划份数'" v-model="kw.num" class="w190 mrg-l5"  placeholder="请输入计划份数"></el-input>
               <span class="unit" v-text="adForm.plan_type == '按投放比例' ? '%' : '份'"></span>
-              <i class="icon-remove" @click="removeKeyWordsItem(kw.keyTime)"></i>
+              <i class="icon-remove" @click="removeKeyWords(kw.keyTime)"></i>
             </el-col>
           </el-row>
         </template>
@@ -89,7 +90,7 @@
       </el-form-item>
 
       <!-- 应用价格 免费、付费-->
-      <el-form-item>
+      <el-form-item prop="appstore_type">
         <div class="left-wrap">
             <div class="fs13-c3a">应用价格</div>
             <div style="font-size:0px;">
@@ -97,7 +98,7 @@
                 <el-radio-button class="el-icon-check" label="免费"></el-radio-button>
                 <el-radio-button class="el-icon-check" label="付费"></el-radio-button>
               </el-radio-group>
-              <span class="mrg-l30 unit-desc" v-text="'单价 ￥'+ (adForm.appstore_type === '付费' ? ad_price.unit_price_level2 : ad_price.unit_price )"></span>
+              <span class="mrg-l30 unit-desc" v-text="'单价 ￥' + (adForm.appstore_type === '付费' ? ad_price.unit_price_level2 : ad_price.unit_price)"></span>
             </div>
         </div>
         <div v-if="adForm.appstore_type == '付费'" class="right-wrap">
@@ -108,7 +109,7 @@
       </el-form-item>
 
       <!-- 投放平台 -->
-      <el-form-item class="qk-form-item" label="投放平台">
+      <el-form-item class="qk-form-item" label="投放平台" prop="platform">
         <el-radio-group v-model="adForm.platform">
           <el-radio-button class="el-icon-check" label="仅 iPhone"></el-radio-button>
           <el-radio-button class="el-icon-check" label="仅 iPad"></el-radio-button>
@@ -142,18 +143,18 @@
 
               <span class="mrg-l30 money" v-if="zs.free == true">免费</span>
               <span class="mrg-l30 money" v-if="zs.free == false">1元</span>
-              <i v-if="zs.can_delete" class="icon-remove" @click="removeDomainItem(zs.key)"></i>
+              <i v-if="zs.can_delete" class="icon-remove" @click="removeZS(zs.key)"></i>
             </el-col>
           </el-row>
         </template>
       </el-form-item>
 
-      <div class="add-zs-task">
-          <el-button type="text" icon="plus" @click="addZS()" >添加专属任务</el-button>
+      <div class="add-zs-task" @click="addZS()">
+          <el-button type="text" icon="plus">添加专属任务</el-button>
       </div>
 
       <el-form-item class="submit-wrapper">
-        <el-button class="w130 mgr-10" type="primary">提交</el-button>
+        <el-button @click="submitForm('adFormRef')" :disabled="submitButtonDisable" class="w130 mgr-10" type="primary" v-loading.fullscreen.lock="fullscreenLoading">提交</el-button>
         <el-button class="w130">保存</el-button>
       </el-form-item>
     </el-form>
@@ -247,6 +248,18 @@
     .zs-task-item {
       .sub-item {
         display: inline-block;
+        .zs_task_day {
+          display: inline-block;
+          width: 40px;
+          height: 40px;
+          background-color: #FBFBFB;
+          border: 1px solid #DDD;
+          font-family: PingFangSC-Regular;
+          text-align: center;
+          font-size: 13px;
+          color: #3A3A3A;
+          line-height: 40px;
+        }
       }
       
       .border-cd {
@@ -267,7 +280,6 @@
         height: 40px;
 
         .el-input__inner {
-          border: 1px solid #dddddd;
           text-align: center;
         }
       }
@@ -346,126 +358,234 @@
 
 </style>
 <script>
+  import util from '@/utils'
+  import _ from 'lodash'
+  import { mapState, mapActions } from 'vuex'
+
   export default {
     data () {
       return {
-        adForm: {
-          title: '',
-          download_url: '',
-          click_notify_url: '',
-          search_keyword: '',
-          begin_time: '',
-          begin_time_time: new Date(2017, 1, 1, 0, 0),
-          end_time: '',
-          end_time_time: new Date(2017, 1, 1, 0, 0),
-          plan_count: '',
-          appstore_type: '免费',
-          appstore_cost: '0.000',
-          kw_flag_needed: '0',
-          zs_task_needed: '0',
-          // 添加的关键字列表
-          plan_type: '按投放比例',
-          remain_count: 100,
-          planlist: [], // [{keyTime:'k1',key:''}],//[{keyTime:'k1',key:'美容'},{keyTime:'k2',key:'交通'}],//keyTime value
-          zs_task: [],
-          platform: '仅 iPhone' // 仅 iPhone 仅 iPad 两者都是
-        },
-        // unit_price:应用免费单价    unit_price_level2:应用付费单价   zs_unit_price：未知数据？？？
-        ad_price: {
-          unit_price: '0',
-          unit_price_level2: '8.00',
-          zs_unit_price: '0'
-        }
+        page_sub_title: '添加新广告',  // ？todo 检查是否冗余？
+        submitButtonDisable: false,  // 提交按钮是否禁用
+        fullscreenLoading: false // loading是否显示
+      }
+    },
+
+    computed: {
+      ...mapState('adNew', [
+        'adForm',
+        'ad_price'
+      ])
+    },
+
+    mounted () {
+      let path = this.$route.name
+      if (path === 'renew') {
+        // 续单
+        let params = this.$route.params.taskId
+        this.page_sub_title = '续单'
+        this.fetchPreRenew(params)
+      } else if (path === 'new') {
+        // 添加
+        this.page_sub_title = '添加新广告'
+        this.fetchPreNew()
+      } else {
+        // 编辑
+        let params = this.$route.params.taskId
+        this.page_sub_title = '编辑'
+        this.fetchPreEdit(params)
       }
     },
 
     methods: {
-      addKeyWords () {
-        // 按计划 可添加的关键词个数
-        var count = Math.floor(this.adForm.plan_count / 150)
+      ...mapActions('adNew', [
+        'fetchPreNew',
+        'fetchPreRenew',
+        'fetchPreEdit',
+        'postForm',
+        'planAnalysis',
+        'rePlanAnalysis',
+        'addKeyWordList',
+        'removeKeyWordsItem',
+        'addZSLists',
+        'removeZSItem'
+      ]),
 
-        if (this.advertiser_id === 45) {
-          this.adForm.planlist.push({
-            key: '',
-            num: '',
-            keyTime: Date.now()
-          })
-        } else {
-          if (this.adForm.planlist.length < count) {
-            // 已添加的关键字个数
-            var total = this.adForm.planlist.length
-            if (total >= 20) {
-              this.$message('您最多只能添加20个关键词')
-              return
+      // 续单、编辑、添加 的验证+提交
+      submitForm (formName) {
+        this.submitButtonDisable = true
+        this.fullscreenLoading = true
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if (this.validForm()) {
+              this.postFormData()
             }
-
-            this.adForm.planlist.push({
-              key: '',
-              num: '',
-              keyTime: Date.now()
-            })
           } else {
-            this.$message('当前份数只能支持' + count + '份,计划份数150加一个关键词')
+            return false
           }
-        }
+        })
       },
 
-      removeKeyWordsItem (keyTime) {
-        var self = this
-        var temporary = []
-        for (var i = 0; i < self.adForm.planlist.length; i++) {
-          var _t = self.adForm.planlist[i]
-          if (_t.keyTime !== keyTime) {
-            temporary.push(_t)
-          }
+      // 续单、编辑、添加 的验证
+      validForm () {
+        if (this.adForm.title.length > 50) {
+          this.$message('应用标题不能超过50字符')
+          this.submitButtonDisable = false
+          this.fullscreenLoading = false
+          return false
         }
-        this.adForm.planlist = temporary
-      },
-
-      addZS () {
-        var canDelete = false
-        var freeFlg = false
-        if (this.adForm.plan_count !== '' && this.adForm.plan_count >= 5000 && this.zs_free === 1) {
-          freeFlg = true
+        if (this.adForm.download_url.length > 100) {
+          this.$message('iTunes地址不能超过100字符')
+          this.submitButtonDisable = false
+          this.fullscreenLoading = false
+          return false
         }
 
-        for (var i = 0; i < this.adForm.zs_task.length; i++) {
-          this.adForm.zs_task[i].can_delete = false
+        var bt = this.adForm.begin_time.toString()
+        var et = this.adForm.end_time.toString()
+        if (_.includes(bt, 'GMT')) {
+          bt = util.formatTime(this.adForm.begin_time.getTime() / 1000)
         }
-        if (this.adForm.zs_task.length === 0) {
-          canDelete = true
-          this.adForm.zs_task.push({
-            the_day: '1',
-            free: freeFlg,
-            key: Date.now(),
-            can_delete: canDelete
-          })
+        if (_.includes(et, 'GMT')) {
+          et = util.formatTime(this.adForm.end_time.getTime() / 1000)
+        }
+
+        if (!this.adForm.begin_time_time) {
+          this.$message('请选择开始时间')
+          this.submitButtonDisable = false
+          this.fullscreenLoading = false
+          return false
+        }
+
+        if (!this.adForm.end_time_time) {
+          this.$message('请选择结束时间')
+          this.submitButtonDisable = false
+          this.fullscreenLoading = false
+          return false
+        }
+        try {
+          bt = bt.substr(0, 10) + ' ' + util.formatTime(this.adForm.begin_time_time.getTime() / 1000, 'HH:mm').substr(11)
+        } catch (e) {
+          this.$message('请选择开始时间')
+          this.submitButtonDisable = false
+          this.fullscreenLoading = false
+          return false
+        }
+        try {
+          et = et.substr(0, 10) + ' ' + util.formatTime(this.adForm.end_time_time.getTime() / 1000, 'HH:mm').substr(11)
+        } catch (e) {
+          this.$message('请选择结束时间')
+          this.submitButtonDisable = false
+          this.fullscreenLoading = false
+          return false
+        }
+
+        if (new Date(bt.replace(/-/g, '/')).getTime() < new Date().getTime()) {
+          this.$message('开始时间不得小于当前时间')
+          this.submitButtonDisable = false
+          this.fullscreenLoading = false
+          return false
+        } else if (new Date(bt.replace(/-/g, '/')).getTime() > new Date(et).getTime()) {
+          this.$message('结束时间不得小于开始时间')
+          this.submitButtonDisable = false
+          this.fullscreenLoading = false
+          return false
+        }
+
+        if (this.adForm.download_url === this.adForm.click_notify_url) {
+          this.$message('跳转链接不可与iTunes地址相同')
+          this.submitButtonDisable = false
+          this.fullscreenLoading = false
+          return false
         } else {
-          this.adForm.zs_task.push({
-            the_day: '0',
-            free: false,
-            key: Date.now(),
-            can_delete: true
-          })
+          return true
         }
       },
 
-      removeDomainItem (key) {
-        var self = this
-        var temporary = []
-        var _key = key
-
-        for (var i = 0; i < self.adForm.zs_task.length; i++) {
-          var _t = self.adForm.zs_task[i]
-          if (i === (self.adForm.zs_task.length - 2)) {
-            _t.can_delete = true
-          }
-          if (_t.key !== _key) {
-            temporary.push(_t)
-          }
+      // 续单、编辑、添加 的提交
+      postFormData () {
+        var tempForm = util.clone(this.adForm)
+        var beginTime = tempForm.begin_time.toString()
+        var endTime = tempForm.end_time.toString()
+        if (_.includes(beginTime, 'GMT')) {
+          tempForm.begin_time = util.formatTime(tempForm.begin_time.getTime() / 1000)
+        }
+        if (_.includes(endTime, 'GMT')) {
+          tempForm.end_time = util.formatTime(tempForm.end_time.getTime() / 1000)
+        }
+        // 续单时，未知原因，时分秒会被去掉，导致结束时间校验失败， 这里手动检测并加上
+        if (beginTime.length < 11) {
+          tempForm.begin_time = tempForm.begin_time + ' 00:00:00'
+        }
+        if (endTime.length < 11) {
+          tempForm.end_time = tempForm.end_time + ' 00:00:00'
         }
 
-        this.adForm.zs_task = temporary
+        tempForm.planlist.length > 0 ? tempForm.kw_flag_needed = 1 : tempForm.kw_flag_needed = 0
+        if (tempForm.planlist.length > 0) {
+          _.forEach(tempForm.planlist, function (p, index) {
+            var temkey = 'planlist-' + index + '-key'
+            var temnum = 'planlist-' + index + '-num'
+            tempForm[temkey] = p.key
+            tempForm[temnum] = p.num
+          })
+        }
+        tempForm.zs_task.length > 0 ? tempForm.zs_task_needed = 1 : tempForm.zs_task_needed = 0
+        tempForm.platform === '仅 iPhone' ? tempForm.platform = '1' : (tempForm.platform === '仅 iPad' ? tempForm.platform = '2' : tempForm.platform = '3')
+        tempForm.appstore_type === '免费' ? tempForm.appstore_type = 0 : tempForm.appstore_type = 1
+        tempForm.plan_type === '按投放比例' ? tempForm.plan_type = 1 : tempForm.plan_type = 2
+
+        tempForm.begin_time_time = util.formatTime(this.adForm.begin_time_time.getTime() / 1000, 'HH:mm').substr(11)
+        tempForm.end_time_time = util.formatTime(this.adForm.end_time_time.getTime() / 1000, 'HH:mm').substr(11)
+
+        var postData = tempForm
+
+        let params = ''
+        this.$route.name === 'edit' ? params = this.$route.params.taskId : (this.$route.name === 'renew' ? params = this.$route.params.taskId : params = '')
+        let config = {
+          params: params,
+          postData: postData
+        }
+        this.postForm(config)
+          .then(res => {
+            console.log('post', res)
+            if (this.$route.name === 'renew') {
+              this.$message('续单成功！')
+            }
+            //  ？TODO ？ 什么作用?
+            postData.platform === 1 ? postData.platform = '仅 iPhone' : (postData.platform === 2 ? postData.platform = '仅 iPad' : postData.platform = '两者都是')
+            postData.appstore_type === 0 ? postData.appstore_type = '免费' : postData.appstore_type = '付费'
+            setTimeout(() => {
+              this.submitButtonDisable = false
+              this.fullscreenLoading = false
+              this.$router.push('/d/ad/ios/pending')
+            }, 500)
+          })
+          .catch((e) => {
+            this.submitButtonDisable = false
+            this.fullscreenLoading = false
+            this.$message(e.message)
+          })
+      },
+
+      // 添加关键词
+      addKeyWords () {
+        this.addKeyWordList()
+      },
+
+      // 删除关键词
+      removeKeyWords (keyTime) {
+        this.removeKeyWordsItem(keyTime)
+      },
+
+      // 添加专属任务
+      addZS () {
+        this.addZSLists()
+      },
+
+      // 删除专属任务
+      removeZS (key) {
+        this.removeZSItem(key)
       }
     }
   }

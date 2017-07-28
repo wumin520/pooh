@@ -36,13 +36,23 @@ export default new Router({
         },
         {
           name: 'dash_ad',
-          path: 'ad',
+          path: 'ad/ios/:status',
           component: Ad
         },
         {
-          name: 'dash_ad_new',
+          name: 'new',
           path: 'ad/new',
-          component: AdNew
+          component: AdNew // 新添加
+        },
+        {
+          name: 'renew',
+          path: 'ad/renew/:taskId',
+          component: AdNew // 续单
+        },
+        {
+          name: 'edit',
+          path: 'ad/edit/:taskId',
+          component: AdNew // 编辑
         },
         {
           name: 'dash_finance',
