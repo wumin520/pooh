@@ -1,5 +1,6 @@
 /* eslint no-unused-vars: off */
 import { Message } from 'element-ui'
+import _ from 'lodash'
 
 import {
   LW,
@@ -99,7 +100,23 @@ const getters = {
   },
 
   chartLabels: state => {
-    return state.chart.labels
+    let labels = []
+    _.each(state.chart.labels, l => {
+      if (l.substr(0, 1) === '0') l = l.substring(1)
+      labels.push(l.replace('-', '月') + '日')
+    })
+
+    // 最多出现 15 个label
+    let labelCnt = 15
+    let n = parseInt(labels.length / labelCnt)
+
+    if (labels.length > 10) {
+      for (let i = 0; i < labels.length; i++) {
+        if ((i % n) !== 0) labels[i] = null
+      }
+    }
+
+    return labels
   },
 
   chartData: state => {

@@ -193,6 +193,7 @@
   import DashboardCard from '@/components/DashboardCard.vue'
   import { LW, L60D, L90D } from '@/constants'
   import Chartist from 'chartist'
+  import '../chartist/createLabel'
 
   export default {
     components: {

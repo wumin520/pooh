@@ -21,7 +21,7 @@
     <div class="content">
       <!-- 侧栏 -->
       <div class="sidebar">
-        <el-menu mode="vertical" default-active="2" @open="handleOpen" @close="handleClose" @select="handleSelect"
+        <el-menu mode="vertical" :default-active="activeIndex" @open="handleOpen" @close="handleClose" @select="handleSelect"
           style="width: 180px; padding-top: 32px; height: 100%;">
           <el-menu-item index="1"><i class="el-icon-square"></i>账户首页<div class="el-icon-triangle"></div></el-menu-item>
 
@@ -81,7 +81,7 @@
   export default {
     data () {
       return {
-        activeIndex: '1'
+        activeIndex: ''
       }
     },
 
@@ -91,6 +91,10 @@
         'balance',
         'balanceThreshold'
       ])
+    },
+
+    mounted () {
+      this.updateActiveIndex()
     },
 
     methods: {
@@ -104,8 +108,10 @@
 
       handleSelect (key, keyPath) {
         console.log(key, keyPath)
+        let activeIndex = keyPath[keyPath.length - 1]
+        this.activeIndex = activeIndex
 
-        switch (keyPath[keyPath.length - 1]) {
+        switch (activeIndex) {
           case '1':
             this.$router.push('/d/home')
             break
@@ -130,6 +136,29 @@
 
       handleClose (key, keyPath) {
         console.log(key, keyPath)
+      },
+
+      updateActiveIndex () {
+        switch (this.$route.name) {
+          case 'dash_home':
+            this.activeIndex = '1'
+            break
+          case 'dash_ad':
+            this.activeIndex = '2'
+            break
+          case 'dash_ad_new':
+            this.activeIndex = '2-1'
+            break
+          case 'dash_finance':
+            this.activeIndex = '3'
+            break
+          case 'dash_finance_charge':
+            this.activeIndex = '3'
+            break
+          case 'dash_account':
+            this.activeIndex = '4'
+            break
+        }
       }
     }
   }

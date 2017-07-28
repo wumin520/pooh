@@ -30,32 +30,37 @@ export default new Router({
       component: Layout,
       children: [
         {
+          name: 'dash_home',
           path: 'home',
           component: Home
         },
         {
+          name: 'dash_ad',
           path: 'ad',
           component: Ad
         },
         {
+          name: 'dash_ad_new',
           path: 'ad/new',
           component: AdNew
         },
         {
+          name: 'dash_finance',
           path: 'finance',
           component: Finance
         },
         {
-          name: 'charge',
+          name: 'dash_finance_charge',
           path: 'finance/charge',
           component: Charge
         },
         {
-          name: 'edit',
+          name: 'dash_finance_edit',
           path: 'finance/edit/:id',
           component: Charge
         },
         {
+          name: 'dash_account',
           path: 'account',
           component: Account
         }
