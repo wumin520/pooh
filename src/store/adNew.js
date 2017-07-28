@@ -139,10 +139,11 @@ const mutations = {
 
 // 在 数据获取 完成后会调用 commit()来调用mutations更改 Store 中的状态。可以在组件中使用dispatch来发出 Actions。
 const actions = {
-  fetchPreNew ({commit}) {
+  fetchPreNew ({dispatch, commit}) {
     return api(URI_FETCH_NEW_PRE, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
+        if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
         commit(types.SET_NEW_TASK_PRE, payload)
         commit(types.RESET_FORM)
       })
@@ -153,6 +154,7 @@ const actions = {
     return api(path, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
+        if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
         dispatch('formatPreInfoForEditAndRenew', payload)
       })
       .catch(err => {
@@ -165,6 +167,7 @@ const actions = {
     return api(path, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
+        if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
         dispatch('formatPreInfoForEditAndRenew', payload)
       })
   },

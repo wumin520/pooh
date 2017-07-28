@@ -146,7 +146,7 @@
           case 'dash_ad':
             this.activeIndex = '2'
             break
-          case 'dash_ad_new':
+          case 'new':
             this.activeIndex = '2-1'
             break
           case 'dash_finance':

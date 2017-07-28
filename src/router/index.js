@@ -35,6 +35,7 @@ export default new Router({
           component: Home
         },
         {
+          name: 'dash_ad',
           path: 'ad/ios/:status',
           component: Ad
         },
