@@ -18,7 +18,7 @@ export const L60D = 'L60D' // 最近60天
 export const L90D = 'L90D' // 最近60天
 
 export const URI_FETCH_NEW_PRE = '/v2/api/task/new' // 新加广告 前的相关信息
-export const URI_POST_TASK = '/v2/api/task/'  // 提交广告
+export const URI_POST_TASK = '/v2/api/task'  // 提交广告
 
 export const URI_FETCH_EDIT_PRE = '/v2/api/task/edit/'  // 编辑的任务信息
 export const URI_FETCH_RENEW_PRE = '/v2/api/task/copy/'  // 续单的任务信息

@@ -133,7 +133,7 @@
             style="margin-left:6px" @click="downloadIdfa(2, scope.row)">下载IDFA2</a>
 
             <!-- common -->
-            <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-left:6px" @click="previewTaskInfo(row)">预览</a>
+            <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-left:6px" @click="previewTaskInfo(scope.row)">预览</a>
           </template>
         </el-table-column>
       </el-table>
@@ -148,6 +148,98 @@
       :total="totalTasks"
       >
     </el-pagination>
+
+     <!-- 预览弹窗 -->
+    <el-dialog title='广告预览' v-model="dialogPreviewVisible" class="el-dialog__wrapper previewDialog">
+      <div class="preview-content" id="preview-content">
+        <div class="content-line" style="border-top: 1px solid #E8E8E8;">
+          <div class="left">广告标题</div>
+          <div class="right"  v-text="previewForm.title"></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >iTunes地址</div>
+          <div class="right" style="white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow:hidden;font-family:PingFangSC-Semibold !important;"
+            v-text="previewForm.download_url"></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >跳转链接</div>
+          <div class="right"  v-text="previewForm.click_notify_url"></div>
+        </div>
+        <!--<div class="content-line">
+              <div class="left">搜索关键词</div>
+              <div class="right"v-text="previewForm.search_keyword"></div>
+            </div>-->
+
+        <div class="content-line" style="border-top: 1px solid #E8E8E8;">
+          <div class="left" >开始时间</div>
+          <div class="right"  v-text="previewForm.begin_time"></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >结束时间</div>
+          <div class="right"  v-text="previewForm.end_time"></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >计划份数</div>
+          <div class="right"  v-text="previewForm.plan_count"></div>
+        </div>
+        <div class="content-line" v-if="previewForm.planlist.length == 0 && previewForm.search_keyword == ''">
+          <div class="left" >关键词</div>
+          <div class="right"  v-if="previewForm.planlist.length == 0 && previewForm.search_keyword == ''">-</div>
+        </div>
+
+        <div class="content-line" v-for="(keyword, index) in previewForm.planlist" style="border-top: 1px solid #E8E8E8;">
+          <div class="left"  v-if="index == 0">关键词</div>
+          <div class="left" v-if="index > 0"></div>
+          <!--<div class="right"  v-if="previewForm.kw_flag_needed == 0">-</div>-->
+          <div class="right" >{{keyword.key}} &nbsp;&nbsp;{{keyword.num + '%'}}</div>
+        </div>
+
+        <div class="content-line" style="margin-top: 10px;border-top: 1px solid #E8E8E8;">
+          <div class="left" >应用价格</div>
+          <div class="right" v-text="previewForm.appstore_type" ></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >单价</div>
+          <div class="right" >{{'￥' + previewForm.unit_price | addCommas_money }}</div>
+        </div>
+        <div class="content-line">
+          <div class="left" >App Store售价</div>
+          <div class="right" >{{(previewForm.appstore_cost == 0 || previewForm.appstore_type == '免费') ? '-' : '￥'+ previewForm.appstore_cost.toFixed(2)}}</div>
+        </div>
+
+        <div class="content-line" style="margin-top: 10px;margin-bottom: 10px;border-top: 1px solid #E8E8E8;">
+          <div class="left" >投放平台</div>
+          <div class="right"  v-text="previewForm.platform"></div>
+        </div>
+
+        <div class="content-line" v-if="previewForm.zs_task_needed == 0" style="border-top: 1px solid #E8E8E8;">
+          <div class="left" >专属任务</div>
+          <div class="right"  v-if="previewForm.zs_task_needed == 0">-</div>
+        </div>
+
+        <div class="content-line" v-for="(zs, index) in previewForm.zs_task" style="border-top: 1px solid #E8E8E8;">
+          <div class="left"  v-if="index == 0">专属任务</div>
+          <div class="left" v-if="index > 0"></div>
+          <div class="right"  v-if="previewForm.zs_task_needed == 0">-</div>
+          <div class="right"  v-if="previewForm.zs_task_needed == 1">第 {{zs.the_day}} 天 &nbsp;&nbsp;{{zs.univalent == 0 ? ' 免费' : '￥' + zs.univalent}}</div>
+        </div>
+      </div>
+    </el-dialog>
+
+    <!-- 续总数弹窗 -->
+    <el-dialog :title="taskName" v-model="dialogContinueTotalVisible">
+      <div class="line" style="width: 100%; height: 1px; background-color: #e0e6ed;margin-bottom:20px;"></div>
+      <el-form :model="continueTotalForm" style="margin-top:20px;">
+        <el-form-item label="增加份数： ">
+          <el-input style="width:300px;float:left;" v-model="continueTotalForm.add_number" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer" style="position:relative;float:right;width:200px;margin-top: -100px;padding:0px;">
+        <el-button @click="dialogContinueTotalVisible = false">关 闭</el-button>
+        <el-button type="primary" @click="addTotalNumber()">保 存</el-button>
+      </span>
+    </el-dialog>
+
 
     <!--删除-->
     <el-dialog title="删除" :show-close="false" v-model="dialogDeleteVisible" custom-class="posi" style="top: 30%;">
@@ -210,6 +302,26 @@
         .el-button:last-child {
           margin-left: 8px;
         }
+      }
+    }
+  }
+  .previewDialog {
+    .el-dialog {
+      width: 662px;
+      padding: 25px 20px;
+      .el-dialog__header {
+        .el-dialog__headerbtn {
+          .el-dialog__close {
+            color: #B5B5B5;
+            font-size: 14px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+          }
+        }
+      }
+      .el-dialog__body {
+        padding: 25px 0px 0px 0px;
       }
     }
   }
@@ -305,6 +417,60 @@
     }
 
   }
+
+  .previewDialog {
+    .preview-content {
+      .content-line {
+        position: relative;
+        /*width: 549px;*/
+        height: 46px;
+        font-family: PingFangSC-Semibold;
+        font-size: 13px;
+        color: #3A3A3A;
+        line-height: 46px;
+        // border-bottom: 1px solid rgba(153, 153, 153, 0.14);
+        .left {
+          width: 122px;
+          height: 100%;
+          text-align: center;
+          position: absolute;
+          left: 0;
+          background: #F9F9F9;
+          box-shadow: inset 0 0px 0 0 #E8E8E8, inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+        }
+        .right {
+          width: 100%;
+          height: 100%;
+          padding-left: 120px + 20px;
+          padding-right: 20px;
+          box-shadow: inset 0 0px 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+        }
+      }
+      // .content-line:nth-child(odd) {
+      //   .left {
+      //     background-color: #E8EDF2;
+      //   }
+      //   .right {
+      //     background-color: #F3F6FA;
+      //   }
+      // }
+      // .content-line:nth-child(even) {
+      //   .left {
+      //     background-color: #F5F6F6;
+      //   }
+      //   .right {
+      //     background-color: #FFFFFF;
+      //   }
+      // }
+      .content-line:nth-child(3),
+      .content-line:nth-child(6) {
+        margin-bottom: 10px;
+      }
+      .content-line:last-child {
+        margin-bottom: 10px;
+      }
+    }
+  }
 }
 </style>
 <script>
@@ -350,6 +516,9 @@
           zs_task_needed: '0',
           zs_task: [],
           platform: '只在iPhone显示'
+        },
+        continueTotalForm: { // 续总数表单
+          add_number: ''
         },
         ad_price: { // 任务的单价 预览时获取
           unit_price: '',
@@ -583,8 +752,8 @@
         api('/v2/api/task/end/' + row.id, {method: 'GET'})
           .then(res => res && res.payload)
           .then((data) => {
-            // console.log(data)
-            this.$message(data.message)
+            console.log(data)
+            // this.$message(data.message)
 
             this.$route.params.status = 'ended'
             this.activeName = 'tab5'
@@ -637,7 +806,7 @@
             payload.task.begin_time = util.formatTime(payload.task.begin_time)
             payload.task.end_time = util.formatTime(payload.task.end_time)
             this.previewForm = payload.task
-            // console.log(this.previewForm)
+            console.log('this.previewForm', this.previewForm)
           })
       },
       showDialogPreview () {
@@ -671,11 +840,11 @@
         api('/V2/api/task/' + row.id + '/' + type + '/statistics/download', {method: 'GET'})
           .then(res => res.payload)
           .then((data) => {
-            this.$message(data.message)
+            // this.$message(data.message)
             this.searchTask()
           })
           .catch((e) => {
-            this.$message(e.message)
+            // this.$message(e.message)
           })
       },
       // 下载idfa
@@ -687,7 +856,7 @@
         api('/api/task/resume/' + row.id, {method: 'GET'})
           .then(res => res.data)
           .then((data) => {
-            this.$message(data.message)
+            // this.$message(data.message)
             // this.$refs.menu.activedIndex = '1'
             this.$route.params.status = 'ok'
             this.getAdvertisement()
