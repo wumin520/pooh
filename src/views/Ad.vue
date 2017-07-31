@@ -133,7 +133,7 @@
             style="margin-left:6px" @click="downloadIdfa(2, scope.row)">下载IDFA2</a>
 
             <!-- common -->
-            <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-left:6px" @click="previewTaskInfo(row)">预览</a>
+            <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-left:6px" @click="previewTaskInfo(scope.row)">预览</a>
           </template>
         </el-table-column>
       </el-table>
@@ -148,6 +148,98 @@
       :total="totalTasks"
       >
     </el-pagination>
+
+     <!-- 预览弹窗 -->
+    <el-dialog title='广告预览' v-model="dialogPreviewVisible" class="el-dialog__wrapper previewDialog">
+      <div class="preview-content" id="preview-content">
+        <div class="content-line" style="border-top: 1px solid #E8E8E8;">
+          <div class="left">广告标题</div>
+          <div class="right"  v-text="previewForm.title"></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >iTunes地址</div>
+          <div class="right" style="white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow:hidden;font-family:PingFangSC-Semibold !important;"
+            v-text="previewForm.download_url"></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >跳转链接</div>
+          <div class="right"  v-text="previewForm.click_notify_url"></div>
+        </div>
+        <!--<div class="content-line">
+              <div class="left">搜索关键词</div>
+              <div class="right"v-text="previewForm.search_keyword"></div>
+            </div>-->
+
+        <div class="content-line" style="border-top: 1px solid #E8E8E8;">
+          <div class="left" >开始时间</div>
+          <div class="right"  v-text="previewForm.begin_time"></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >结束时间</div>
+          <div class="right"  v-text="previewForm.end_time"></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >计划份数</div>
+          <div class="right"  v-text="previewForm.plan_count"></div>
+        </div>
+        <div class="content-line" v-if="previewForm.planlist.length == 0 && previewForm.search_keyword == ''">
+          <div class="left" >关键词</div>
+          <div class="right"  v-if="previewForm.planlist.length == 0 && previewForm.search_keyword == ''">-</div>
+        </div>
+
+        <div class="content-line" v-for="(keyword, index) in previewForm.planlist" style="border-top: 1px solid #E8E8E8;">
+          <div class="left"  v-if="index == 0">关键词</div>
+          <div class="left" v-if="index > 0"></div>
+          <!--<div class="right"  v-if="previewForm.kw_flag_needed == 0">-</div>-->
+          <div class="right" >{{keyword.key}} &nbsp;&nbsp;{{keyword.num + '%'}}</div>
+        </div>
+
+        <div class="content-line" style="margin-top: 10px;border-top: 1px solid #E8E8E8;">
+          <div class="left" >应用价格</div>
+          <div class="right" v-text="previewForm.appstore_type" ></div>
+        </div>
+        <div class="content-line">
+          <div class="left" >单价</div>
+          <div class="right" >{{'￥' + previewForm.unit_price | addCommas_money }}</div>
+        </div>
+        <div class="content-line">
+          <div class="left" >App Store售价</div>
+          <div class="right" >{{(previewForm.appstore_cost == 0 || previewForm.appstore_type == '免费') ? '-' : '￥'+ previewForm.appstore_cost.toFixed(2)}}</div>
+        </div>
+
+        <div class="content-line" style="margin-top: 10px;margin-bottom: 10px;border-top: 1px solid #E8E8E8;">
+          <div class="left" >投放平台</div>
+          <div class="right"  v-text="previewForm.platform"></div>
+        </div>
+
+        <div class="content-line" v-if="previewForm.zs_task_needed == 0" style="border-top: 1px solid #E8E8E8;">
+          <div class="left" >专属任务</div>
+          <div class="right"  v-if="previewForm.zs_task_needed == 0">-</div>
+        </div>
+
+        <div class="content-line" v-for="(zs, index) in previewForm.zs_task" style="border-top: 1px solid #E8E8E8;">
+          <div class="left"  v-if="index == 0">专属任务</div>
+          <div class="left" v-if="index > 0"></div>
+          <div class="right"  v-if="previewForm.zs_task_needed == 0">-</div>
+          <div class="right"  v-if="previewForm.zs_task_needed == 1">第 {{zs.the_day}} 天 &nbsp;&nbsp;{{zs.univalent == 0 ? ' 免费' : '￥' + zs.univalent}}</div>
+        </div>
+      </div>
+    </el-dialog>
+
+    <!-- 续总数弹窗 -->
+    <el-dialog title="" v-model="dialogContinueTotalVisible" :show-close="true" custom-class="add-total-dialog" style="top: 30%;">
+      <div class="head-content" v-text="taskName"></div>
+      <el-form :model="continueTotalForm" style="margin-top:20px;">
+        <el-form-item label="增加份数： ">
+          <el-input v-model="continueTotalForm.add_number" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div class="footer">
+        <el-button @click="dialogContinueTotalVisible = false" size="small">取消</el-button>
+        <el-button type="primary" size="small" class="goon-btn" @click="addTotalNumber()">继续</el-button>
+      </div>
+    </el-dialog>
+
 
     <!--删除-->
     <el-dialog title="删除" :show-close="false" v-model="dialogDeleteVisible" custom-class="posi" style="top: 30%;">
@@ -210,6 +302,83 @@
         .el-button:last-child {
           margin-left: 8px;
         }
+      }
+    }
+  }
+
+  .add-total-dialog {
+    padding: 35px 35px 0px 35px;
+    width: 640px;
+    .el-dialog__header {
+      .el-dialog__headerbtn {
+        .el-dialog__close {
+          width: 14px;
+          height: 14px;
+          position: absolute;
+          top: 20px;
+          right: 18px;
+        }
+      }
+    }
+
+    .el-dialog__body {
+      font-family: PingFangSC-Regular;      
+      padding: 0px;
+      .head-content {
+        font-size: 14px;
+        line-height: 19px;
+        color: #3A3A3A;
+        padding-bottom: 35px;
+        border-bottom: 1px solid #ddd;
+      }
+      .el-form {
+        margin-top: 25px !important;
+        .el-form-item {
+          margin-bottom: 35px;
+          .el-form-item__label {
+            padding: 0px 0px 9px 0px;
+            font-size: 13px;
+            line-height: 18px;
+            color: #3A3A3A;
+          }
+          .el-form-item__content {
+            width: 190px;
+          }
+        }
+      }
+      .footer {
+        width: 148px;
+        font-size: 0px;
+        margin-top: 0px;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        .el-button {
+          width: 70px;
+        }
+        .goon-btn {
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+  .previewDialog {
+    .el-dialog {
+      width: 662px;
+      padding: 25px 20px;
+      .el-dialog__header {
+        .el-dialog__headerbtn {
+          .el-dialog__close {
+            color: #B5B5B5;
+            font-size: 14px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+          }
+        }
+      }
+      .el-dialog__body {
+        padding: 25px 0px 0px 0px;
       }
     }
   }
@@ -305,64 +474,76 @@
     }
 
   }
+
+  .previewDialog {
+    .preview-content {
+      .content-line {
+        position: relative;
+        /*width: 549px;*/
+        height: 46px;
+        font-family: PingFangSC-Semibold;
+        font-size: 13px;
+        color: #3A3A3A;
+        line-height: 46px;
+        // border-bottom: 1px solid rgba(153, 153, 153, 0.14);
+        .left {
+          width: 122px;
+          height: 100%;
+          text-align: center;
+          position: absolute;
+          left: 0;
+          background: #F9F9F9;
+          box-shadow: inset 0 0px 0 0 #E8E8E8, inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+        }
+        .right {
+          width: 100%;
+          height: 100%;
+          padding-left: 120px + 20px;
+          padding-right: 20px;
+          box-shadow: inset 0 0px 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+        }
+      }
+      // .content-line:nth-child(odd) {
+      //   .left {
+      //     background-color: #E8EDF2;
+      //   }
+      //   .right {
+      //     background-color: #F3F6FA;
+      //   }
+      // }
+      // .content-line:nth-child(even) {
+      //   .left {
+      //     background-color: #F5F6F6;
+      //   }
+      //   .right {
+      //     background-color: #FFFFFF;
+      //   }
+      // }
+      .content-line:nth-child(3),
+      .content-line:nth-child(6) {
+        margin-bottom: 10px;
+      }
+      .content-line:last-child {
+        margin-bottom: 10px;
+      }
+    }
+  }
 }
 </style>
 <script>
-  import api from '@/fetch'
   import util from '@/utils'
-  import _ from 'lodash'
+  import { mapState, mapActions } from 'vuex'
 
   export default {
     data () {
       return {
         loading: true, // loading 显示开关
-        afterSearch: false, // 标识搜索是否已经结束  ？todo 检查是否多余？
-        currentPage: 1, // 当前在第几页 for pagination
-        totalTasks: 0, // 任务总数 for pagination
-        currentStatus: 'ok', // 当前路由的参数
-        currentTaskId: '',  // 当前选中的任务ID
-        searchSelect: 'time', // 搜索的条件： time + title  默认按时间搜索
-        searchForm: { // 按时间搜索时 选择的时间
-          end_time: '',
-          begin_time: ''
-        },
+        activeName: 'tab1',   // 选中的tab的 名字
+        app_name: '',
         count: 0, // 存在两个相同pagination，这里记录 pagination 点击次数， 防止发送多次请求
-        activeName: 'tab1', // 选中的tab的 名字
+        currentPage: 1, // 当前在第几页 for pagination
         dateWeekTime: '',
-        deleting: null, // 要删除的任务信息 json
-        taskName: '', // 续总数标题
-        dialogDeleteVisible: false, // 确认删除任务弹层 显示开关
-        dialogContinueTotalVisible: false, // 续总数弹层 显示开关
-        dialogPreviewVisible: false, // 预览弹层 显示开关
-        previewForm: {  // 预览表单的字段
-          title: '',
-          download_url: '',
-          click_notify_url: '',
-          search_keyword: '',
-          begin_time: '',
-          end_time: '',
-          plan_count: '',
-          appstore_type: '免费',
-          appstore_cost: '',
-          kw_flag_needed: '0',
-          planlist: [],
-          // planlistString: '',
-          zs_task_needed: '0',
-          zs_task: [],
-          platform: '只在iPhone显示'
-        },
-        ad_price: { // 任务的单价 预览时获取
-          unit_price: '',
-          unit_price_level2: '',
-          zs_unit_price: ''
-        },
-        task_statcnt: { // 每个tab 的任务数
-          ok: '',
-          pending: '',
-          rejected: '',
-          paused: '',
-          ended: ''
-        },
+        currentStatus: 'ok', // 当前路由的参数
         pickerOptions2: { // 搜索时间的配置
           shortcuts: [{
             text: '最近一周',
@@ -390,8 +571,15 @@
             }
           }]
         },
-        app_name: '',
-        tableData: []
+        dialogContinueTotalVisible: false, // 续总数弹层 显示开关
+        currentTaskId: '', // 当前选中的任务ID
+        taskName: '', // 续总数标题
+        continueTotalForm: { // 续总数表单
+          add_number: ''
+        },
+        dialogPreviewVisible: false, // 预览弹层 显示开关
+        dialogDeleteVisible: false, // 确认删除任务弹层 显示开关
+        deleting: null // 要删除的任务信息 json
       }
     },
 
@@ -424,6 +612,19 @@
       }
     },
 
+    computed: {
+      ...mapState('ad', [
+        'task_statcnt',
+        'afterSearch',
+        'totalTasks',
+        'tableData',
+        'searchSelect',
+        'searchForm',
+        'previewForm',
+        'ad_price'
+      ])
+    },
+
     mounted () {
       this.loading = true
       var type = this.task_status = this.$route.params.status.split('&')[0]
@@ -452,6 +653,15 @@
     },
 
     methods: {
+      ...mapActions('ad', [
+        'searchAdTask',
+        'taskToEnd',
+        'addTaskNumber',
+        'previewTask',
+        'deleTask',
+        'exportIDFA',
+        'resume'
+      ]),
       // 搜索功能 切换时置空
       searchChange (select) {
         // console.log(select)
@@ -469,11 +679,10 @@
       },
       // 搜索 时间、标题
       searchTask () {
-        console.log('searchTask')
-        console.log('searchTask  dateWeekTime: ', this.dateWeekTime, this.dateWeekTime.length)
-        var that = this
+        // console.log('searchTask')
+        // console.log('searchTask  dateWeekTime: ', this.dateWeekTime, this.dateWeekTime.length)
         this.loading = true
-        this.currentStatus = this.$route.params.status.split('&')[0]
+        let currentStatus = this.currentStatus = this.$route.params.status.split('&')[0]
         let url = '/v2/api/task?status=' + this.$route.params.status.split('&')[0] + '&page_index=' + this.currentPage
         // 按时间搜索
         if (this.searchSelect === 'time' && this.dateWeekTime !== '' && this.dateWeekTime.length >= 2 && this.dateWeekTime[0] !== null) {
@@ -492,31 +701,17 @@
           url += '&app_name=' + this.app_name
         }
 
-        api(url, {method: 'GET'})
-          .then(res => res && res.payload)
-          .then(payload => {
-            var self = that
-            self.count = 0
-            self.loading = false
-            that.afterSearch = true
-            // bus.$emit('updateNavbar', payload.navbar)
-            if (self.currentStatus === payload.status) {
-              self.tableData = payload.tasks
-              self.task_statcnt = payload.task_statcnt
-              console.log(self.task_statcnt)
-              self.totalTasks = self.task_statcnt[self.$route.params.status.split('&')[0]]
-              _.forEach(self.tableData, function (n) {
-                n.begin_time = util.formatTime(n.begin_time, 'yyyy-MM-dd hh:mm')
-                n.end_time = util.formatTime(n.end_time, 'yyyy-MM-dd hh:mm')
-              })
-            }
-            self.set_operation_column_width()
-            this.dialogSearchVisible = false
-          }).catch((e) => {
-            var self = that
-            self.afterSearch = true
-            self.loading = false
-          })
+        let config = {
+          url: url,
+          status: this.$route.params.status.split('&')[0],
+          currentStatus: currentStatus
+        }
+        this.searchAdTask(config).then(_ => {
+          this.loading = false
+          this.count = 0
+        }).catch((e) => {
+          this.loading = false
+        })
       },
       // 前往 添加广告
       toAddAd () {
@@ -528,7 +723,6 @@
         }
 
         let routePath = '/d/ad/ios'
-        this.tableData = []
         var name = key.name
         // tab1 tab2 tab3 tab4 tab5
         switch (name) {
@@ -560,7 +754,7 @@
         }
 
         if (this.dateWeekTime.length >= 2 && this.dateWeekTime[0] != null) {
-          console.log('this.dateWeekTime', this.dateWeekTime)
+          // console.log('this.dateWeekTime', this.dateWeekTime)
           routePath += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + util.formatTime(this.dateWeekTime[1].getTime() / 1000)
         }
 
@@ -573,33 +767,28 @@
       handleCurrentChange (val) {
         if (this.count > 0) {
           return
+        } else {
+          this.count = this.count + 1
+          this.currentPage = val
+          this.searchTask()
         }
-        this.count = this.count + 1
-        this.currentPage = val
-        this.searchTask()
       },
       // 手动 完成
       goToEnded (row) {
-        api('/v2/api/task/end/' + row.id, {method: 'GET'})
-          .then(res => res && res.payload)
-          .then((data) => {
-            // console.log(data)
-            this.$message(data.message)
-
-            this.$route.params.status = 'ended'
-            this.activeName = 'tab5'
-            this.searchTask()
-          })
+        this.taskToEnd(row.id).then(data => {
+          this.$route.params.status = 'ended'
+          this.activeName = 'tab5' // 要留在vue文件中
+          this.searchTask()
+        })
       },
+
        // 续总数
       addTotalNumber () {
-        // console.log(this.continueTotalForm.add_number)
-        var url = '/v2/api/task/' + this.currentTaskId + '/add_number/' + this.continueTotalForm.add_number
-        api(url, {method: 'GET'})
-          .then(res => res.payload)
-          .then((data) => {
-            window.location.reload()
-          })
+        let config = {
+          currentTaskId: this.currentTaskId,
+          addNumber: this.continueTotalForm.add_number
+        }
+        this.addTaskNumber(config)
       },
       // 显示 续总数弹窗
       addNumber (row) {
@@ -614,31 +803,7 @@
       // 预览
       previewTaskInfo (row) {
         this.dialogPreviewVisible = true
-        api('/v2/api/task/view/' + row.id, {method: 'GET'})
-          .then(res => res && res.payload)
-          .then((payload) => {
-            this.ad_price = payload.task.ad_price
-            _.forEach(payload.task.zs_task, function (n) {
-              n.univalent === 0 ? n.free = true : n.free = false
-            })
-            _.forEach(payload.task.planlist, function (n) {
-              n.keyTime = Date.now()
-            })
-
-            if (payload.task.planlist.length === 0) {
-              if (payload.task.search_keyword !== '') {
-                payload.task.planlist.push({key: payload.task.search_keyword, num: '100'})
-              }
-            }
-
-            payload.task.platform === 1 ? payload.task.platform = '只在iPhone显示' : (payload.task.platform === 2 ? payload.task.platform = '只在iPad显示' : payload.task.platform = '两者都显示')
-            payload.task.appstore_type === 0 ? payload.task.appstore_type = '免费' : payload.task.appstore_type = '付费'
-
-            payload.task.begin_time = util.formatTime(payload.task.begin_time)
-            payload.task.end_time = util.formatTime(payload.task.end_time)
-            this.previewForm = payload.task
-            // console.log(this.previewForm)
-          })
+        this.previewTask(row.id)
       },
       showDialogPreview () {
         /* ?todo? 检查是否冗余 */
@@ -654,13 +819,9 @@
         this.dialogDeleteVisible = true
       },
       handleDelete () {
-        api('/v2/api/task/delete/' + this.deleting.id, {method: 'GET'})
-          .then((data) => {
-            console.log(data)
-            this.$message(data.message)
-            this.tableData.splice(this.deleting.index, 1)
-            this.dialogDeleteVisible = false
-          })
+        this.deleTask(this.deleting).then(_ => {
+          this.dialogDeleteVisible = false
+        })
       },
       // 完成状态时 续单
       readd (row) {
@@ -668,15 +829,13 @@
       },
       // 导出idfa
       exportIdfa (type, row) {
-        api('/V2/api/task/' + row.id + '/' + type + '/statistics/download', {method: 'GET'})
-          .then(res => res.payload)
-          .then((data) => {
-            this.$message(data.message)
-            this.searchTask()
-          })
-          .catch((e) => {
-            this.$message(e.message)
-          })
+        let config = {
+          type: type,
+          id: row.id
+        }
+        this.exportIDFA(config).then(_ => {
+          this.searchTask()
+        })
       },
       // 下载idfa
       downloadIdfa (type, row) {
@@ -684,14 +843,10 @@
       },
       // 开启
       resumeTask (row) {
-        api('/api/task/resume/' + row.id, {method: 'GET'})
-          .then(res => res.data)
-          .then((data) => {
-            this.$message(data.message)
-            // this.$refs.menu.activedIndex = '1'
-            this.$route.params.status = 'ok'
-            this.getAdvertisement()
-          })
+        this.resume(row.id).then(_ => {
+          this.$route.params.status = 'ok'
+          this.getAdvertisement()
+        })
       }
     }
   }

@@ -222,7 +222,10 @@ const actions = {
   },
 
   postForm ({commit}, config) {
-    let path = URI_POST_TASK + config.params
+    let path = URI_POST_TASK
+    if (config.params) {
+      path = URI_POST_TASK + '/' + config.params
+    }
     return api(path, {method: 'post', body: config.postData})
       .then(res => res && res.payload)
       .then(payload => {
