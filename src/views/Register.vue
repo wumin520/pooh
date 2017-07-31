@@ -21,7 +21,7 @@
                 <el-form-item class="qk-form-item"  label="" prop="confirm">
                   <el-input class="qk-input__border-bottom" type="password" v-model="form.confirm" placeholder="请再输一次"></el-input>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item class="qk-form-item">
                   <el-button type="primary" class="btn-register" @click="register(form)">注册</el-button>
                 </el-form-item>
               </el-form>
@@ -35,6 +35,14 @@
 
       </div>
     </div>
+
+    <el-dialog title="注册成功" v-model="registerSucc" :show-close="false" custom-class="register-dialog" style="top: 30%;">
+      <img class="logo" src="//qianka.b0.upaiyun.com/images/425ec42718c6ef5cbe6e6fe998b66d12.png" alt="">
+      <span class="qk-title" v-text="'恭喜您！注册成功！'+ countdown + '(s)后自动跳转登录'"></span>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="sign-button" type="primary" size="small" @click="toLogin()">现在去登陆</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -68,6 +76,9 @@
               }
 
               .register-form {
+                .qk-form-item {
+                  width: 100%;
+                }
                 .btn-register {
                   width: 100%;
                   margin-top: 13px;
@@ -95,6 +106,22 @@
               font-size: 12px;
               color: #FFFFFF;
             }
+          }
+        }
+      }
+
+      .register-dialog {
+        .el-dialog__body{
+          .logo {
+            top: 30px;
+          }
+          .qk-title {
+            top: 2px;
+          }
+        }
+        .dialog-footer {
+          .sign-button {
+            width: 109px;
           }
         }
       }
@@ -133,6 +160,9 @@
       }
 
       return {
+        registerSucc: false,
+        countdown: 3,
+        countdownId: '',
         form: {
           username: '',
           displayName: '',
@@ -187,12 +217,25 @@
             }
           }).then((res) => {
             setTimeout(() => {
-              this.$router.push({ name: 'login' })
+              this.registerSucc = true
+              var self = this
+              this.countdownId = setInterval(function () {
+                self.countdown = self.countdown - 1
+                if (self.countdown < 0) {
+                  self.toLogin()
+                  return
+                }
+              }, 1000)
             }, 3000)
           }).catch((err) => {
             this.$message(err.message)
           })
         })
+      },
+
+      toLogin () {
+        clearInterval(this.countdownId)
+        this.$router.push({ name: 'login' })
       }
     }
   }
