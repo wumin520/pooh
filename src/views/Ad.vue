@@ -227,17 +227,17 @@
     </el-dialog>
 
     <!-- 续总数弹窗 -->
-    <el-dialog :title="taskName" v-model="dialogContinueTotalVisible">
-      <div class="line" style="width: 100%; height: 1px; background-color: #e0e6ed;margin-bottom:20px;"></div>
+    <el-dialog title="" v-model="dialogContinueTotalVisible" :show-close="true" custom-class="add-total-dialog" style="top: 30%;">
+      <div class="head-content" v-text="taskName"></div>
       <el-form :model="continueTotalForm" style="margin-top:20px;">
         <el-form-item label="增加份数： ">
-          <el-input style="width:300px;float:left;" v-model="continueTotalForm.add_number" auto-complete="off"></el-input>
+          <el-input v-model="continueTotalForm.add_number" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer" style="position:relative;float:right;width:200px;margin-top: -100px;padding:0px;">
-        <el-button @click="dialogContinueTotalVisible = false">关 闭</el-button>
-        <el-button type="primary" @click="addTotalNumber()">保 存</el-button>
-      </span>
+      <div class="footer">
+        <el-button @click="dialogContinueTotalVisible = false" size="small">取消</el-button>
+        <el-button type="primary" size="small" class="goon-btn" @click="addTotalNumber()">继续</el-button>
+      </div>
     </el-dialog>
 
 
@@ -300,6 +300,63 @@
         }
 
         .el-button:last-child {
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+
+  .add-total-dialog {
+    padding: 35px 35px 0px 35px;
+    width: 640px;
+    .el-dialog__header {
+      .el-dialog__headerbtn {
+        .el-dialog__close {
+          width: 14px;
+          height: 14px;
+          position: absolute;
+          top: 20px;
+          right: 18px;
+        }
+      }
+    }
+
+    .el-dialog__body {
+      font-family: PingFangSC-Regular;      
+      padding: 0px;
+      .head-content {
+        font-size: 14px;
+        line-height: 19px;
+        color: #3A3A3A;
+        padding-bottom: 35px;
+        border-bottom: 1px solid #ddd;
+      }
+      .el-form {
+        margin-top: 25px !important;
+        .el-form-item {
+          margin-bottom: 35px;
+          .el-form-item__label {
+            padding: 0px 0px 9px 0px;
+            font-size: 13px;
+            line-height: 18px;
+            color: #3A3A3A;
+          }
+          .el-form-item__content {
+            width: 190px;
+          }
+        }
+      }
+      .footer {
+        width: 148px;
+        font-size: 0px;
+        margin-top: 0px;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        .el-button {
+          width: 70px;
+        }
+        .goon-btn {
           margin-left: 8px;
         }
       }
