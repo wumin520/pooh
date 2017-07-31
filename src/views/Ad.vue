@@ -1,8 +1,14 @@
 <template>
   <div class="container">
-    <div class="title">iOS广告
-      <i class="el-icon-arrow-right" v-if="dateWeekTime != '' && dateWeekTime.length >=2 && dateWeekTime[0] != null"></i> <span v-if="dateWeekTime != '' && dateWeekTime.length >=2 && dateWeekTime[0] != null"> 按时间搜索 </span>
-      <i class="el-icon-arrow-right" v-if="app_name != ''"></i> <span v-if="app_name != ''"> 按标题搜索 </span>
+    <!-- 面包屑 -->
+    <div class="breadcrumb">
+      <span class="breadcrumb-item">
+        <span class="breadcrumb-item-inner">iOS广告</span>
+        <span class="breadcrumb-separator" v-if="dateWeekTime != '' && dateWeekTime.length >=2 && dateWeekTime[0] != null"></span>        
+      </span>
+      <span class="breadcrumb-item" v-if="dateWeekTime != '' && dateWeekTime.length >=2 && dateWeekTime[0] != null">
+        <span class="breadcrumb-item-inner">按时间搜索</span>        
+      </span>
     </div>
 
     <div class="search-wrapper">
@@ -390,6 +396,36 @@
   padding: 43px 35px;
   position: relative;
 
+  .breadcrumb {
+    height: 16px;
+    margin-top: 7px;
+    margin-bottom: 47px;
+    .breadcrumb-item {
+      display: inline-block;
+      float: left;
+      margin-right: 10px;
+      cursor: pointer;
+      .breadcrumb-item-inner {
+        font-family: PingFangSC-Light;
+        font-size: 16px;
+        color: #888888;
+      }
+      .breadcrumb-separator {
+        width: 6px;
+        height: 12px;
+        margin-left: 2px;
+        display: inline-block;
+        background-image: url('http://qianka.b0.upaiyun.com/images/a688c7dd7a765df07ec7d9cfab76b68f.png');
+        background-size: 6px 12px;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    }
+    .breadcrumb-item:last-child {
+      cursor: text;
+    }
+  }
+
   .title {
     font-family: PingFangSC-Light;
     font-size: 16px;
@@ -629,6 +665,7 @@
     mounted () {
       this.loading = true
       var type = this.task_status = this.$route.params.status.split('&')[0]
+      bus.$emit('updateActiveIndex')
 
       var activeName = 'tab1'
       switch (type) {

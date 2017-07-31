@@ -1,10 +1,15 @@
 <template>
   <div class="container">
     <!-- 面包屑 -->
-    <el-breadcrumb separator=">">
-      <el-breadcrumb-item :to="{ path: '/d/ad' }">iOS广告</el-breadcrumb-item>
-      <el-breadcrumb-item v-text="page_sub_title"></el-breadcrumb-item>
-    </el-breadcrumb>
+    <div class="breadcrumb">
+      <span class="breadcrumb-item" @click="toIOS()">
+        <span class="breadcrumb-item-inner">iOS广告</span>
+        <span class="breadcrumb-separator"></span>        
+      </span>
+      <span class="breadcrumb-item" @click="toIOS()">
+        <span class="breadcrumb-item-inner" v-text="page_sub_title"></span>        
+      </span>
+    </div>
 
     <!-- Advertisement Form -->
     <el-form :model="adForm" ref="adFormRef" label-position="top" class="addAd-form">
@@ -163,6 +168,33 @@
 <style lang="scss" >
   .container {
     padding: 50px 0 0 35px;
+
+    .breadcrumb {
+      .breadcrumb-item {
+        display: inline-block;
+        float: left;
+        margin-right: 10px;
+        cursor: pointer;
+        .breadcrumb-item-inner {
+          font-family: PingFangSC-Light;
+          font-size: 16px;
+          color: #888888;
+        }
+        .breadcrumb-separator {
+          width: 6px;
+          height: 12px;
+          margin-left: 2px;
+          display: inline-block;
+          background-image: url('http://qianka.b0.upaiyun.com/images/a688c7dd7a765df07ec7d9cfab76b68f.png');
+          background-size: 6px 12px;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+      }
+      .breadcrumb-item:last-child {
+        cursor: text;
+      }
+    }
 
     .addAd-form {
       margin-top: 47px; 
@@ -412,6 +444,11 @@
         'removeZSItem'
       ]),
 
+      // 回IOS广告页
+      toIOS () {
+        this.$router.push('/d/ad/ios/ok')
+        bus.$emit('updateActiveIndex')
+      },
       // 续单、编辑、添加 的验证+提交
       submitForm (formName) {
         this.submitButtonDisable = true
