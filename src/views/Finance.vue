@@ -129,9 +129,7 @@
       ])
     },
 
-    mounted () {
-      this.getInfo()
-    },
+    fetchAction: 'finance/getInfo',
 
     methods: {
       cancel (index, row) {
