@@ -13,14 +13,12 @@ import util from '@/utils'
 
 const initState = () => ({
   afterSearch: false, // 标识搜索是否已经结束  ？todo 检查是否多余？
-  currentPage: 1, // 当前在第几页 for pagination
   totalTasks: 0, // 任务总数 for pagination
   searchSelect: 'time', // 搜索的条件： time + title  默认按时间搜索
   searchForm: { // 按时间搜索时 选择的时间
     end_time: '',
     begin_time: ''
   },
-  count: 0, // 存在两个相同pagination，这里记录 pagination 点击次数， 防止发送多次请求
   previewForm: {  // 预览表单的字段
     title: '',
     download_url: '',
@@ -61,10 +59,7 @@ const getters = {
 }
 
 const types = {
-  // CHANGE_LOADIG_STATUS: 'change_loading_status',
-  CHANGE_COUNT_STATUS: 'change_count_status',
   CHANGE_AFTERSEARCH_STATUS: 'change_aftersearch_status',
-  RESET_TABLE_DATA: 'reset_table_data',
   SET_TABLE_DATA: 'set_table_data',
   SET_TASK_STATCNT: 'set_task_statcnt',
   UPDATE_AD_PRICE: 'update_ad_price',
@@ -74,12 +69,6 @@ const types = {
 
 // 更新应用状态
 const mutations = {
-  // [types.CHANGE_LOADIG_STATUS] (state, loading) {
-  //   state.loading = loading
-  // },
-  [types.CHANGE_COUNT_STATUS] (state, count) {
-    state.count = count
-  },
   [types.CHANGE_AFTERSEARCH_STATUS] (state, afterSearch) {
     state.afterSearch = afterSearch
   },
@@ -96,12 +85,6 @@ const mutations = {
       n.begin_time = util.formatTime(n.begin_time, 'yyyy-MM-dd hh:mm')
       n.end_time = util.formatTime(n.end_time, 'yyyy-MM-dd hh:mm')
     })
-  },
-  [types.RESET_TABLE_DATA] (state) {
-    // state.tableData = []
-  },
-  [types.CHANGE_CURRENT_PAGE] (state, currentPage) {
-    state.currentPage = currentPage
   },
   [types.UPDATE_AD_PRICE] (state, adPrice) {
     state.ad_price = adPrice
@@ -120,9 +103,6 @@ const actions = {
     return api(config.url, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
-        console.log('>>>>', payload, config.currentStatus)
-        // commit(types.CHANGE_LOADIG_STATUS, false)
-        commit(types.CHANGE_COUNT_STATUS, 0)
         commit(types.CHANGE_AFTERSEARCH_STATUS, true)
         if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
 
@@ -137,19 +117,8 @@ const actions = {
         commit(types.CHANGE_DIALOG_SEARCH_VISIBLE, false)
         // state.set_operation_column_width()
       }).catch((e) => {
-        // commit(types.CHANGE_LOADIG_STATUS, false)
         commit(types.CHANGE_AFTERSEARCH_STATUS, true)
       })
-  },
-  resetTableData ({commit}) {
-    commit(types.RESET_TABLE_DATA)
-  },
-  changeCount ({commit, state}, val) {
-    if (state.count > 0) {
-      return
-    }
-    commit(types.CHANGE_COUNT_STATUS, state.count + 1) // ?这里要验证对不对?
-    commit(types.CHANGE_CURRENT_PAGE, val)
   },
   taskToEnd ({commit}, id) {
     let path = URI_TASK_TO_END + id
@@ -201,7 +170,6 @@ const actions = {
       .then((data) => {
         Message(data.message)
         commit(types.SPLICE_TABLE_DATA, deleting.index)
-        // this.tableData.splice(deleting.index, 1)
       })
   },
 

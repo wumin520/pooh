@@ -483,6 +483,8 @@
         loading: true, // loading 显示开关
         activeName: 'tab1',   // 选中的tab的 名字
         app_name: '',
+        count: 0, // 存在两个相同pagination，这里记录 pagination 点击次数， 防止发送多次请求
+        currentPage: 1, // 当前在第几页 for pagination
         dateWeekTime: '',
         currentStatus: 'ok', // 当前路由的参数
         pickerOptions2: { // 搜索时间的配置
@@ -559,10 +561,8 @@
         'afterSearch',
         'totalTasks',
         'tableData',
-        'currentPage',
         'searchSelect',
         'searchForm',
-        'count',
         'previewForm',
         'ad_price'
       ])
@@ -598,8 +598,6 @@
     methods: {
       ...mapActions('ad', [
         'searchAdTask',
-        'resetTableData',
-        'changeCount',
         'taskToEnd',
         'addTaskNumber',
         'previewTask',
@@ -624,8 +622,8 @@
       },
       // 搜索 时间、标题
       searchTask () {
-        console.log('searchTask')
-        console.log('searchTask  dateWeekTime: ', this.dateWeekTime, this.dateWeekTime.length)
+        // console.log('searchTask')
+        // console.log('searchTask  dateWeekTime: ', this.dateWeekTime, this.dateWeekTime.length)
         this.loading = true
         let currentStatus = this.currentStatus = this.$route.params.status.split('&')[0]
         let url = '/v2/api/task?status=' + this.$route.params.status.split('&')[0] + '&page_index=' + this.currentPage
@@ -653,6 +651,7 @@
         }
         this.searchAdTask(config).then(_ => {
           this.loading = false
+          this.count = 0
         }).catch((e) => {
           this.loading = false
         })
@@ -667,7 +666,6 @@
         }
 
         let routePath = '/d/ad/ios'
-        this.resetTableData()
         var name = key.name
         // tab1 tab2 tab3 tab4 tab5
         switch (name) {
@@ -699,7 +697,7 @@
         }
 
         if (this.dateWeekTime.length >= 2 && this.dateWeekTime[0] != null) {
-          console.log('this.dateWeekTime', this.dateWeekTime)
+          // console.log('this.dateWeekTime', this.dateWeekTime)
           routePath += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + util.formatTime(this.dateWeekTime[1].getTime() / 1000)
         }
 
@@ -710,8 +708,13 @@
         this.$router.push(routePath)
       },
       handleCurrentChange (val) {
-        this.changeCount(val)
-        this.searchTask()
+        if (this.count > 0) {
+          return
+        } else {
+          this.count = this.count + 1
+          this.currentPage = val
+          this.searchTask()
+        }
       },
       // 手动 完成
       goToEnded (row) {
