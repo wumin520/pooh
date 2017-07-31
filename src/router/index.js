@@ -40,17 +40,17 @@ export default new Router({
           component: Ad
         },
         {
-          name: 'new',
+          name: 'dash_ad_new',
           path: 'ad/new',
           component: AdNew // 新添加
         },
         {
-          name: 'renew',
+          name: 'dash_ad_renew',
           path: 'ad/renew/:taskId',
           component: AdNew // 续单
         },
         {
-          name: 'edit',
+          name: 'dash_ad_edit',
           path: 'ad/edit/:taskId',
           component: AdNew // 编辑
         },

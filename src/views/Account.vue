@@ -34,13 +34,13 @@
       </el-form-item>
     </el-form>
 
-    <el-dialog title="" v-model="submitSuccess" style="top: 30%;">
+    <!--<el-dialog title="" v-model="submitSuccess" style="top: 30%;">
       <img class="logo-success" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
       <span class="qk-title">修改成功</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitSuccess = false">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 <style lang="scss">
@@ -193,7 +193,7 @@
               this.$router.push('/d/home')
               bus.$emit('updateActiveIndex')
             }, 500)
-            this.submitSuccess = true
+            // this.submitSuccess = true
           })
         }
       }

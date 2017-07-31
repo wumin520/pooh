@@ -800,7 +800,7 @@
       },
       // 编辑
       editTask (row) {
-        this.$router.push({ name: 'edit', params: { taskId: row.id } })
+        this.$router.push({ name: 'dash_ad_edit', params: { taskId: row.id } })
         bus.$emit('updateActiveIndex')
       },
       // 预览
@@ -828,7 +828,7 @@
       },
       // 完成状态时 续单
       readd (row) {
-        this.$router.push({ name: 'renew', params: { taskId: row.id } })
+        this.$router.push({ name: 'dash_ad_renew', params: { taskId: row.id } })
         bus.$emit('updateActiveIndex')
       },
       // 导出idfa

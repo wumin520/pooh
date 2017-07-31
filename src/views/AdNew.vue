@@ -381,12 +381,12 @@
 
     mounted () {
       let path = this.$route.name
-      if (path === 'renew') {
+      if (path === 'dash_ad_renew') {
         // 续单
         let params = this.$route.params.taskId
         this.page_sub_title = '续单'
         this.fetchPreRenew(params)
-      } else if (path === 'new') {
+      } else if (path === 'dash_ad_new') {
         // 添加
         this.page_sub_title = '添加新广告'
         this.fetchPreNew()
@@ -542,7 +542,7 @@
         var postData = tempForm
 
         let params = ''
-        this.$route.name === 'edit' ? params = this.$route.params.taskId : (this.$route.name === 'renew' ? params = this.$route.params.taskId : params = '')
+        this.$route.name === 'dash_ad_edit' ? params = this.$route.params.taskId : (this.$route.name === 'dash_ad_renew' ? params = this.$route.params.taskId : params = '')
         let config = {
           params: params,
           postData: postData
@@ -550,7 +550,7 @@
         this.postForm(config)
           .then(res => {
             console.log('post', res)
-            if (this.$route.name === 'renew') {
+            if (this.$route.name === 'dash_ad_renew') {
               this.$message('续单成功！')
             }
             //  ？TODO ？ 什么作用?
