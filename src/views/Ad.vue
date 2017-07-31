@@ -474,64 +474,17 @@
 }
 </style>
 <script>
-  import api from '@/fetch'
   import util from '@/utils'
-  import _ from 'lodash'
+  import { mapState, mapActions } from 'vuex'
 
   export default {
     data () {
       return {
         loading: true, // loading 显示开关
-        afterSearch: false, // 标识搜索是否已经结束  ？todo 检查是否多余？
-        currentPage: 1, // 当前在第几页 for pagination
-        totalTasks: 0, // 任务总数 for pagination
-        currentStatus: 'ok', // 当前路由的参数
-        currentTaskId: '',  // 当前选中的任务ID
-        searchSelect: 'time', // 搜索的条件： time + title  默认按时间搜索
-        searchForm: { // 按时间搜索时 选择的时间
-          end_time: '',
-          begin_time: ''
-        },
-        count: 0, // 存在两个相同pagination，这里记录 pagination 点击次数， 防止发送多次请求
-        activeName: 'tab1', // 选中的tab的 名字
+        activeName: 'tab1',   // 选中的tab的 名字
+        app_name: '',
         dateWeekTime: '',
-        deleting: null, // 要删除的任务信息 json
-        taskName: '', // 续总数标题
-        dialogDeleteVisible: false, // 确认删除任务弹层 显示开关
-        dialogContinueTotalVisible: false, // 续总数弹层 显示开关
-        dialogPreviewVisible: false, // 预览弹层 显示开关
-        previewForm: {  // 预览表单的字段
-          title: '',
-          download_url: '',
-          click_notify_url: '',
-          search_keyword: '',
-          begin_time: '',
-          end_time: '',
-          plan_count: '',
-          appstore_type: '免费',
-          appstore_cost: '',
-          kw_flag_needed: '0',
-          planlist: [],
-          // planlistString: '',
-          zs_task_needed: '0',
-          zs_task: [],
-          platform: '只在iPhone显示'
-        },
-        continueTotalForm: { // 续总数表单
-          add_number: ''
-        },
-        ad_price: { // 任务的单价 预览时获取
-          unit_price: '',
-          unit_price_level2: '',
-          zs_unit_price: ''
-        },
-        task_statcnt: { // 每个tab 的任务数
-          ok: '',
-          pending: '',
-          rejected: '',
-          paused: '',
-          ended: ''
-        },
+        currentStatus: 'ok', // 当前路由的参数
         pickerOptions2: { // 搜索时间的配置
           shortcuts: [{
             text: '最近一周',
@@ -559,8 +512,15 @@
             }
           }]
         },
-        app_name: '',
-        tableData: []
+        dialogContinueTotalVisible: false, // 续总数弹层 显示开关
+        currentTaskId: '', // 当前选中的任务ID
+        taskName: '', // 续总数标题
+        continueTotalForm: { // 续总数表单
+          add_number: ''
+        },
+        dialogPreviewVisible: false, // 预览弹层 显示开关
+        dialogDeleteVisible: false, // 确认删除任务弹层 显示开关
+        deleting: null // 要删除的任务信息 json
       }
     },
 
@@ -593,6 +553,21 @@
       }
     },
 
+    computed: {
+      ...mapState('ad', [
+        'task_statcnt',
+        'afterSearch',
+        'totalTasks',
+        'tableData',
+        'currentPage',
+        'searchSelect',
+        'searchForm',
+        'count',
+        'previewForm',
+        'ad_price'
+      ])
+    },
+
     mounted () {
       this.loading = true
       var type = this.task_status = this.$route.params.status.split('&')[0]
@@ -621,6 +596,17 @@
     },
 
     methods: {
+      ...mapActions('ad', [
+        'searchAdTask',
+        'resetTableData',
+        'changeCount',
+        'taskToEnd',
+        'addTaskNumber',
+        'previewTask',
+        'deleTask',
+        'exportIDFA',
+        'resume'
+      ]),
       // 搜索功能 切换时置空
       searchChange (select) {
         // console.log(select)
@@ -640,9 +626,8 @@
       searchTask () {
         console.log('searchTask')
         console.log('searchTask  dateWeekTime: ', this.dateWeekTime, this.dateWeekTime.length)
-        var that = this
         this.loading = true
-        this.currentStatus = this.$route.params.status.split('&')[0]
+        let currentStatus = this.currentStatus = this.$route.params.status.split('&')[0]
         let url = '/v2/api/task?status=' + this.$route.params.status.split('&')[0] + '&page_index=' + this.currentPage
         // 按时间搜索
         if (this.searchSelect === 'time' && this.dateWeekTime !== '' && this.dateWeekTime.length >= 2 && this.dateWeekTime[0] !== null) {
@@ -661,31 +646,16 @@
           url += '&app_name=' + this.app_name
         }
 
-        api(url, {method: 'GET'})
-          .then(res => res && res.payload)
-          .then(payload => {
-            var self = that
-            self.count = 0
-            self.loading = false
-            that.afterSearch = true
-            // bus.$emit('updateNavbar', payload.navbar)
-            if (self.currentStatus === payload.status) {
-              self.tableData = payload.tasks
-              self.task_statcnt = payload.task_statcnt
-              console.log(self.task_statcnt)
-              self.totalTasks = self.task_statcnt[self.$route.params.status.split('&')[0]]
-              _.forEach(self.tableData, function (n) {
-                n.begin_time = util.formatTime(n.begin_time, 'yyyy-MM-dd hh:mm')
-                n.end_time = util.formatTime(n.end_time, 'yyyy-MM-dd hh:mm')
-              })
-            }
-            self.set_operation_column_width()
-            this.dialogSearchVisible = false
-          }).catch((e) => {
-            var self = that
-            self.afterSearch = true
-            self.loading = false
-          })
+        let config = {
+          url: url,
+          status: this.$route.params.status.split('&')[0],
+          currentStatus: currentStatus
+        }
+        this.searchAdTask(config).then(_ => {
+          this.loading = false
+        }).catch((e) => {
+          this.loading = false
+        })
       },
       // 前往 添加广告
       toAddAd () {
@@ -697,7 +667,7 @@
         }
 
         let routePath = '/d/ad/ios'
-        this.tableData = []
+        this.resetTableData()
         var name = key.name
         // tab1 tab2 tab3 tab4 tab5
         switch (name) {
@@ -740,35 +710,25 @@
         this.$router.push(routePath)
       },
       handleCurrentChange (val) {
-        if (this.count > 0) {
-          return
-        }
-        this.count = this.count + 1
-        this.currentPage = val
+        this.changeCount(val)
         this.searchTask()
       },
       // 手动 完成
       goToEnded (row) {
-        api('/v2/api/task/end/' + row.id, {method: 'GET'})
-          .then(res => res && res.payload)
-          .then((data) => {
-            console.log(data)
-            // this.$message(data.message)
-
-            this.$route.params.status = 'ended'
-            this.activeName = 'tab5'
-            this.searchTask()
-          })
+        this.taskToEnd(row.id).then(data => {
+          this.$route.params.status = 'ended'
+          this.activeName = 'tab5' // 要留在vue文件中
+          this.searchTask()
+        })
       },
+
        // 续总数
       addTotalNumber () {
-        // console.log(this.continueTotalForm.add_number)
-        var url = '/v2/api/task/' + this.currentTaskId + '/add_number/' + this.continueTotalForm.add_number
-        api(url, {method: 'GET'})
-          .then(res => res.payload)
-          .then((data) => {
-            window.location.reload()
-          })
+        let config = {
+          currentTaskId: this.currentTaskId,
+          addNumber: this.continueTotalForm.add_number
+        }
+        this.addTaskNumber(config)
       },
       // 显示 续总数弹窗
       addNumber (row) {
@@ -783,31 +743,7 @@
       // 预览
       previewTaskInfo (row) {
         this.dialogPreviewVisible = true
-        api('/v2/api/task/view/' + row.id, {method: 'GET'})
-          .then(res => res && res.payload)
-          .then((payload) => {
-            this.ad_price = payload.task.ad_price
-            _.forEach(payload.task.zs_task, function (n) {
-              n.univalent === 0 ? n.free = true : n.free = false
-            })
-            _.forEach(payload.task.planlist, function (n) {
-              n.keyTime = Date.now()
-            })
-
-            if (payload.task.planlist.length === 0) {
-              if (payload.task.search_keyword !== '') {
-                payload.task.planlist.push({key: payload.task.search_keyword, num: '100'})
-              }
-            }
-
-            payload.task.platform === 1 ? payload.task.platform = '只在iPhone显示' : (payload.task.platform === 2 ? payload.task.platform = '只在iPad显示' : payload.task.platform = '两者都显示')
-            payload.task.appstore_type === 0 ? payload.task.appstore_type = '免费' : payload.task.appstore_type = '付费'
-
-            payload.task.begin_time = util.formatTime(payload.task.begin_time)
-            payload.task.end_time = util.formatTime(payload.task.end_time)
-            this.previewForm = payload.task
-            console.log('this.previewForm', this.previewForm)
-          })
+        this.previewTask(row.id)
       },
       showDialogPreview () {
         /* ?todo? 检查是否冗余 */
@@ -823,13 +759,9 @@
         this.dialogDeleteVisible = true
       },
       handleDelete () {
-        api('/v2/api/task/delete/' + this.deleting.id, {method: 'GET'})
-          .then((data) => {
-            console.log(data)
-            this.$message(data.message)
-            this.tableData.splice(this.deleting.index, 1)
-            this.dialogDeleteVisible = false
-          })
+        this.deleTask(this.deleting).then(_ => {
+          this.dialogDeleteVisible = false
+        })
       },
       // 完成状态时 续单
       readd (row) {
@@ -837,15 +769,13 @@
       },
       // 导出idfa
       exportIdfa (type, row) {
-        api('/V2/api/task/' + row.id + '/' + type + '/statistics/download', {method: 'GET'})
-          .then(res => res.payload)
-          .then((data) => {
-            // this.$message(data.message)
-            this.searchTask()
-          })
-          .catch((e) => {
-            // this.$message(e.message)
-          })
+        let config = {
+          type: type,
+          id: row.id
+        }
+        this.exportIDFA(config).then(_ => {
+          this.searchTask()
+        })
       },
       // 下载idfa
       downloadIdfa (type, row) {
@@ -853,14 +783,10 @@
       },
       // 开启
       resumeTask (row) {
-        api('/api/task/resume/' + row.id, {method: 'GET'})
-          .then(res => res.data)
-          .then((data) => {
-            // this.$message(data.message)
-            // this.$refs.menu.activedIndex = '1'
-            this.$route.params.status = 'ok'
-            this.getAdvertisement()
-          })
+        this.resume(row.id).then(_ => {
+          this.$route.params.status = 'ok'
+          this.getAdvertisement()
+        })
       }
     }
   }
