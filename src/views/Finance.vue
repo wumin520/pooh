@@ -3,36 +3,35 @@
     <p class="title">财务管理</p>
     <div class="balance-wrap">
       <div class="fs14-c3a">当前余额</div>
-      <div class="money">¥ 999,999,999.00</div>
+      <div class="money">¥ {{navbar.balance}}</div>
       <el-button size="small" class="w76-h30" type="primary" @click="charge()">充值</el-button>
     </div>
-    <el-pagination layout="prev, pager, next" :total="500"></el-pagination>
+    <el-pagination layout="prev, pager, next" :page-size="10" :total="500"></el-pagination>
 
-    <el-table :data="tableData" border stripe class="table-wrapper">
-      <el-table-column prop="date" label="日期" width="180">
+    <el-table :data="payments" border class="table-wrapper">
+      <el-table-column fixed prop="date" label="日期" width="180">
       </el-table-column>
-       <el-table-column prop="date" label="付款类型" width="180">
+       <el-table-column prop="types" label="付款类型" width="180">
       </el-table-column>
-       <el-table-column prop="date" label="付款人" width="180">
+       <el-table-column prop="drawee" label="付款人" width="180">
       </el-table-column>
-       <el-table-column prop="date" label="发票" width="180">
+       <el-table-column prop="invoice" label="发票" width="180">
       </el-table-column>
-       <el-table-column prop="date" label="操作编号" width="180">
+       <el-table-column prop="operation_number" label="操作编号" width="180">
       </el-table-column>
-       <el-table-column prop="date" label="状态" width="180">
+       <el-table-column prop="new_finance_status" label="状态" width="180">
       </el-table-column>
-       <el-table-column prop="date" label="付款金额" width="180">
+       <el-table-column prop="settlement_amount" label="付款金额" width="180">
       </el-table-column>
-      <el-table-column prop="name" label="充值" width="180">
+      <el-table-column prop="actual_arrival_amount" label="充值" width="180">
       </el-table-column>
-      <el-table-column prop="address" label="操作">
+      <el-table-column class="custom-column" fixed="right" label="操作">
         <template scope="scope">
-          <el-button type="text" size="small" @click="cancel()">撤销</el-button>
-          <el-button type="text" size="small" @click="charge()">充值</el-button>
+            <el-button class="custom-btn" type="text" size="small" @click="cancel(scope.$index, scope.row)">撤销</el-button>
+            <el-button class="custom-btn" type="text" size="small" @click="charge()">充值</el-button>
         </template>
       </el-table-column>
     </el-table>
-
     <el-pagination layout="prev, pager, next" :total="500"></el-pagination>
 
     <el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
@@ -87,44 +86,77 @@
     }
 
     .table-wrapper {
+      width: 1050px;
       margin-bottom: 20px;
+    }
+
+    .custom-btn {
+      padding: 0;
+    }
+
+    .el-table__fixed-right {
+      .cell {
+        padding: 12px 6px;
+      }
+    }
+
+    .el-table__row {
+      height: 46px;
+    }
+
+    .fs13-c42 {
+      font-size: 13px;
+      color: #4A90E2;
+      text-align: center;
     }
   }
 </style>
 <script>
+  import {mapState, mapActions} from 'vuex'
   export default {
     data () {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
-
+        operation_number: '',
+        curRowIndex: -1,
         dialogVisible: false
       }
     },
 
+    computed: {
+      ...mapState('finance', [
+        'payments',
+        'navbar'
+      ])
+    },
+
+    mounted () {
+      this.getInfo()
+    },
+
     methods: {
-      cancel () {
+      cancel (index, row) {
         this.dialogVisible = true
+        this.operation_number = row.operation_number
+        this.curRowIndex = index
+        console.log(row)
+      },
+
+      handleDelete () {
+        console.log('me')
+        this.cancelCharge(this.operation_number).then(() => {
+          this.dialogVisible = false
+          this.payments.splice(this.curRowIndex, 1)
+        })
       },
 
       charge () {
         this.$router.push('/d/finance/charge')
-      }
+      },
+
+      ...mapActions('finance', [
+        'getInfo',
+        'cancelCharge'
+      ])
     }
   }
 </script>

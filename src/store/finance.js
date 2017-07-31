@@ -1,36 +1,47 @@
 /* eslint no-unused-vars: off */
 import { Message } from 'element-ui'
+import api from '../fetch'
+import {URI_FINANCE, URI_FINANCE_CHARGE_CANCEL} from '@/constants'
 
 const types = {
   SYNC: 'sync'
 }
 
 const initState = () => ({
-  tableData: [],
-  summary: {
-    today_cost: 0,
-    yesterday_cost: 0,
-    sevenday_coast: 0,
-    thirtyday_coast: '0',
-    remainder: 0,
-  }
+  payments: [],
+  navbar: {}
 })
 
 const state = initState()
 
+const getters = {}
+
 const mutations = {
   [types.SYNC] (state, payload) {
-    state.tableData = payload.payments
-    state.summary.today_cost = payload.cost.cost_00
-    state.summary.yesterday_cost = payload.cost.cost_01
-    state.summary.sevenday_coast = payload.cost.cost_07
-    state.summary.thirtyday_coast = payload.cost.cost_30
-    state.summary.remainder = payload.cost.balance
+    Object.assign(state, {...payload})
   }
 }
 
-const action = {
-  fetch () {
+const actions = {
+  getInfo ({commit}) {
+    let apiUri = URI_FINANCE + '?last_id=ad&limit=3'
+    return api(apiUri).then((res) => {
+      console.log('actions: ' + URI_FINANCE, res)
+      commit(types.SYNC, res.payload)
+    })
+  },
 
+  cancelCharge ({commit}, id) {
+    return api(URI_FINANCE_CHARGE_CANCEL + id).then((res) => {
+      console.log('cancelCharge: ', res)
+    })
   }
+}
+
+export default {
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions
 }

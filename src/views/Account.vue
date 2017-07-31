@@ -38,7 +38,7 @@
       <img class="logo-success" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
       <span class="qk-title">修改成功</span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submitSuccess = false">确 定</el-button>
       </span>
     </el-dialog>
   </div>

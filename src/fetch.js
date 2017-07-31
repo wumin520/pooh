@@ -22,7 +22,7 @@ const api = (url, options) => {
       opt.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     }
     // application/json
-    if (opt.method.toLowerCase() === 'get') {
+    if (opt.method && opt.method.toLowerCase() === 'get') {
       opt.headers = {'Content-Type': 'application/json'}
     }
 

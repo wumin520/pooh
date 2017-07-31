@@ -169,6 +169,7 @@
 
     .el-tabs--border-card >.el-tabs__content {
       padding: 30px 0 9px 0;
+      width: 660px;
     }
 
     .grid-content {
