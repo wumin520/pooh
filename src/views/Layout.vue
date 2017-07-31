@@ -77,6 +77,7 @@
 
 <script>
   import {mapGetters} from 'vuex'
+  import bus from '@/bus.js'
 
   export default {
     data () {
@@ -95,6 +96,10 @@
 
     mounted () {
       this.updateActiveIndex()
+
+      bus.$on('updateActiveIndex', () => {
+        this.updateActiveIndex()
+      })
     },
 
     methods: {

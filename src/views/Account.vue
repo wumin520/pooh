@@ -90,6 +90,8 @@
 </style>
 <script>
   import { mapState, mapActions } from 'vuex'
+  import bus from '@/bus.js'
+
   export default {
     data () {
       let checkNewPassword = (rule, value, callback) => {
@@ -122,7 +124,7 @@
       }
 
       return {
-        submitSuccess: false,
+        // submitSuccess: false,
 
         rules: {
           title: [
@@ -187,6 +189,10 @@
         }
         if (isValid) {
           this.submitInfo(this.info).then(() => {
+            setTimeout(function () {
+              this.$router.push('/d/home')
+              bus.$emit('updateActiveIndex')
+            }, 500)
             this.submitSuccess = true
           })
         }

@@ -180,7 +180,7 @@
         </div>
         <div class="content-line">
           <div class="left" >计划份数</div>
-          <div class="right"  v-text="previewForm.plan_count"></div>
+          <div class="right">{{ previewForm.plan_count | addCommas }}</div>
         </div>
         <div class="content-line" v-if="previewForm.planlist.length == 0 && previewForm.search_keyword == ''">
           <div class="left" >关键词</div>
@@ -532,6 +532,7 @@
 </style>
 <script>
   import util from '@/utils'
+  import bus from '@/bus.js'
   import { mapState, mapActions } from 'vuex'
 
   export default {
@@ -716,6 +717,7 @@
       // 前往 添加广告
       toAddAd () {
         this.$router.push('/d/ad/new')
+        bus.$emit('updateActiveIndex')
       },
       handleClick (key) {
         if (this.$route.params.status === key) {
@@ -799,6 +801,7 @@
       // 编辑
       editTask (row) {
         this.$router.push({ name: 'edit', params: { taskId: row.id } })
+        bus.$emit('updateActiveIndex')
       },
       // 预览
       previewTaskInfo (row) {
@@ -826,6 +829,7 @@
       // 完成状态时 续单
       readd (row) {
         this.$router.push({ name: 'renew', params: { taskId: row.id } })
+        bus.$emit('updateActiveIndex')
       },
       // 导出idfa
       exportIdfa (type, row) {

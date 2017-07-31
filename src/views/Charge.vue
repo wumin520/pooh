@@ -328,8 +328,10 @@
   }
 </style>
 <script>
+  import bus from '@/bus.js'
   import {mapState, mapActions} from 'vuex'
   import {Message} from 'element-ui'
+
   export default {
     data () {
       return {
@@ -448,7 +450,10 @@
       },
 
       backTo () {
-        this.$router.push('/d/finance')
+        setTimeout(() => {
+          this.$router.push('/d/finance')
+          bus.$emit('updateActiveIndex')
+        })
       },
 
       ...mapActions('charge', [

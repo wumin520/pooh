@@ -360,6 +360,7 @@
 <script>
   import util from '@/utils'
   import _ from 'lodash'
+  import bus from '@/bus.js'
   import { mapState, mapActions } from 'vuex'
 
   export default {
@@ -558,7 +559,10 @@
             setTimeout(() => {
               this.submitButtonDisable = false
               this.fullscreenLoading = false
-              this.$router.push('/d/ad/ios/pending')
+              setTimeout(() => {
+                this.$router.push('/d/ad/ios/pending')
+                bus.$emit('updateActiveIndex')
+              })
             }, 500)
           })
           .catch((e) => {
