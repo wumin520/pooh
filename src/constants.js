@@ -9,6 +9,8 @@ export const URI_ACCOUNTSETTING = '/v2/api/account'
 export const URI_CHARGE_INVOICE = '/v2/api/charge/get_invoice'
 export const URI_CHARGE_EDIT = '/v2/api/charge_edit/'
 export const URI_CHARGE = '/v2/api/charge'
+export const URI_FINANCE = '/v2/api/finance'
+export const URI_FINANCE_CHARGE_CANCEL = '/v2/api/cancel/'
 
 // Report Types
 export const LW = 'LW' // 最近7天
