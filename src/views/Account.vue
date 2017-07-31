@@ -142,6 +142,8 @@
       ])
     },
 
+    fetchAction: 'accountSetting/getInfo',
+
     mounted () {
       this.fetch()
     },

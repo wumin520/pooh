@@ -1,6 +1,7 @@
 import {
   URI_ACCOUNTSETTING
 } from '@/constants'
+import api from '../fetch'
 
 const types = {
   SYNC: 'sync'
@@ -27,10 +28,7 @@ const mutations = {
 
 const actions = {
   getInfo ({commit, dispatch}) {
-    return fetch(URI_ACCOUNTSETTING, {
-      credentials: 'include'
-    })
-      .then(res => res.json())
+    return api(URI_ACCOUNTSETTING)
       .then(res => {
         let payload = res.payload
         if (payload) {
@@ -42,17 +40,9 @@ const actions = {
   },
 
   submitInfo ({ commit }, payload) {
-    let params = ''
-    for (let key in payload) {
-      params += key + '=' + payload[key] + '&'
-    }
-    return fetch(URI_ACCOUNTSETTING, {
-      credentials: 'include',
+    return api(URI_ACCOUNTSETTING, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: params
+      body: payload
     }).then((res) => {
       console.log(res)
       return res
