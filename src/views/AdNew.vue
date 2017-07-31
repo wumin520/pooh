@@ -6,7 +6,7 @@
         <span class="breadcrumb-item-inner">iOS广告</span>
         <span class="breadcrumb-separator"></span>        
       </span>
-      <span class="breadcrumb-item" @click="toIOS()">
+      <span class="breadcrumb-item">
         <span class="breadcrumb-item-inner" v-text="page_sub_title"></span>        
       </span>
     </div>
