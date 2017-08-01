@@ -108,16 +108,6 @@ const getters = {
       labels.push(l.replace('-', '月') + '日')
     })
 
-    // 最多出现 15 个label
-    let labelCnt = 15
-    let n = parseInt(labels.length / labelCnt)
-
-    if (labels.length > 10) {
-      for (let i = 0; i < labels.length; i++) {
-        if ((i % n) !== 0) labels[i] = null
-      }
-    }
-
     return labels
   },
 

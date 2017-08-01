@@ -184,6 +184,12 @@
     .chart-wrapper {
       height: 440px;
       margin-bottom: 72px;
+      padding-top: 10px;
+
+      .rpt-chart {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 </style>
@@ -193,8 +199,6 @@
   import {mapGetters, mapActions} from 'vuex'
   import DashboardCard from '@/components/DashboardCard.vue'
   import { LW, L60D, L90D } from '@/constants'
-  import Chartist from 'chartist'
-  import '../chartist/createLabel'
 
   export default {
     components: {
@@ -283,22 +287,104 @@
           dayCnt: this.dayCnt
         }).then(() => {
           if (this.chart) {
-            this.chart.detach()
+            console.log(this.chart)
           }
-          this.chart = new Chartist.Line('.rpt-chart', {
-            labels: this.chartLabels,
-            series: [
-              this.chartData
-            ]
-          }, {
-            high: parseInt(_.max(this.chartData) * 1.2),
-            low: 0,
-            height: 440,
-            lineSmooth: false,
-            axisX: {
-              showGrid: false
-            }
+
+          let container = document.querySelector('.rpt-chart')
+          let data = []
+          let labels = this.chartLabels
+          let max = 0
+
+          _.each(this.chartData, (v, i) => {
+            data.push([i, v])
+            if (v > max) max = v
           })
+
+          max = max > 0 ? max * 1.5 : 101
+
+          // 矫正x轴
+          switch (data.length) {
+            case 7:
+              data.push([data.length - 1 + 0.2, null])
+              data.splice(0, 0, [-0.2, null])
+              break
+            case 60:
+              data.push([data.length - 1 + 2, null])
+              data.splice(0, 0, [-2, null])
+              break
+            case 90:
+              data.push([data.length - 1 + 3, null])
+              data.splice(0, 0, [-3, null])
+              break
+          }
+
+          // x轴 ticks
+          const makeTicks = () => {
+            let len = data.length - 2
+            let n = len % 10 === 0 ? len / 10 : 1
+            let ticks = []
+            _.each(labels, (l, i) => {
+              if (i % n === 0 || i === labels.length - 1) ticks.push([i, l])
+            })
+            return ticks
+          }
+
+          this.chart = window.Flotr.draw(
+            container,
+            [
+              {
+                data: data,
+                label: ''
+              }
+            ],
+            {
+              colors: ['#4A90E2', '#C0D800', '#CB4B4B', '#4DA74D', '#9440ED'],
+              shadowSize: 0,
+
+              xaxis: {
+                ticks: makeTicks(),
+                color: '#B5B5B5'
+              },
+
+              yaxis: {
+                max: max,
+                min: -max * 0.05,
+                color: '#B5B5B5',
+                tickFormatter: function (y) {
+                  return y + ' '
+                }
+              },
+
+              grid: {
+                color: '#B5B5B5',
+                outline: '',
+                verticalLines: false
+              },
+
+              points: {
+                show: true,
+                radius: 6,
+                fillColor: '#4A90E2',
+                lineWidth: 2,
+                color: '#FFF'
+              },
+
+              lines: {
+                show: true
+              },
+
+              mouse: {
+                track: true,
+                relative: true,
+                lineColor: '#4A90E2',
+                fillColor: '#4A90E2',
+                fillOpacity: 1,
+                trackFormatter: ({x, y}) => {
+                  return labels[parseInt(x)] + ': ' + y
+                }
+              }
+            }
+          )
         })
       },
 
