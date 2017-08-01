@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="ad-new-container">
     <!-- 面包屑 -->
     <div class="breadcrumb">
       <span class="breadcrumb-item" @click="toIOS()">
@@ -166,18 +166,21 @@
   </div>
 </template>
 <style lang="scss" >
-  .container {
+  .ad-new-container {
     padding: 50px 0 0 35px;
 
     .breadcrumb {
+      height: 22px;
       .breadcrumb-item {
         display: inline-block;
         float: left;
+        line-height: 22px;
         margin-right: 10px;
         cursor: pointer;
         .breadcrumb-item-inner {
           font-family: PingFangSC-Light;
           font-size: 16px;
+          line-height: 22px;
           color: #888888;
         }
         .breadcrumb-separator {

@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div class="account-container">
     <p class="title">账户信息</p>
-    <el-form ref="infoForm" :model="info" :rules="rules">
+    <el-form ref="infoForm" class="account-form" :model="info" :rules="rules">
       <el-form-item label="平台账号">
         <div class="fs13-c3a break-line" v-text="info.username">wenchuanthesharpchin@gmail.com</div>
       </el-form-item>
@@ -50,13 +50,23 @@
     }
   }
 
-  .container {
+  .account-container {
     padding: 50px 0 0 35px;
 
     .title {
+      font-family: PingFangSC-Light;
+      margin-top: 0px;
       font-size: 16px;
+      line-height: 22px;
       color: #888888;
       letter-spacing: 0;
+      margin-bottom: 36px;
+    }
+
+    .account-form {
+      .el-form-item {
+        margin-bottom: 29px;
+      }
     }
 
     .mrg-t47 {

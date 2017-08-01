@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="ad-container">
     <!-- 面包屑 -->
     <div class="breadcrumb">
       <span class="breadcrumb-item">
@@ -59,49 +59,49 @@
     <!-- table -->
     <div class="table-wrapper">
       <el-table :data="tableData" stripe border style="width: 100%" v-loading="loading" element-loading-text="加载中...">
-        <el-table-column fixed label="广告" min-width="150">
+        <el-table-column label="广告" min-width="166">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
               <div class="aui-ellipsis" v-text="scope.row.task" @click="filter(scope.row.appid)"></div>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="开始时间" min-width="120">
+        <el-table-column label="开始时间" min-width="152">
           <template scope="scope">
             <div class="aui-ellipsis" v-text="scope.row.begin_time_str"></div>
           </template>
         </el-table-column>
-        <el-table-column label="结束时间" min-width="120">
+        <el-table-column label="结束时间" min-width="152">
           <template scope="scope">
             <div class="aui-ellipsis" v-text="scope.row.end_time_str"></div>
           </template>
         </el-table-column>
-        <el-table-column label="计划份数" min-width="120">
+        <el-table-column label="计划份数" min-width="98">
           <template scope="scope">
             <div class="aui-ellipsis">{{ scope.row.plan_count | addCommas }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="完成份数" min-width="120">
+        <el-table-column label="完成份数" min-width="98">
           <template scope="scope">
             <div class="aui-ellipsis">{{ scope.row.actual_count | addCommas }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="付费专属" min-width="120">
+        <el-table-column label="付费专属" min-width="110">
           <template scope="scope">
             <div class="aui-ellipsis">￥ {{ scope.row.zs_done_count | addCommas }}</div>            
           </template>
         </el-table-column>
-        <el-table-column label="单价" min-width="120">
+        <el-table-column label="单价" min-width="72">
           <template scope="scope">
             <div class="aui-ellipsis">￥ {{ scope.row.unit_price | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="消耗" min-width="120">
+        <el-table-column label="消耗" min-width="108">
           <template scope="scope">
             <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" min-width="150" v-if="tableData.length > 0">
+        <el-table-column label="操作" min-width="265" v-if="tableData.length > 0">
           <template scope="scope">
             <!-- 投放中 ok -->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:6px" @click="goToEnded(scope.row)">完成</a>
@@ -390,14 +390,15 @@
   }
 </style>
 <style lang="scss" scoped>
-.container {
+.ad-container {
   width: 100%;
+  min-width: 1292px;
   height: 100%;
   padding: 43px 35px;
   position: relative;
 
   .breadcrumb {
-    height: 16px;
+    height: 22px;
     margin-top: 7px;
     margin-bottom: 47px;
     .breadcrumb-item {
@@ -408,6 +409,7 @@
       .breadcrumb-item-inner {
         font-family: PingFangSC-Light;
         font-size: 16px;
+        line-height: 22px;
         color: #888888;
       }
       .breadcrumb-separator {
@@ -485,9 +487,13 @@
 
   .qk-tabs-text {
     margin-bottom: 5px;
+    .el-tabs__header {
+      width: 100%;
+    }
   }
 
   .table-wrapper {
+    width: 100%;
     margin: 20px 0px;
 
     .aui-ellipsis {

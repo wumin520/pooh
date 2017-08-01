@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="finance-container">
     <p class="title">财务管理</p>
     <div class="balance-wrap">
       <div class="fs14-c3a">当前余额</div>
@@ -8,22 +8,25 @@
     </div>
     <el-pagination v-if="payments_count > pageSize" layout="prev, pager, next" @current-change="currentChange" :page-size="pageSize" :total="payments_count"></el-pagination>
 
-    <el-table :data="payments" border class="table-wrapper" style="width: 100%;">
-      <el-table-column prop="date" label="日期" width="152">
+    <el-table :data="payments" stripe border class="table-wrapper" style="width: 100%;">
+      <el-table-column fixed prop="date" label="日期" min-width="152">
       </el-table-column>
-       <el-table-column prop="types" label="付款类型" width="98">
+       <el-table-column prop="types" label="付款类型" min-width="98">
       </el-table-column>
-       <el-table-column prop="drawee" label="付款人" width="206">
+       <el-table-column prop="drawee" label="付款人" min-width="206">
       </el-table-column>
-       <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" width="72">
+       <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
       </el-table-column>
-       <el-table-column prop="operation_number" label="操作编号" width="110">
+       <el-table-column prop="operation_number" label="操作编号" min-width="110">
       </el-table-column>
-       <el-table-column prop="new_finance_status" label="状态" width="98">
+       <el-table-column prop="new_finance_status" label="状态" min-width="98">
       </el-table-column>
-       <el-table-column prop="settlement_amount" label="付款金额" width="118">
+       <el-table-column prop="settlement_amount" label="付款金额" min-width="118">
+        <template scope="scope">
+          <div>￥ {{ scope.row.settlement_amount | addCommas_money }}</div>
+        </template>
       </el-table-column>
-      <el-table-column prop="actual_arrival_amount" label="充值" width="118">
+      <el-table-column prop="actual_arrival_amount" label="充值" min-width="118">
       </el-table-column>
       <el-table-column :class="'custom-column'" label="操作" width="64">
         <template scope="scope">
@@ -37,12 +40,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <div :class="{'opera-slider-wrap': sliderStart}" style="">
-      <div :class="{'opera-slider-enter': sliderStart}" class="opera-slider" style="position:absolute;top:50%;left:50%;z-index: 88" :style="{top: pageY + 'px', left: pageX + 'px'}">
-        <el-button type="text">撤销</el-button>
-        <el-button type="text">充值</el-button>
-      </div>
-    </div>
     <el-pagination v-if="payments_count > pageSize" layout="prev, pager, next" @current-change="currentChange" :page-size="pageSize" :total="payments_count"></el-pagination>
 
     <el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
@@ -56,7 +53,7 @@
   </div>
 </template>
 <style lang="scss">
-  .container {
+  .finance-container {
     width: 100%;
     height: 100%;
     padding: 50px 35px 0 35px;
@@ -68,13 +65,17 @@
 
     .fs14-c3a {
       font-size: 14px;
+      line-height: 20px;
       color: #3a3a3a;
     }
 
     .title {
+      margin-top: 0px;
+      margin-bottom: 47px;
       font-size: 16px;
+      font-family: PingFangSC-Light;
+      line-height: 22px;
       color: #888888;
-      letter-spacing: 0;
     }
 
     .balance-wrap {
@@ -86,6 +87,7 @@
 
       .money {
         font-size: 22px;
+        line-height: 30px;
         color: #4A90E2;
         letter-spacing: 0;
         margin: 8px 0 13px 0;
@@ -136,7 +138,7 @@
       .slider-wrap {
         opacity: 1;
         position: absolute;
-        width: 106px;
+        min-width: 106px;
         height: 46px;
         left: -43px;
         top: 0px;
@@ -146,6 +148,9 @@
         box-shadow: inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
         transition: transform .8s;
         transform: translateX(106px);
+        .el-button {
+          height: 46px;
+        }
       }
 
       &:hover .slider-wrap{
@@ -176,6 +181,25 @@
         sliderStart: false,
         pageSize: 30,
         currentPage: 1
+      }
+    },
+
+    filters: {
+      //  x,xxx.00
+      addCommas_money: function (value) {
+        value += ''
+        const x = value.split('.')
+        var x1 = x[0]
+        const x2 = x.length > 1 ? '.' + x[1] : ''
+        const rgx = /(\d+)(\d{3})/
+        if (rgx.test(x1)) {
+          x1 = x1.replace(rgx, '$1' + ',' + '$2')
+        }
+        var ret = x1 + x2
+        if (ret.indexOf('.') === -1) {
+          ret = ret + '.00'
+        }
+        return ret
       }
     },
 
