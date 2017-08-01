@@ -9,9 +9,32 @@ var chalk = require('chalk')
 var webpack = require('webpack')
 var config = require('../config')
 var webpackConfig = require('./webpack.prod.conf')
+var sass = require('node-sass')
+var fs = require('fs')
+var shell = require('shelljs')
 
 var spinner = ora('building for production...')
 spinner.start()
+
+/* homepage */
+shell.rm('-rf', 'dist/homepage')
+shell.mkdir('-p', 'dist/homepage')
+shell.cp('homepage/index.html', 'dist/homepage/index.html')
+
+var scssFile = './homepage/index.scss'
+var cssFile = './dist/homepage/index.css'
+var mapFile = './dist/homepage/index.css.map'
+
+var result = sass.renderSync({
+  file: scssFile,
+  outputStyle: 'compressed',
+  outFile: cssFile,
+  sourceMap: true
+})
+
+fs.writeFileSync(cssFile, result.css)
+fs.writeFileSync(mapFile, result.map)
+/* homepage - END */
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
