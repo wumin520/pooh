@@ -10,7 +10,8 @@ const types = {
 const initState = () => ({
   payments: [],
   navbar: {},
-  payments_count: 0
+  payments_count: 0,
+  limit: 30
 })
 
 const state = initState()
@@ -24,8 +25,9 @@ const mutations = {
 }
 
 const actions = {
-  getInfo ({commit, dispatch}, {offset, limit}) {
-    let apiUri = `${URI_FINANCE}?offset=${offset}&limit=${limit}`
+  getInfo ({commit, dispatch, state}, params = {page: 1}) {
+    let offset = (params.page - 1) * state.limit
+    let apiUri = `${URI_FINANCE}?offset=${offset}&limit=${state.limit}`
     return api(apiUri).then(({payload}) => {
       console.log('actions: ' + URI_FINANCE, payload)
       if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })

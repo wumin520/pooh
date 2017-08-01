@@ -6,7 +6,7 @@
       <div class="money">¥ {{navbar.balance}}</div>
       <el-button size="small" class="w76-h30" type="primary" @click="charge()">充值</el-button>
     </div>
-    <el-pagination v-if="payments_count > pageSize" layout="prev, pager, next" @current-change="currentChange" :page-size="pageSize" :total="payments_count"></el-pagination>
+    <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
 
     <el-table :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column fixed prop="date" label="日期" min-width="152">
@@ -40,7 +40,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="payments_count > pageSize" layout="prev, pager, next" @current-change="currentChange" :page-size="pageSize" :total="payments_count"></el-pagination>
+    <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
 
     <el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
       <i class="el-icon-warning" style="margin-right:15px;"></i>
@@ -175,12 +175,7 @@
       return {
         operation_number: '',
         curRowIndex: -1,
-        dialogVisible: false,
-        pageX: 0,
-        pageY: 0,
-        sliderStart: false,
-        pageSize: 30,
-        currentPage: 1
+        dialogVisible: false
       }
     },
 
@@ -207,25 +202,20 @@
       ...mapState('finance', [
         'payments',
         'navbar',
-        'payments_count'
+        'payments_count',
+        'limit'
       ])
     },
 
-    mounted () {
-      this.$store.dispatch('updateIndex', 'dash_finance', { root: true })
-      this.getInfo({offset: 0, limit: this.pageSize})
-    },
+    fetchAction: 'finance/getInfo',
 
     methods: {
       currentChange (page) {
         console.log(page)
-        let offset = (page - 1) * this.pageSize
-        this.getInfo({offset, limit: this.pageSize})
-        this.currentPage = page
+        this.getInfo({page})
       },
 
       invoiceFormatter (row, column, cellValue) {
-        console.log(cellValue)
         return cellValue === '需要' ? '需要' : '—'
       },
 

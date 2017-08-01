@@ -142,19 +142,10 @@
         'info'
       ])
     },
-
+    // 在vue created的时候自动请求该action
     fetchAction: 'accountSetting/getInfo',
 
-    mounted () {
-      this.$store.dispatch('updateIndex', 'dash_account', { root: true })
-      this.fetch()
-    },
-
     methods: {
-      fetch () {
-        return this.getInfo()
-      },
-
       ...mapActions('accountSetting', [
         'getInfo',
         'submitInfo'
