@@ -330,6 +330,7 @@
 <script>
   import {mapState, mapActions} from 'vuex'
   import {Message} from 'element-ui'
+
   export default {
     data () {
       return {
@@ -421,6 +422,8 @@
     fetchAction: 'charge/getInvoiceInfo',
 
     mounted () {
+      this.$store.dispatch('updateIndex', 'dash_finance_charge', { root: true })
+
       if (this.$router.currentRoute.name === 'dash_finance_charge') {
         this.getInvoiceInfo()
       } else {
@@ -448,7 +451,9 @@
       },
 
       backTo () {
-        this.$router.push('/d/finance')
+        setTimeout(() => {
+          this.$router.push('/d/finance')
+        })
       },
 
       ...mapActions('charge', [

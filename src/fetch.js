@@ -37,8 +37,12 @@ const api = (url, options) => {
       .catch(err => {
         if (err.response.status === 400) {
           return err.response
+        } if (err.response.status === 401) {
+          Message('请先登录！')
+          $router.push('/')
+          return
         } else {
-          Message({type: 'error', message: err.response.status + ':' + err.response.statusText + '错误，请稍后重试！'})
+          Message({type: 'error', message: '服务器内部错误，请稍后重试！'})
         }
       })
       .then(err => {

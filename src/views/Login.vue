@@ -13,9 +13,9 @@
                   <el-input class="qk-input__border-bottom" v-model="form.username" placeholder="用户名"></el-input>
                 </el-form-item>
                 <el-form-item class="qk-form-item" label="" prop="password" style="margin-bottom:25px;">
-                  <el-input class="qk-input__border-bottom" v-model="form.password" placeholder="密码"></el-input>
+                  <el-input class="qk-input__border-bottom" type="password" v-model="form.password" placeholder="密码"></el-input>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item class="qk-form-item">
                   <el-button type="primary" class="btn-login" @click="login()">登录</el-button>
                 </el-form-item>
               </el-form>
@@ -63,6 +63,9 @@
               }
 
               .login-form {
+                .qk-form-item {
+                  width: 100%;
+                }
                 .btn-login {
                   width: 100%;
                   margin-top: 10px;

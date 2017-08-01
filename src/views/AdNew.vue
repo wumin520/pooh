@@ -1,10 +1,15 @@
 <template>
   <div class="container">
     <!-- 面包屑 -->
-    <el-breadcrumb separator=">">
-      <el-breadcrumb-item :to="{ path: '/d/ad' }">iOS广告</el-breadcrumb-item>
-      <el-breadcrumb-item v-text="page_sub_title"></el-breadcrumb-item>
-    </el-breadcrumb>
+    <div class="breadcrumb">
+      <span class="breadcrumb-item" @click="toIOS()">
+        <span class="breadcrumb-item-inner">iOS广告</span>
+        <span class="breadcrumb-separator"></span>        
+      </span>
+      <span class="breadcrumb-item">
+        <span class="breadcrumb-item-inner" v-text="page_sub_title"></span>        
+      </span>
+    </div>
 
     <!-- Advertisement Form -->
     <el-form :model="adForm" ref="adFormRef" label-position="top" class="addAd-form">
@@ -163,6 +168,33 @@
 <style lang="scss" >
   .container {
     padding: 50px 0 0 35px;
+
+    .breadcrumb {
+      .breadcrumb-item {
+        display: inline-block;
+        float: left;
+        margin-right: 10px;
+        cursor: pointer;
+        .breadcrumb-item-inner {
+          font-family: PingFangSC-Light;
+          font-size: 16px;
+          color: #888888;
+        }
+        .breadcrumb-separator {
+          width: 6px;
+          height: 12px;
+          margin-left: 2px;
+          display: inline-block;
+          background-image: url('http://qianka.b0.upaiyun.com/images/a688c7dd7a765df07ec7d9cfab76b68f.png');
+          background-size: 6px 12px;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+      }
+      .breadcrumb-item:last-child {
+        cursor: text;
+      }
+    }
 
     .addAd-form {
       margin-top: 47px; 
@@ -380,13 +412,14 @@
 
     mounted () {
       let path = this.$route.name
-      if (path === 'renew') {
+      if (path === 'dash_ad_renew') {
         // 续单
         let params = this.$route.params.taskId
         this.page_sub_title = '续单'
         this.fetchPreRenew(params)
-      } else if (path === 'new') {
+      } else if (path === 'dash_ad_new') {
         // 添加
+        this.$store.dispatch('updateIndex', 'dash_ad_new', { root: true })
         this.page_sub_title = '添加新广告'
         this.fetchPreNew()
       } else {
@@ -411,6 +444,10 @@
         'removeZSItem'
       ]),
 
+      // 回IOS广告页
+      toIOS () {
+        this.$router.push('/d/ad/ios/ok')
+      },
       // 续单、编辑、添加 的验证+提交
       submitForm (formName) {
         this.submitButtonDisable = true
@@ -541,7 +578,7 @@
         var postData = tempForm
 
         let params = ''
-        this.$route.name === 'edit' ? params = this.$route.params.taskId : (this.$route.name === 'renew' ? params = this.$route.params.taskId : params = '')
+        this.$route.name === 'dash_ad_edit' ? params = this.$route.params.taskId : (this.$route.name === 'dash_ad_renew' ? params = this.$route.params.taskId : params = '')
         let config = {
           params: params,
           postData: postData
@@ -549,7 +586,7 @@
         this.postForm(config)
           .then(res => {
             console.log('post', res)
-            if (this.$route.name === 'renew') {
+            if (this.$route.name === 'dash_ad_renew') {
               this.$message('续单成功！')
             }
             //  ？TODO ？ 什么作用?
@@ -558,7 +595,9 @@
             setTimeout(() => {
               this.submitButtonDisable = false
               this.fullscreenLoading = false
-              this.$router.push('/d/ad/ios/pending')
+              setTimeout(() => {
+                this.$router.push('/d/ad/ios/pending')
+              })
             }, 500)
           })
           .catch((e) => {

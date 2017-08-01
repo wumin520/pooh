@@ -10,7 +10,7 @@
           <el-menu-item index="2-1">退出</el-menu-item>
         </el-submenu>
 
-        <el-menu-item index="3" class="pull-right"><a href="" style="text-decoration: underlined;">充值</a></el-menu-item>
+        <el-menu-item index="3" class="pull-right">充值</el-menu-item>
 
         <el-menu-item index="4" class="pull-right">余额：¥ <span v-text="balance"></span></el-menu-item>
 
@@ -76,12 +76,11 @@
 </style>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapState} from 'vuex'
 
   export default {
     data () {
       return {
-        activeIndex: ''
       }
     },
 
@@ -90,6 +89,9 @@
         'username',
         'balance',
         'balanceThreshold'
+      ]),
+      ...mapState([
+        'activeIndex'
       ])
     },
 
@@ -102,6 +104,9 @@
         switch (key) {
           case '2-1':
             this.$store.dispatch('user/logout')
+            break
+          case '3':
+            this.$router.push('/d/finance/charge')
             break
         }
       },
@@ -139,26 +144,8 @@
       },
 
       updateActiveIndex () {
-        switch (this.$route.name) {
-          case 'dash_home':
-            this.activeIndex = '1'
-            break
-          case 'dash_ad':
-            this.activeIndex = '2'
-            break
-          case 'new':
-            this.activeIndex = '2-1'
-            break
-          case 'dash_finance':
-            this.activeIndex = '3'
-            break
-          case 'dash_finance_charge':
-            this.activeIndex = '3'
-            break
-          case 'dash_account':
-            this.activeIndex = '4'
-            break
-        }
+        let params = this.$route.name
+        this.$store.dispatch('updateIndex', params, { root: true })
       }
     }
   }
