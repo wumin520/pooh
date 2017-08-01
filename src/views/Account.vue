@@ -90,7 +90,6 @@
 </style>
 <script>
   import { mapState, mapActions } from 'vuex'
-  import bus from '@/bus.js'
 
   export default {
     data () {
@@ -147,6 +146,7 @@
     fetchAction: 'accountSetting/getInfo',
 
     mounted () {
+      this.$store.dispatch('updateIndex', 'dash_account', { root: true })
       this.fetch()
     },
 
@@ -191,9 +191,7 @@
           this.submitInfo(this.info).then(() => {
             setTimeout(function () {
               this.$router.push('/d/home')
-              bus.$emit('updateActiveIndex')
             }, 500)
-            // this.submitSuccess = true
           })
         }
       }

@@ -328,7 +328,6 @@
   }
 </style>
 <script>
-  import bus from '@/bus.js'
   import {mapState, mapActions} from 'vuex'
   import {Message} from 'element-ui'
 
@@ -423,6 +422,8 @@
     fetchAction: 'charge/getInvoiceInfo',
 
     mounted () {
+      this.$store.dispatch('updateIndex', 'dash_finance_charge', { root: true })
+
       if (this.$router.currentRoute.name === 'dash_finance_charge') {
         this.getInvoiceInfo()
       } else {
@@ -452,7 +453,6 @@
       backTo () {
         setTimeout(() => {
           this.$router.push('/d/finance')
-          bus.$emit('updateActiveIndex')
         })
       },
 

@@ -568,7 +568,6 @@
 </style>
 <script>
   import util from '@/utils'
-  import bus from '@/bus.js'
   import { mapState, mapActions } from 'vuex'
 
   export default {
@@ -665,7 +664,7 @@
     mounted () {
       this.loading = true
       var type = this.task_status = this.$route.params.status.split('&')[0]
-      bus.$emit('updateActiveIndex')
+      this.$store.dispatch('updateIndex', 'dash_ad', { root: true })
 
       var activeName = 'tab1'
       switch (type) {
@@ -754,7 +753,6 @@
       // 前往 添加广告
       toAddAd () {
         this.$router.push('/d/ad/new')
-        bus.$emit('updateActiveIndex')
       },
       handleClick (key) {
         if (this.$route.params.status === key) {
@@ -838,7 +836,6 @@
       // 编辑
       editTask (row) {
         this.$router.push({ name: 'dash_ad_edit', params: { taskId: row.id } })
-        bus.$emit('updateActiveIndex')
       },
       // 预览
       previewTaskInfo (row) {
@@ -866,7 +863,6 @@
       // 完成状态时 续单
       readd (row) {
         this.$router.push({ name: 'dash_ad_renew', params: { taskId: row.id } })
-        bus.$emit('updateActiveIndex')
       },
       // 导出idfa
       exportIdfa (type, row) {

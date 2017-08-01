@@ -392,7 +392,6 @@
 <script>
   import util from '@/utils'
   import _ from 'lodash'
-  import bus from '@/bus.js'
   import { mapState, mapActions } from 'vuex'
 
   export default {
@@ -420,6 +419,7 @@
         this.fetchPreRenew(params)
       } else if (path === 'dash_ad_new') {
         // 添加
+        this.$store.dispatch('updateIndex', 'dash_ad_new', { root: true })
         this.page_sub_title = '添加新广告'
         this.fetchPreNew()
       } else {
@@ -447,7 +447,6 @@
       // 回IOS广告页
       toIOS () {
         this.$router.push('/d/ad/ios/ok')
-        bus.$emit('updateActiveIndex')
       },
       // 续单、编辑、添加 的验证+提交
       submitForm (formName) {
@@ -598,7 +597,6 @@
               this.fullscreenLoading = false
               setTimeout(() => {
                 this.$router.push('/d/ad/ios/pending')
-                bus.$emit('updateActiveIndex')
               })
             }, 500)
           })
