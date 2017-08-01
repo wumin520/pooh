@@ -341,7 +341,7 @@
 
     computed: {
       currentPageTitle () {
-        return this.$router.currentRoute.name === 'charge' ? '充值' : '编辑'
+        return this.$router.currentRoute.name === 'dash_finance_charge' ? '充值' : '编辑'
       },
 
       CHINA_BANK_IMG () {
@@ -418,8 +418,10 @@
       ])
     },
 
+    fetchAction: 'charge/getInvoiceInfo',
+
     mounted () {
-      if (this.$router.currentRoute.name === 'charge') {
+      if (this.$router.currentRoute.name === 'dash_finance_charge') {
         this.getInvoiceInfo()
       } else {
         let id = this.$router.currentRoute.params.id

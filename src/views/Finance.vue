@@ -6,33 +6,44 @@
       <div class="money">¥ {{navbar.balance}}</div>
       <el-button size="small" class="w76-h30" type="primary" @click="charge()">充值</el-button>
     </div>
-    <el-pagination layout="prev, pager, next" :page-size="10" :total="500"></el-pagination>
+    <el-pagination v-if="payments_count > pageSize" layout="prev, pager, next" @current-change="currentChange" :page-size="pageSize" :total="payments_count"></el-pagination>
 
-    <el-table :data="payments" border class="table-wrapper">
-      <el-table-column fixed prop="date" label="日期" width="180">
+    <el-table :data="payments" border class="table-wrapper" style="width: 100%;">
+      <el-table-column prop="date" label="日期" width="152">
       </el-table-column>
-       <el-table-column prop="types" label="付款类型" width="180">
+       <el-table-column prop="types" label="付款类型" width="98">
       </el-table-column>
-       <el-table-column prop="drawee" label="付款人" width="180">
+       <el-table-column prop="drawee" label="付款人" width="206">
       </el-table-column>
-       <el-table-column prop="invoice" label="发票" width="180">
+       <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" width="72">
       </el-table-column>
-       <el-table-column prop="operation_number" label="操作编号" width="180">
+       <el-table-column prop="operation_number" label="操作编号" width="110">
       </el-table-column>
-       <el-table-column prop="new_finance_status" label="状态" width="180">
+       <el-table-column prop="new_finance_status" label="状态" width="98">
       </el-table-column>
-       <el-table-column prop="settlement_amount" label="付款金额" width="180">
+       <el-table-column prop="settlement_amount" label="付款金额" width="118">
       </el-table-column>
-      <el-table-column prop="actual_arrival_amount" label="充值" width="180">
+      <el-table-column prop="actual_arrival_amount" label="充值" width="118">
       </el-table-column>
-      <el-table-column class="custom-column" fixed="right" label="操作">
+      <el-table-column :class="'custom-column'" label="操作" width="64">
         <template scope="scope">
-            <el-button class="custom-btn" type="text" size="small" @click="cancel(scope.$index, scope.row)">撤销</el-button>
-            <el-button class="custom-btn" type="text" size="small" @click="charge()">充值</el-button>
+           <div class="opera hover-event">
+             <div class="three-dot">...</div>
+             <div class="slider-wrap" style="position:absolute;">
+               <el-button type="text" @click="cancel(scope.$index, scope.row)">撤销</el-button>
+               <el-button type="text" @click="charge()">充值</el-button>
+             </div>
+           </div>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :total="500"></el-pagination>
+    <div :class="{'opera-slider-wrap': sliderStart}" style="">
+      <div :class="{'opera-slider-enter': sliderStart}" class="opera-slider" style="position:absolute;top:50%;left:50%;z-index: 88" :style="{top: pageY + 'px', left: pageX + 'px'}">
+        <el-button type="text">撤销</el-button>
+        <el-button type="text">充值</el-button>
+      </div>
+    </div>
+    <el-pagination v-if="payments_count > pageSize" layout="prev, pager, next" @current-change="currentChange" :page-size="pageSize" :total="payments_count"></el-pagination>
 
     <el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
       <i class="el-icon-warning" style="margin-right:15px;"></i>
@@ -88,6 +99,10 @@
     .table-wrapper {
       width: 1050px;
       margin-bottom: 20px;
+
+      .el-table__body {
+        overflow: hidden;
+      }
     }
 
     .custom-btn {
@@ -96,7 +111,14 @@
 
     .el-table__fixed-right {
       .cell {
-        padding: 12px 6px;
+        text-align: center;
+
+        div.opera {
+          font-size: 13px;
+          color: #4A90E2;
+          letter-spacing: 0;
+          text-align: center;
+        }
       }
     }
 
@@ -109,6 +131,36 @@
       color: #4A90E2;
       text-align: center;
     }
+
+    td[class^=el-table_1_column] {
+      .slider-wrap {
+        opacity: 1;
+        position: absolute;
+        width: 106px;
+        height: 46px;
+        left: -43px;
+        top: 0px;
+        overflow: hidden;
+        padding-left: 18px;
+        background: #FCFCFC;
+        box-shadow: inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+        transition: transform .8s;
+        transform: translateX(106px);
+      }
+
+      &:hover .slider-wrap{
+        opacity: 1;
+        width: 106px;
+        transform: translateX(1px);
+      }
+
+      .three-dot {
+        font-size: 13px;
+        color: #4A90E2;
+        letter-spacing: 0;
+        text-align: center;
+      }
+    }
   }
 </style>
 <script>
@@ -118,20 +170,42 @@
       return {
         operation_number: '',
         curRowIndex: -1,
-        dialogVisible: false
+        dialogVisible: false,
+        pageX: 0,
+        pageY: 0,
+        sliderStart: false,
+        pageSize: 30,
+        currentPage: 1
       }
     },
 
     computed: {
       ...mapState('finance', [
         'payments',
-        'navbar'
+        'navbar',
+        'payments_count'
       ])
     },
 
     fetchAction: 'finance/getInfo',
 
+    mounted () {
+      this.getInfo({offset: 0, limit: this.pageSize})
+    },
+
     methods: {
+      currentChange (page) {
+        console.log(page)
+        let offset = (page - 1) * this.pageSize
+        this.getInfo({offset, limit: this.pageSize})
+        this.currentPage = page
+      },
+
+      invoiceFormatter (row, column, cellValue) {
+        console.log(cellValue)
+        return cellValue === '需要' ? '需要' : '—'
+      },
+
       cancel (index, row) {
         this.dialogVisible = true
         this.operation_number = row.operation_number
