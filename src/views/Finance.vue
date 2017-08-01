@@ -173,7 +173,7 @@
   export default {
     data () {
       return {
-        operation_number: '',
+        operation_number: 0,
         curRowIndex: -1,
         dialogVisible: false
       }
@@ -211,7 +211,6 @@
 
     methods: {
       currentChange (page) {
-        console.log(page)
         this.getInfo({page})
       },
 
@@ -223,11 +222,9 @@
         this.dialogVisible = true
         this.operation_number = row.operation_number
         this.curRowIndex = index
-        console.log(row)
       },
 
       handleDelete () {
-        console.log('me')
         this.cancelCharge(this.operation_number).then(() => {
           this.dialogVisible = false
           this.payments.splice(this.curRowIndex, 1)
