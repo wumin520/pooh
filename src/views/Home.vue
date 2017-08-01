@@ -399,6 +399,18 @@
 
               lines: {
                 show: true
+              },
+
+              mouse: {
+                track: true,
+                relative: true,
+                lineColor: '#4A90E2',
+                fillColor: '#4A90E2',
+                fillOpacity: 1,
+                trackFormatter: ({x, y}) => {
+                  console.log(labels, x, y)
+                  return labels[parseInt(x)] + ': ' + y
+                }
               }
             }
           )
