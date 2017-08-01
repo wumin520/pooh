@@ -1,9 +1,16 @@
 <template>
   <div class="container">
-  <el-breadcrumb separator=">">
-    <el-breadcrumb-item>财务管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{this.currentPageTitle}}</el-breadcrumb-item>
-  </el-breadcrumb>
+   <!-- 面包屑 -->
+    <div class="breadcrumb">
+      <span class="breadcrumb-item">
+        <span class="breadcrumb-item-inner" @click="toFinance()">财务管理</span>
+        <span class="breadcrumb-separator"></span>        
+      </span>
+      <span class="breadcrumb-item">
+        <span class="breadcrumb-item-inner">{{currentPageTitle}}</span>        
+      </span>
+    </div>
+
     <el-tabs v-model="activeTabName" type="border-card">
       <el-tab-pane :name="'chinabank'">
         <span slot="label"><img class="china-bank-img" :src="CHINA_BANK_IMG"/></span>
@@ -111,6 +118,36 @@
 <style lang="scss">
   .container {
     padding: 50px 0 0 35px;
+
+    .breadcrumb {
+      height: 22px;
+      margin-bottom: 47px;
+      .breadcrumb-item {
+        display: inline-block;
+        float: left;
+        margin-right: 10px;
+        cursor: pointer;
+        .breadcrumb-item-inner {
+          font-family: PingFangSC-Light;
+          font-size: 16px;
+          line-height: 22px;
+          color: #888888;
+        }
+        .breadcrumb-separator {
+          width: 6px;
+          height: 12px;
+          margin-left: 2px;
+          display: inline-block;
+          background-image: url('http://qianka.b0.upaiyun.com/images/a688c7dd7a765df07ec7d9cfab76b68f.png');
+          background-size: 6px 12px;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+      }
+      .breadcrumb-item:last-child {
+        cursor: text;
+      }
+    }
 
     .fs13-c3a {
       font-size: 13px;
@@ -433,6 +470,9 @@
     },
 
     methods: {
+      toFinance () {
+        this.$router.push('/d/finance')
+      },
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           console.log('validate result: ', valid)
