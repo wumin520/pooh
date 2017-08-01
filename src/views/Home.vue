@@ -199,8 +199,6 @@
   import {mapGetters, mapActions} from 'vuex'
   import DashboardCard from '@/components/DashboardCard.vue'
   import { LW, L60D, L90D } from '@/constants'
-  import Chartist from 'chartist'
-  import '../chartist/createLabel'
 
   export default {
     components: {
@@ -281,32 +279,6 @@
         })
 
         this.drawChart()
-      },
-
-      /* Deprecated */
-      _drawChart () {
-        this.getChartData({
-          content: this.reportContent,
-          dayCnt: this.dayCnt
-        }).then(() => {
-          if (this.chart) {
-            this.chart.detach()
-          }
-          this.chart = new Chartist.Line('.rpt-chart', {
-            labels: this.chartLabels,
-            series: [
-              this.chartData
-            ]
-          }, {
-            high: parseInt(_.max(this.chartData) * 1.2),
-            low: 0,
-            height: 440,
-            lineSmooth: false,
-            axisX: {
-              showGrid: false
-            }
-          })
-        })
       },
 
       drawChart () {
@@ -408,7 +380,6 @@
                 fillColor: '#4A90E2',
                 fillOpacity: 1,
                 trackFormatter: ({x, y}) => {
-                  console.log(labels, x, y)
                   return labels[parseInt(x)] + ': ' + y
                 }
               }
