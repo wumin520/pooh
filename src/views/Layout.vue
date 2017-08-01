@@ -39,7 +39,7 @@
           <el-menu-item index="3"><i class="el-icon-square"></i>财务管理<div class="el-icon-triangle"></div></el-menu-item>
 
           <el-menu-item index="4"><i class="el-icon-square"></i>账户信息<div class="el-icon-triangle"></div></el-menu-item>
-        </el-menu>                
+        </el-menu>
       </div>
 
       <router-view></router-view>

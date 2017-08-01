@@ -48,7 +48,6 @@ const mutations = {
 
 const actions = {
   updateIndex ({commit, state}, paramsName) {
-    console.log('dispatch updateIndex')
     commit(types.UPDATE_ACTIVE_INDEX, paramsName)
   }
 

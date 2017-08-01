@@ -33,14 +33,6 @@
         <el-button @click="submitForm('infoForm')" type="primary" class="w130">提交</el-button>
       </el-form-item>
     </el-form>
-
-    <!--<el-dialog title="" v-model="submitSuccess" style="top: 30%;">
-      <img class="logo-success" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
-      <span class="qk-title">修改成功</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitSuccess = false">确 定</el-button>
-      </span>
-    </el-dialog>-->
   </div>
 </template>
 <style lang="scss">
@@ -123,8 +115,6 @@
       }
 
       return {
-        // submitSuccess: false,
-
         rules: {
           title: [
             { required: true, message: '请输入姓名/公司', trigger: 'change' }
