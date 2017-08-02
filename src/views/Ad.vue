@@ -164,7 +164,7 @@
         </div>
         <div class="content-line">
           <div class="left" >iTunes地址</div>
-          <div class="right" style="white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow:hidden;font-family:PingFangSC-Semibold !important;"
+          <div class="right" style="white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow:hidden;"
             v-text="previewForm.download_url"></div>
         </div>
         <div class="content-line">
@@ -193,13 +193,15 @@
           <div class="right"  v-if="previewForm.planlist.length == 0 && previewForm.search_keyword == ''">-</div>
         </div>
 
-        <div class="content-line" v-for="(keyword, index) in previewForm.planlist" style="border-top: 1px solid #E8E8E8;">
-          <div class="left"  v-if="index == 0">关键词</div>
-          <div class="left" v-if="index > 0"></div>
-          <!--<div class="right"  v-if="previewForm.kw_flag_needed == 0">-</div>-->
-          <div class="right" >{{keyword.key}} &nbsp;&nbsp;{{keyword.num + '%'}}</div>
+        <div>
+          <div class="content-line keyword-line" v-for="(keyword, index) in previewForm.planlist">
+            <div class="left"  v-if="index == 0">关键词</div>
+            <div class="left" v-if="index > 0"></div>
+            <!--<div class="right"  v-if="previewForm.kw_flag_needed == 0">-</div>-->
+            <div class="right" >{{keyword.key}} &nbsp;&nbsp;{{keyword.num + '%'}}</div>
+          </div>
         </div>
-
+        
         <div class="content-line" style="margin-top: 10px;border-top: 1px solid #E8E8E8;">
           <div class="left" >应用价格</div>
           <div class="right" v-text="previewForm.appstore_type" ></div>
@@ -223,11 +225,13 @@
           <div class="right"  v-if="previewForm.zs_task_needed == 0">-</div>
         </div>
 
-        <div class="content-line" v-for="(zs, index) in previewForm.zs_task" style="border-top: 1px solid #E8E8E8;">
-          <div class="left"  v-if="index == 0">专属任务</div>
-          <div class="left" v-if="index > 0"></div>
-          <div class="right"  v-if="previewForm.zs_task_needed == 0">-</div>
-          <div class="right"  v-if="previewForm.zs_task_needed == 1">第 {{zs.the_day}} 天 &nbsp;&nbsp;{{zs.univalent == 0 ? ' 免费' : '￥' + zs.univalent}}</div>
+        <div>
+          <div class="content-line zs_line" v-for="(zs, index) in previewForm.zs_task">
+            <div class="left"  v-if="index == 0">专属任务</div>
+            <div class="left" v-if="index > 0"></div>
+            <div class="right"  v-if="previewForm.zs_task_needed == 0">-</div>
+            <div class="right"  v-if="previewForm.zs_task_needed == 1">第 {{zs.the_day}} 天 &nbsp;&nbsp;{{zs.univalent == 0 ? ' 免费' : '￥' + zs.univalent}}</div>
+          </div>
         </div>
       </div>
     </el-dialog>
@@ -545,6 +549,14 @@
           box-shadow: inset 0 0px 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
         }
       }
+      .content-line.keyword-line:first-child {
+        border-top: 1px solid #E8E8E8;
+      }
+
+      .content-line.zs_line:first-child {
+        border-top: 1px solid #E8E8E8;        
+      }
+        
       // .content-line:nth-child(odd) {
       //   .left {
       //     background-color: #E8EDF2;
@@ -585,6 +597,7 @@
         count: 0, // 存在两个相同pagination，这里记录 pagination 点击次数， 防止发送多次请求
         currentPage: 1, // 当前在第几页 for pagination
         dateWeekTime: '',
+        searchSelect: 'time', // 搜索的条件： time + title  默认按时间搜索
         currentStatus: 'ok', // 当前路由的参数
         pickerOptions2: { // 搜索时间的配置
           shortcuts: [{
@@ -660,7 +673,6 @@
         'afterSearch',
         'totalTasks',
         'tableData',
-        'searchSelect',
         'searchForm',
         'previewForm',
         'ad_price'

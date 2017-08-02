@@ -14,7 +14,6 @@ import util from '@/utils'
 const initState = () => ({
   afterSearch: false, // 标识搜索是否已经结束  ？todo 检查是否多余？
   totalTasks: 0, // 任务总数 for pagination
-  searchSelect: 'time', // 搜索的条件： time + title  默认按时间搜索
   searchForm: { // 按时间搜索时 选择的时间
     end_time: '',
     begin_time: ''
