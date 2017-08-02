@@ -95,7 +95,7 @@
       </el-form-item>
 
       <!-- 应用价格 免费、付费-->
-      <el-form-item prop="appstore_type">
+      <el-form-item prop="appstore_type" class="qk-form-item">
         <div class="left-wrap">
             <div class="fs13-c3a">应用价格</div>
             <div style="font-size:0px;">
@@ -202,6 +202,17 @@
     .addAd-form {
       margin-top: 47px; 
 
+      .qk-form-item {
+        .el-radio-group {
+          .el-icon-check {
+            .el-radio-button__inner {
+              font-family: 'element-icons' !important;
+            }
+          }
+        }
+
+      }
+
       .mgb-80 {
         margin-bottom: 80px;
       }
@@ -220,8 +231,7 @@
       font-family: Lato-Regular;
       font-size: 14px;
       color: #3A3A3A;
-      position: relative;
-      top: 5px;
+      vertical-align: middle;
     }
 
     .form-item-zs-label {
