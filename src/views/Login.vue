@@ -6,7 +6,7 @@
           <el-col :span="18" :offset="3">
             <div class="grid-content">
               <!--qk logo-->
-              <img class="logo" src="http://assets.kagou.me/kagou_app/images/c7e01903fa5539386afbb040ed6a366d990c586f.png"/>
+              <img class="logo" src="http://qianka.b0.upaiyun.com/images/3c3313c66c2141a17d2a96adb0c3b067.png"/>
               <!-- Login Form -->
               <el-form ref="loginForm" class="login-form" :model="form" :rules="formRules">
                 <el-form-item class="qk-form-item" label="" prop="username">

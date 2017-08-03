@@ -688,7 +688,6 @@
     },
 
     mounted () {
-      this.loading = true
       var type = this.task_status = this.$route.params.status.split('&')[0]
       this.$store.dispatch('updateIndex', 'dash_ad', { root: true })
 
@@ -770,7 +769,10 @@
           currentStatus: currentStatus
         }
         this.searchAdTask(config).then(_ => {
-          this.loading = false
+          var self = this
+          setTimeout(function () {
+            self.loading = false
+          }, 0)
           this.count = 0
         }).catch((e) => {
           this.loading = false
@@ -784,7 +786,6 @@
         if (this.$route.params.status === key) {
           return
         }
-
         let routePath = '/d/ad/ios'
         var name = key.name
         // tab1 tab2 tab3 tab4 tab5
