@@ -226,7 +226,7 @@ const actions = {
     if (config.params) {
       path = URI_POST_TASK + '/' + config.params
     }
-    return api(path, {method: 'post', body: config.postData})
+    return api(path, {method: 'post', special: true, body: config.postData})
       .then(res => res && res.payload)
       .then(payload => {
         return payload
@@ -305,8 +305,10 @@ const actions = {
   addZSLists ({commit, state}) {
     var canDelete = false
     var freeFlg = false
+    var money = 1
     if (state.adForm.plan_count !== '' && state.adForm.plan_count >= 5000 && state.zs_free === 1) {
       freeFlg = true
+      money = 0
     }
 
     for (var i = 0; i < state.adForm.zs_task.length; i++) {
@@ -317,6 +319,7 @@ const actions = {
       var item1 = {
         the_day: '1',
         free: freeFlg,
+        money: money,
         key: Date.now(),
         can_delete: canDelete
       }
@@ -325,6 +328,7 @@ const actions = {
       var item2 = {
         the_day: '0',
         free: false,
+        money: money,
         key: Date.now(),
         can_delete: true
       }

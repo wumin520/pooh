@@ -12,7 +12,7 @@
     </div>
 
     <!-- Advertisement Form -->
-    <el-form :model="adForm" ref="adFormRef" label-position="top" class="addAd-form">
+    <el-form :model="adForm" ref="adFormRef" label-position="top" class="addAd-form" id="addAd-form-id">
       <!-- 应用标题 -->
       <el-form-item class="qk-form-item" label="应用标题" prop="title">
         <el-input v-model="adForm.title"  placeholder="请输入应用标题"></el-input>
@@ -95,7 +95,7 @@
       </el-form-item>
 
       <!-- 应用价格 免费、付费-->
-      <el-form-item prop="appstore_type">
+      <el-form-item prop="appstore_type" class="qk-form-item">
         <div class="left-wrap">
             <div class="fs13-c3a">应用价格</div>
             <div style="font-size:0px;">
@@ -137,12 +137,14 @@
               <div class="sub-item" v-if="zs.free" >
                 <span class="border-cd">第</span>
                 <div class="mrg-l--5 zs_task_day" v-text="zs.the_day"></div>
+                <el-button type="taskItemCenter" v-text="zs.money" style="display:none;"></el-button>
                 <span class="border-cd mrg-l--5">天</span>
               </div>
               <!-- 专属 免费 day -->
               <div class="sub-item" v-if="zs.free == false" >
                 <span class="border-cd">第</span>
                 <el-input class="mrg-l--5" v-model="zs.the_day"></el-input>
+                <el-button type="taskItemCenter" v-text="zs.money" style="display:none;"></el-button>
                 <span class="border-cd mrg-l--5">天</span>
               </div>
 
@@ -202,6 +204,17 @@
     .addAd-form {
       margin-top: 47px; 
 
+      .qk-form-item {
+        .el-radio-group {
+          .el-icon-check {
+            .el-radio-button__inner {
+              font-family: 'element-icons' !important;
+            }
+          }
+        }
+
+      }
+
       .mgb-80 {
         margin-bottom: 80px;
       }
@@ -220,8 +233,7 @@
       font-family: Lato-Regular;
       font-size: 14px;
       color: #3A3A3A;
-      position: relative;
-      top: 5px;
+      vertical-align: middle;
     }
 
     .form-item-zs-label {
