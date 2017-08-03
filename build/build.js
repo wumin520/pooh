@@ -17,6 +17,9 @@ var spinner = ora('building for production...')
 spinner.start()
 
 /* homepage as site index */
+shell.rm('-rf', 'dist')
+shell.mkdir('-p', 'dist')
+
 shell.cp('homepage/index.html', 'dist/index.html')
 
 var scssFile = './homepage/index.scss'

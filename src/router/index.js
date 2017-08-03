@@ -82,5 +82,6 @@ export default new Router({
       component: Login
     }
   ],
-  mode: 'history'
+  mode: 'history',
+  base: '/v2'
 })
