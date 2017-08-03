@@ -11,7 +11,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "element-theme-qianka": "git+ssh://git@git.corp.qianka.com:qianka/element-theme-qianka.git#v0.2.7",
+    "element-theme-qianka": "git+ssh://git@git.corp.qianka.com:qianka/element-theme-qianka.git#v0.2.8",
     "element-ui": "1.3.7",
     "lodash": "4.17.4",
     "normalize.css": "7.0.0",
