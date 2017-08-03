@@ -114,7 +114,6 @@
       handleSelect (key, keyPath) {
         console.log(key, keyPath)
         let activeIndex = keyPath[keyPath.length - 1]
-        this.activeIndex = activeIndex
 
         switch (activeIndex) {
           case '1':

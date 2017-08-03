@@ -4,10 +4,10 @@
     <div class="breadcrumb">
       <span class="breadcrumb-item">
         <span class="breadcrumb-item-inner" @click="toFinance()">财务管理</span>
-        <span class="breadcrumb-separator"></span>        
+        <span class="breadcrumb-separator"></span>
       </span>
       <span class="breadcrumb-item">
-        <span class="breadcrumb-item-inner">{{currentPageTitle}}</span>        
+        <span class="breadcrumb-item-inner">{{currentPageTitle}}</span>
       </span>
     </div>
 
@@ -457,17 +457,6 @@
     },
 
     fetchAction: 'charge/getInvoiceInfo',
-
-    mounted () {
-      this.$store.dispatch('updateIndex', 'dash_finance_charge', { root: true })
-
-      if (this.$router.currentRoute.name === 'dash_finance_charge') {
-        this.getInvoiceInfo()
-      } else {
-        let id = this.$router.currentRoute.params.id
-        this.getInfo(id)
-      }
-    },
 
     methods: {
       toFinance () {
