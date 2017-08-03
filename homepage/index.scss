@@ -211,7 +211,8 @@ body {
 
         .register {
           text-align: center;
-          line-height: 65px;
+          display: block;
+          line-height: 47px;
           width: 200px;
           height: 60px;
           margin: 120px auto 0;
@@ -418,6 +419,7 @@ body {
         }
 
         .register {
+          text-decoration: none;
           background: #1B80C3;
           border: 1px solid #1B80c3;
           transition: all 0.48s ease-out;
