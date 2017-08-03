@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="charge-container">
    <!-- 面包屑 -->
     <div class="breadcrumb">
       <span class="breadcrumb-item">
@@ -116,7 +116,7 @@
   </div>
 </template>
 <style lang="scss">
-  .container {
+  .charge-container {
     padding: 50px 0 0 35px;
 
     .breadcrumb {
