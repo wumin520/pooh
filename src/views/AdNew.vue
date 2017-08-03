@@ -12,7 +12,7 @@
     </div>
 
     <!-- Advertisement Form -->
-    <el-form :model="adForm" ref="adFormRef" label-position="top" class="addAd-form">
+    <el-form :model="adForm" ref="adFormRef" label-position="top" class="addAd-form" id="addAd-form-id">
       <!-- 应用标题 -->
       <el-form-item class="qk-form-item" label="应用标题" prop="title">
         <el-input v-model="adForm.title"  placeholder="请输入应用标题"></el-input>
@@ -137,12 +137,14 @@
               <div class="sub-item" v-if="zs.free" >
                 <span class="border-cd">第</span>
                 <div class="mrg-l--5 zs_task_day" v-text="zs.the_day"></div>
+                <el-button type="taskItemCenter" v-text="zs.money" style="display:none;"></el-button>
                 <span class="border-cd mrg-l--5">天</span>
               </div>
               <!-- 专属 免费 day -->
               <div class="sub-item" v-if="zs.free == false" >
                 <span class="border-cd">第</span>
                 <el-input class="mrg-l--5" v-model="zs.the_day"></el-input>
+                <el-button type="taskItemCenter" v-text="zs.money" style="display:none;"></el-button>
                 <span class="border-cd mrg-l--5">天</span>
               </div>
 

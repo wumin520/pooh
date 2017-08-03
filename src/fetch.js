@@ -18,10 +18,33 @@ const api = (url, options) => {
     let opt = options || {}
 
     if (opt.method && opt.method.toLowerCase() === 'post' && opt.body) {
-      opt.body = qs.stringify(opt.body)
+      var optBody = opt.body
+      var stringBody = qs.stringify(opt.body)
+      if (opt.special) {
+        /*
+          特殊的业务代码 ？？TODO 换种方法？？
+          这里拦截body， 因为json无法添加两个key相同val不同的值
+          但是添加广告、续单、编辑 提交时 需要特殊处理zs_task数组为如下格式, 否则专属的数据后端获取不到
+            zs_task_the_day:1
+            zs_task_money:1
+            zs_task_the_day:2
+            zs_task_money:1
+            zs_task_the_day:3
+            zs_task_money:1
+            ...
+        */
+        let zsTask = optBody.zs_task
+        zsTask.forEach(function (zt) {
+          stringBody += '&zs_task_the_day=' + zt.the_day
+          stringBody += '&zs_task_money=' + zt.money
+        })
+
+        opt.body = stringBody
+      } else {
+        opt.body = qs.stringify(opt.body)
+      }
       opt.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     }
-    // application/json
     if (opt.method && opt.method.toLowerCase() === 'get') {
       opt.headers = {'Content-Type': 'application/json'}
     }

@@ -556,6 +556,10 @@
       .content-line.zs_line:first-child {
         border-top: 1px solid #E8E8E8;        
       }
+
+      .content-line.zs_line {
+        margin-bottom: 0px !important;
+      }
         
       // .content-line:nth-child(odd) {
       //   .left {
@@ -579,6 +583,10 @@
       }
       .content-line:last-child {
         margin-bottom: 10px;
+      }
+
+      .content-line.keyword-line:nth-child(3) {
+        margin-bottom: 0px;
       }
     }
   }
