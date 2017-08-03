@@ -16,14 +16,12 @@ var shell = require('shelljs')
 var spinner = ora('building for production...')
 spinner.start()
 
-/* homepage */
-shell.rm('-rf', 'dist/homepage')
-shell.mkdir('-p', 'dist/homepage')
-shell.cp('homepage/index.html', 'dist/homepage/index.html')
+/* homepage as site index */
+shell.cp('homepage/index.html', 'dist/index.html')
 
 var scssFile = './homepage/index.scss'
-var cssFile = './dist/homepage/index.css'
-var mapFile = './dist/homepage/index.css.map'
+var cssFile = './dist/index.css'
+var mapFile = './dist/index.css.map'
 
 var result = sass.renderSync({
   file: scssFile,
