@@ -162,9 +162,19 @@
 
       <el-form-item class="submit-wrapper">
         <el-button @click="submitForm('adFormRef')" :disabled="submitButtonDisable" class="w130 mgr-10" type="primary" v-loading.fullscreen.lock="fullscreenLoading">提交</el-button>
-        <el-button class="w130">保存</el-button>
+        <el-button class="w130" @click="cancelDialogVisible = true">取消</el-button>
       </el-form-item>
     </el-form>
+
+    <!-- 取消弹窗 -->
+    <el-dialog title="提示" v-model="cancelDialogVisible" :show-close="showClose" custom-class="revoke-dialog" style="top: 30%;">
+      <img class="logo" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
+      <span class="qk-title">取消后您填写的信息将不再保留，是否确认取消？</span><br>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="cancle-button" size="small" style="width: 70px;" @click="cancelDialogVisible = false">取消</el-button>
+        <el-button class="goon-button" type="primary" style="width: 70px;" size="small" @click="toAd()">继续</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <style lang="scss" >
@@ -414,7 +424,9 @@
       return {
         page_sub_title: '添加新广告',  // ？todo 检查是否冗余？
         submitButtonDisable: false,  // 提交按钮是否禁用
-        fullscreenLoading: false // loading是否显示
+        fullscreenLoading: false, // loading是否显示
+        cancelDialogVisible: false, // 取消弹层 是否显示
+        showClose: false // 弹层close按钮不显示
       }
     },
 
@@ -640,6 +652,10 @@
       // 删除专属任务
       removeZS (key) {
         this.removeZSItem(key)
+      },
+
+      toAd () {
+        this.$router.push('/d/ad/ios/ok')
       }
     }
   }
