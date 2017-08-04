@@ -11,7 +11,7 @@
     <el-table :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column fixed prop="date" label="日期" min-width="152">
       </el-table-column>
-       <el-table-column prop="types" label="付款类型" min-width="98">
+       <el-table-column prop="types" label="广告主类型" min-width="98">
       </el-table-column>
        <el-table-column prop="drawee" label="付款人" min-width="206">
       </el-table-column>

@@ -59,7 +59,7 @@
     <!-- table -->
     <div class="table-wrapper">
       <el-table :data="tableData" stripe border style="width: 100%" v-loading="loading" element-loading-text="加载中...">
-        <el-table-column label="广告" min-width="166">
+        <el-table-column fixed label="广告" min-width="166">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
               <div class="aui-ellipsis" v-text="scope.row.task" @click="filter(scope.row.appid)"></div>
@@ -101,45 +101,50 @@
             <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" min-width="265" v-if="tableData.length > 0">
+        <el-table-column label="操作" width="63" v-if="tableData.length > 0">
           <template scope="scope">
-            <!-- 投放中 ok -->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:6px" @click="goToEnded(scope.row)">完成</a>
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-left:6px" @click="addNumber(scope.row)">续总数</a>
-            <!-- 待审核 pending-->
-            <!-- <a class="link-go"  href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-right:6px" @click="checkTask(row)">查看</a>-->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-left:6px" @click="removeTask(scope.$index, scope.row)">删除</a>
-            <!-- 审核失败 rejected-->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-left:6px" @click="editTask(scope.row)">编辑</a>
-            <!-- </router-link> -->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-left:6px" @click="removeTask(scope.$index,scope.row)">删除</a>
-            <!-- 暂停 paused-->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && scope.row.button[0] == 1 " size="small" type="info"
-            style="margin-left:6px" @click="resumeTask(scope.row)">开启</a>
-            <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'paused' && scope.row.button[0] == 2 " size="small"
-            type="info" style="margin-left:6px">开启</a>
+            <div class="opera hover-event">
+              <div class="three-dot">...</div>
+              <div class="slider-wrap" style="position:absolute;">
+                <!-- 投放中 ok -->
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:18px" @click="goToEnded(scope.row)">完成</a>
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:18px" @click="addNumber(scope.row)">续总数</a>
+                <!-- 待审核 pending-->
+                <!-- <a class="link-go"  href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-right:6px" @click="checkTask(row)">查看</a>-->
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-left:18px" @click="removeTask(scope.$index, scope.row)">删除</a>
+                <!-- 审核失败 rejected-->
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-left:18px" @click="editTask(scope.row)">编辑</a>
+                <!-- </router-link> -->
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-left:18px" @click="removeTask(scope.$index,scope.row)">删除</a>
+                <!-- 暂停 paused-->
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && scope.row.button[0] == 1 " size="small" type="info"
+                style="margin-right:6px" @click="resumeTask(scope.row)">开启</a>
+                <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'paused' && scope.row.button[0] == 2 " size="small"
+                type="info" style="margin-left:18px">开启</a>
 
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-left:6px" @click="goToEnded(scope.row)">完成</a>
-            <!-- 完成 ended-->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[0] == 1" size="small" type="info"
-            style="margin-left:6px" @click="readd(scope.row)">续单</a>
-            <!-- </router-link> -->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[1] == 1" size="small" type="info"
-            style="margin-left:6px" @click="exportIdfa(1, scope.row)">导出IDFA1</a>
-            <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[1] == 2" size="small"
-            type="info" style="margin-left:6px">正在导出IDFA1</a>
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[2] == 1" size="small" type="info"
-            style="margin-left:6px" @click="downloadIdfa(1, scope.row)">下载IDFA1</a>
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-left:18px" @click="goToEnded(scope.row)">完成</a>
+                <!-- 完成 ended-->
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[0] == 1" size="small" type="info"
+                style="margin-right:18px" @click="readd(scope.row)">续单</a>
+                <!-- </router-link> -->
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[1] == 1" size="small" type="info"
+                style="margin-right:18px" @click="exportIdfa(1, scope.row)">导出IDFA1</a>
+                <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[1] == 2" size="small"
+                type="info" style="margin-right:18px">正在导出IDFA1</a>
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[2] == 1" size="small" type="info"
+                style="margin-right:18px" @click="downloadIdfa(1, scope.row)">下载IDFA1</a>
 
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[3] == 1" size="small" type="info"
-            style="margin-left:6px" @click="exportIdfa(2, scope.row)">导出IDFA2</a>
-            <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[3] == 2" size="small"
-            type="info" style="margin-left:6px">正在导出IDFA2</a>
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[4] == 1" size="small" type="info"
-            style="margin-left:6px" @click="downloadIdfa(2, scope.row)">下载IDFA2</a>
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[3] == 1" size="small" type="info"
+                style="margin-right:18px" @click="exportIdfa(2, scope.row)">导出IDFA2</a>
+                <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[3] == 2" size="small"
+                type="info" style="margin-right:18px">正在导出IDFA2</a>
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[4] == 1" size="small" type="info"
+                style="margin-right:18px" @click="downloadIdfa(2, scope.row)">下载IDFA2</a>
 
-            <!-- common -->
-            <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-left:6px" @click="previewTaskInfo(scope.row)">预览</a>
+                <!-- common -->
+                <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-right:18px" @click="previewTaskInfo(scope.row)">预览</a>
+              </div>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -517,6 +522,41 @@
       text-decoration: underline;
       font-family: PingFangSC-Semibold;
       margin-right: 6px;
+    }
+
+    td[class^=el-table_1_column] {
+      .slider-wrap {
+        opacity: 1;
+        font-size: 0;
+        position: absolute;
+        min-width: 300px;
+        height: 46px;
+        line-height: 46px;
+        left: -238px;
+        top: 0px;
+        overflow: hidden;
+        padding-left: 18px;
+        background: #FCFCFC;
+        box-shadow: inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+        transition: transform .8s;
+        transform: translateX(300px);
+        .el-button {
+          height: 46px;
+        }
+      }
+
+      &:hover .slider-wrap{
+        opacity: 1;
+        width: 300px;
+        transform: translateX(1px);
+      }
+
+      .three-dot {
+        font-size: 13px;
+        color: #4A90E2;
+        letter-spacing: 0;
+        text-align: center;
+      }
     }
 
   }
