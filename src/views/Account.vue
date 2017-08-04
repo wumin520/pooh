@@ -23,7 +23,7 @@
       <el-form-item prop="password" class="mrg-t47" label="当前密码">
         <el-input v-model="info.password" placeholder="请输入当前密码"></el-input>
       </el-form-item>
-      <el-form-item prop="new_password" label="新的秘密">
+      <el-form-item prop="new_password" label="新的密码">
         <el-input v-model="info.new_password" placeholder="请输入新的密码"></el-input>
       </el-form-item>
       <el-form-item prop="confirm" label="确认密码">
