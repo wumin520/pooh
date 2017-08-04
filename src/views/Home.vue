@@ -198,7 +198,7 @@
   import _ from 'lodash'
   import {mapGetters, mapActions} from 'vuex'
   import DashboardCard from '@/components/DashboardCard.vue'
-  import { LW, L60D, L90D } from '@/constants'
+  import { LW, L30D, L90D } from '@/constants'
 
   export default {
     components: {
@@ -244,8 +244,8 @@
         switch (this.reportType) {
           case LW:
             return 7
-          case L60D:
-            return 60
+          case L30D:
+            return 30
           case L90D:
             return 90
         }
@@ -309,7 +309,7 @@
               data.push([data.length - 1 + 0.2, null])
               data.splice(0, 0, [-0.2, null])
               break
-            case 60:
+            case 30:
               data.push([data.length - 1 + 2, null])
               data.splice(0, 0, [-2, null])
               break

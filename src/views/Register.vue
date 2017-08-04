@@ -136,9 +136,19 @@
     fullscreen: true,
 
     data () {
+      var validatePass1 = (rule, value, callback) => {
+        if (value.trim().length < value.length) {
+          callback(new Error('密码不能包含空格'))
+        } else {
+          callback()
+        }
+      }
+
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'))
+        } else if (value.trim().length < value.length) {
+          callback(new Error('密码不能包含空格'))
         } else if (value !== this.form.password) {
           callback(new Error('两次输入密码不一致!'))
         } else {
@@ -190,7 +200,8 @@
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
             { min: 5, message: '长度至少为 5 个字符', trigger: 'blur' },
-            { max: 50, message: '长度在 50 个字符以内', trigger: 'blur' }
+            { max: 50, message: '长度在 50 个字符以内', trigger: 'blur' },
+            { validator: validatePass1, trigger: 'blur' }
           ],
           confirm: [
             { required: true, message: '请再次输入密码', trigger: 'blur' },
