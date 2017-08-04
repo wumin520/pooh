@@ -146,7 +146,7 @@
         padding-left: 18px;
         background: #FCFCFC;
         box-shadow: inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
-        transition: transform .8s;
+        transition: transform .5s;
         transform: translateX(106px);
         .el-button {
           height: 46px;
