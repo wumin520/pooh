@@ -355,6 +355,9 @@
       width: 206px;
       border: 1px dashed #dddddd;
       font-size: 13px;
+      &:hover {
+        border: 1px dashed #B5B5B5;        
+      }
 
       .el-button--text {
         color: #B5B5B5;
@@ -401,6 +404,9 @@
     border-radius: 4px;
     color: #3A3A3A;
     margin-bottom: 80px;
+    &:hover {
+      border: 1px dashed #b5b5b5;
+    }
 
     .el-button--text {
       color: #3a3a3a;
@@ -630,7 +636,7 @@
           .catch((e) => {
             this.submitButtonDisable = false
             this.fullscreenLoading = false
-            this.$message(e.message)
+            this.$message(e.err_msg)
           })
       },
 

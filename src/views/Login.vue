@@ -10,13 +10,13 @@
               <!-- Login Form -->
               <el-form ref="loginForm" class="login-form" :model="form" :rules="formRules">
                 <el-form-item class="qk-form-item" label="" prop="username">
-                  <el-input class="qk-input__border-bottom" v-model="form.username" placeholder="用户名"></el-input>
+                  <el-input class="qk-input__border-bottom" v-model="form.username" placeholder="电子邮箱"></el-input>
                 </el-form-item>
                 <el-form-item class="qk-form-item" label="" prop="password" style="margin-bottom:25px;">
                   <el-input class="qk-input__border-bottom password" type="password" v-model="form.password" placeholder="密码"></el-input>
                 </el-form-item>
                 <el-form-item class="qk-form-item">
-                  <el-button type="primary" class="btn-login" @click="login()">登录</el-button>
+                  <el-button type="primary" size="large" class="btn-login" @click="login()">登录</el-button>
                 </el-form-item>
               </el-form>
 
@@ -32,25 +32,6 @@
   </div>
 </template>
 <style lang="scss">
-  .login-form {
-    .qk-form-item {
-      width: 100%;
-      .el-form-item__content {
-        .password {
-          .el-input__inner {
-            font-size: 28px !important;                      
-          }
-          .el-input__inner::-webkit-input-placeholder {
-            position: relative;
-            top: -5px;
-          }
-        }
-      }
-    }
-  }
-</style>
-
-<style lang="scss" scoped>
   #page {
     width: 100%;
     height: 100%;
@@ -83,8 +64,28 @@
               .login-form {
                 .qk-form-item {
                   width: 100%;
+
+                  input:-webkit-autofill {
+                    -webkit-box-shadow: 0 0 0 1000px white inset;
+                  }
+
+                  .el-form-item__content {
+                    .password {
+                      .el-input__inner {
+                        font-size: 28px !important;                      
+                      }
+
+                      .el-input__inner::-webkit-input-placeholder {
+                        position: relative;
+                        font-size: 12px;
+                        top: -5px;
+                      }
+                    }
+                  }
                 }
+
                 .btn-login {
+                  height: 42px;
                   width: 100%;
                   margin-top: 10px;
                 }
@@ -174,7 +175,7 @@
         }).then(data => {
           this.$router.push('/d/home')
         }).catch(err => {
-          this.$message(err.message)
+          this.$message(err.err_msg)
         })
       }
     }

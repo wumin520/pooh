@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="nav">
-      <div class="title">用户首页</div>
+      <div class="title">账户首页</div>
     </div>
 
     <el-row class="cards">
@@ -117,6 +117,10 @@
         <el-table-column
           prop="effect_rate"
           label="转化率">
+        </el-table-column>
+         <el-table-column
+          prop="zs_done_count"
+          label="付费专属">
         </el-table-column>
       </el-table>
     </el-row>
