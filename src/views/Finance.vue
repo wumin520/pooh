@@ -11,7 +11,7 @@
     <el-table :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column fixed prop="date" label="日期" min-width="152">
       </el-table-column>
-       <el-table-column prop="types" label="付款类型" min-width="98">
+       <el-table-column prop="types" label="广告主类型" min-width="98">
       </el-table-column>
        <el-table-column prop="drawee" label="付款人" min-width="206">
       </el-table-column>
@@ -146,7 +146,7 @@
         padding-left: 18px;
         background: #FCFCFC;
         box-shadow: inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
-        transition: transform .8s;
+        transition: transform .5s;
         transform: translateX(106px);
         .el-button {
           height: 46px;

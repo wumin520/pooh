@@ -64,7 +64,8 @@ const actions = {
       })
   },
 
-  getInvoiceInfo ({commit}) {
+  getInvoiceInfo ({dispatch, commit}) {
+    dispatch('updateIndex', 'dash_finance_charge', { root: true })
     return api(URI_CHARGE_INVOICE).then((res) => {
       // commit(res)
       console.log('getInvoiceInfo', res)

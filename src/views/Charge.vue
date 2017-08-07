@@ -20,19 +20,19 @@
             <el-col :span="8">
               <div class="grid-content bg-purple mrg-l--0">
                 单笔充值<br>
-                ¥ 10,000 ~ 29,999
+                ¥ 10,000 ~ 299,999
               </div>
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple">
                 单笔充值<br>
-                ¥ 30,000 ~ 49,999
+                ¥ 300,000 ~ 499,999
               </div>
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple mrg-l--2">
                 单笔充值<br>
-                ¥ 50,000 及以上
+                ¥ 500,000 及以上
               </div>
             </el-col>
           </el-row>
@@ -107,7 +107,7 @@
         <div class="fs12-c88 mrg-t8">我们会在核实银行转账信息后为您充值指定金额</div></div>
       </div>
       <div class="company-desc">公司名称：宁波钱咖广告传媒有限公司
-        银行账户：3166 3803 0026 61224
+        银行账户：3166 3803 0026 61224<br>
         开户银行：上海银行白玉支行</div>
       <div slot="footer" class="dialog-footer">
         <el-button class="w70-h32" type="primary" @click="backTo('.')">确 定</el-button>
@@ -206,11 +206,11 @@
 
     .el-tabs--border-card >.el-tabs__content {
       padding: 30px 0 9px 0;
-      width: 660px;
+      width: 669px;
     }
 
     .grid-content {
-      width: 220px;
+      width: 223px;
       line-height: 23px;
       font-size: 13px;
       color: #3A3A3A;
@@ -221,7 +221,7 @@
 
     .bg-purple {
       height: 70px;
-      padding: 12px 55px;
+      padding: 12px 50px;
       background: #F9F9F9;
       box-shadow: inset 0 1px 0 0 #E8E8E8, inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
 

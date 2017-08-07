@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import {
   LW,
-  L60D,
+  L30D,
   L90D,
   URI_LOGOUT,
   URI_DASHBOARD,
@@ -89,7 +89,7 @@ const getters = {
 
   reportTypes: state => ([
     { label: '最新7天', value: LW },
-    { label: '60天', value: L60D },
+    { label: '30天', value: L30D },
     { label: '90天', value: L90D }
   ]),
 

@@ -23,7 +23,7 @@
       <el-form-item prop="password" class="mrg-t47" label="当前密码">
         <el-input v-model="info.password" placeholder="请输入当前密码"></el-input>
       </el-form-item>
-      <el-form-item prop="new_password" label="新的秘密">
+      <el-form-item prop="new_password" label="新的密码">
         <el-input v-model="info.new_password" placeholder="请输入新的密码"></el-input>
       </el-form-item>
       <el-form-item prop="confirm" label="确认密码">
@@ -98,6 +98,10 @@
       let checkNewPassword = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入新的密码'))
+        } else if (value === this.info.password) {
+          callback(new Error('新密码不能与旧密码相同'))
+        } else if (value.trim().length < value.length) {
+          callback(new Error('密码不能包含空格'))
         } else {
           if (this.info.confirm !== '') {
             this.$refs.infoForm.validateField('confirm')
@@ -109,6 +113,8 @@
       let checkConfirm = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再输入一次新的密码'))
+        } else if (value.trim().length < value.length) {
+          callback(new Error('密码不能包含空格'))
         } else if (value !== this.info.new_password) {
           callback(new Error('请确保新密码两次输入一致'))
         } else {

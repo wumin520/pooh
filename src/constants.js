@@ -14,7 +14,7 @@ export const URI_FINANCE_CHARGE_CANCEL = '/v2/api/cancel/'
 
 // Report Types
 export const LW = 'LW' // 最近7天
-export const L60D = 'L60D' // 最近60天
+export const L30D = 'L30D' // 最近30天
 export const L90D = 'L90D' // 最近60天
 
 export const URI_TASK_TO_END = '/v2/api/task/end/' // 任务状态变成 ‘完成’

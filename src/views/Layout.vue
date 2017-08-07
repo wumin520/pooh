@@ -6,7 +6,7 @@
         <el-menu-item index="1" class="logo"></el-menu-item>
 
         <el-submenu index="2" class="pull-right">
-          <template slot="title"><span v-text="username"></span></template>
+          <template slot="title"><span v-text="username" @click="toAccount()"></span></template>
           <el-menu-item index="2-1">退出</el-menu-item>
         </el-submenu>
 
@@ -100,6 +100,10 @@
     },
 
     methods: {
+      toAccount () {
+        this.$router.push('/d/account')
+      },
+
       onClick (key, keyPath) {
         switch (key) {
           case '2-1':
