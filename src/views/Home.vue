@@ -265,6 +265,12 @@
       })
 
       this.drawChart()
+
+      window.addEventListener('resize', this.drawChart)
+    },
+
+    destroyed () {
+      window.removeEventListener('resize', this.drawChart)
     },
 
     methods: {
