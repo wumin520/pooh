@@ -58,57 +58,142 @@
 
     <!-- table -->
     <div class="table-wrapper">
-      <el-table :data="tableData" stripe border style="width: 100%" v-loading="loading" element-loading-text="加载中...">
-        <el-table-column fixed label="广告" min-width="166">
+      <el-table :data="tableData" stripe border style="width: 100%" v-show="columnExpand" v-loading="loading" element-loading-text="加载中...">
+        <el-table-column fixed label="广告" min-width="170">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
               <div class="aui-ellipsis" v-text="scope.row.task" @click="filter(scope.row.appid)"></div>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="开始时间" min-width="152">
+        <el-table-column label="开始时间" min-width="140">
           <template scope="scope">
             <div class="aui-ellipsis" v-text="scope.row.begin_time_str"></div>
           </template>
         </el-table-column>
-        <el-table-column label="结束时间" min-width="152">
+        <el-table-column label="结束时间" min-width="140">
           <template scope="scope">
             <div class="aui-ellipsis" v-text="scope.row.end_time_str"></div>
           </template>
         </el-table-column>
-        <el-table-column label="计划份数" min-width="98">
+        <el-table-column label="计划份数" min-width="91">
           <template scope="scope">
             <div class="aui-ellipsis">{{ scope.row.plan_count | addCommas }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="完成份数" min-width="98">
+        <el-table-column label="完成份数" min-width="91">
           <template scope="scope">
             <div class="aui-ellipsis">{{ scope.row.actual_count | addCommas }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="付费专属" min-width="110">
+        <el-table-column label="付费专属" min-width="90">
           <template scope="scope">
-            <div class="aui-ellipsis">￥ {{ scope.row.zs_done_count | addCommas }}</div>            
+            <div class="aui-ellipsis">￥ {{ scope.row.zs_done_count | addCommas_money }}</div>            
           </template>
         </el-table-column>
-        <el-table-column label="单价" min-width="72">
+        <el-table-column label="单价" min-width="81">
           <template scope="scope">
             <div class="aui-ellipsis">￥ {{ scope.row.unit_price | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="消耗" min-width="108">
+        <el-table-column label="消耗" min-width="81">
           <template scope="scope">
             <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="63" v-if="tableData.length > 0">
+        <el-table-column label="操作" width="320" label-class-name="expand-cloumn">
+          <template scope="scope">
+            <!-- 投放中 ok -->
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:18px" @click="goToEnded(scope.row)">完成</a>
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:18px" @click="addNumber(scope.row)">续总数</a>
+            <!-- 待审核 pending-->
+            <!-- <a class="link-go"  href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-right:6px" @click="checkTask(row)">查看</a>-->
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-right:18px" @click="removeTask(scope.$index, scope.row)">删除</a>
+            <!-- 审核失败 rejected-->
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-right:18px" @click="editTask(scope.row)">编辑</a>
+            <!-- </router-link> -->
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-right:18px" @click="removeTask(scope.$index,scope.row)">删除</a>
+            <!-- 暂停 paused-->
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && scope.row.button[0] == 1 " size="small" type="info"
+            style="margin-right:18px" @click="resumeTask(scope.row)">开启</a>
+            <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'paused' && scope.row.button[0] == 2 " size="small"
+            type="info" style="margin-right:18px">开启</a>
+
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-right:18px" @click="goToEnded(scope.row)">完成</a>
+            <!-- 完成 ended-->
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[0] == 1" size="small" type="info"
+            style="margin-right:18px" @click="readd(scope.row)">续单</a>
+            <!-- </router-link> -->
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[1] == 1" size="small" type="info"
+            style="margin-right:18px" @click="exportIdfa(1, scope.row)">导出IDFA1</a>
+            <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[1] == 2" size="small"
+            type="info" style="margin-right:18px">正在导出IDFA1</a>
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[2] == 1" size="small" type="info"
+            style="margin-right:18px" @click="downloadIdfa(1, scope.row)">下载IDFA1</a>
+
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[3] == 1" size="small" type="info"
+            style="margin-right:18px" @click="exportIdfa(2, scope.row)">导出IDFA2</a>
+            <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[3] == 2" size="small"
+            type="info" style="margin-right:18px">正在导出IDFA2</a>
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[4] == 1" size="small" type="info"
+            style="margin-right:18px" @click="downloadIdfa(2, scope.row)">下载IDFA2</a>
+
+            <!-- common -->
+            <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-right:18px" @click="previewTaskInfo(scope.row)">预览</a>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table :data="tableData" stripe border style="width: 100%" v-show="!columnExpand" v-loading="loading" element-loading-text="加载中...">
+        <el-table-column fixed label="广告" min-width="170">
+          <template scope="scope">
+            <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
+              <div class="aui-ellipsis" v-text="scope.row.task" @click="filter(scope.row.appid)"></div>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="开始时间" min-width="140">
+          <template scope="scope">
+            <div class="aui-ellipsis" v-text="scope.row.begin_time_str"></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="结束时间" min-width="140">
+          <template scope="scope">
+            <div class="aui-ellipsis" v-text="scope.row.end_time_str"></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="计划份数" min-width="91">
+          <template scope="scope">
+            <div class="aui-ellipsis">{{ scope.row.plan_count | addCommas }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="完成份数" min-width="91">
+          <template scope="scope">
+            <div class="aui-ellipsis">{{ scope.row.actual_count | addCommas }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="付费专属" min-width="90">
+          <template scope="scope">
+            <div class="aui-ellipsis">￥ {{ scope.row.zs_done_count | addCommas_money }}</div>            
+          </template>
+        </el-table-column>
+        <el-table-column label="单价" min-width="81">
+          <template scope="scope">
+            <div class="aui-ellipsis">￥ {{ scope.row.unit_price | addCommas_money }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="消耗" min-width="81">
+          <template scope="scope">
+            <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="63" label-class-name="not-expand-cloumn">
           <template scope="scope">
             <div class="opera hover-event">
               <div class="three-dot">...</div>
               <div class="slider-wrap" style="position:absolute;">
                 <!-- 投放中 ok -->
-                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:18px" @click="goToEnded(scope.row)">完成</a>
-                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:18px" @click="addNumber(scope.row)">续总数</a>
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-left:18px" @click="goToEnded(scope.row)">完成</a>
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-left:18px" @click="addNumber(scope.row)">续总数</a>
                 <!-- 待审核 pending-->
                 <!-- <a class="link-go"  href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-right:6px" @click="checkTask(row)">查看</a>-->
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'pending'" size="small" type="info" style="margin-left:18px" @click="removeTask(scope.$index, scope.row)">删除</a>
@@ -118,31 +203,31 @@
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-left:18px" @click="removeTask(scope.$index,scope.row)">删除</a>
                 <!-- 暂停 paused-->
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && scope.row.button[0] == 1 " size="small" type="info"
-                style="margin-right:6px" @click="resumeTask(scope.row)">开启</a>
+                style="margin-left:18px" @click="resumeTask(scope.row)">开启</a>
                 <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'paused' && scope.row.button[0] == 2 " size="small"
                 type="info" style="margin-left:18px">开启</a>
 
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-left:18px" @click="goToEnded(scope.row)">完成</a>
                 <!-- 完成 ended-->
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[0] == 1" size="small" type="info"
-                style="margin-right:18px" @click="readd(scope.row)">续单</a>
+                style="margin-left:18px" @click="readd(scope.row)">续单</a>
                 <!-- </router-link> -->
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[1] == 1" size="small" type="info"
-                style="margin-right:18px" @click="exportIdfa(1, scope.row)">导出IDFA1</a>
+                style="margin-left:18px" @click="exportIdfa(1, scope.row)">导出IDFA1</a>
                 <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[1] == 2" size="small"
-                type="info" style="margin-right:18px">正在导出IDFA1</a>
+                type="info" style="margin-left:18px">正在导出IDFA1</a>
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[2] == 1" size="small" type="info"
-                style="margin-right:18px" @click="downloadIdfa(1, scope.row)">下载IDFA1</a>
+                style="margin-left:18px" @click="downloadIdfa(1, scope.row)">下载IDFA1</a>
 
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[3] == 1" size="small" type="info"
-                style="margin-right:18px" @click="exportIdfa(2, scope.row)">导出IDFA2</a>
+                style="margin-left:18px" @click="exportIdfa(2, scope.row)">导出IDFA2</a>
                 <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[3] == 2" size="small"
-                type="info" style="margin-right:18px">正在导出IDFA2</a>
+                type="info" style="margin-left:18px">正在导出IDFA2</a>
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[4] == 1" size="small" type="info"
-                style="margin-right:18px" @click="downloadIdfa(2, scope.row)">下载IDFA2</a>
+                style="margin-left:18px" @click="downloadIdfa(2, scope.row)">下载IDFA2</a>
 
                 <!-- common -->
-                <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-right:18px" @click="previewTaskInfo(scope.row)">预览</a>
+                <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-left:18px" @click="previewTaskInfo(scope.row)">预览</a>
               </div>
             </div>
           </template>
@@ -257,7 +342,7 @@
 
 
     <!--删除-->
-    <el-dialog title="删除" :show-close="false" v-model="dialogDeleteVisible" custom-class="posi" style="top: 30%;">
+    <el-dialog title="删除" :show-close="false" v-model="dialogDeleteVisible" custom-class="deleDialog" style="top: 30%;">
       <img class="logo-waring" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
       <span class="qk-title">此操作将删除该信息，是否继续？</span>
       <span slot="footer" class="dialog-footer">
@@ -268,26 +353,247 @@
   </div>
 </template>
 <style lang="scss">
+.ad-container {
+  width: 100%;
+  min-width: 1292px;
+  height: 100%;
+  padding: 43px 35px;
+  position: relative;
+
+  .breadcrumb {
+    height: 22px;
+    margin-top: 7px;
+    margin-bottom: 47px;
+    .breadcrumb-item {
+      display: inline-block;
+      float: left;
+      margin-right: 10px;
+      cursor: pointer;
+      .breadcrumb-item-inner {
+        font-family: PingFangSC-Light;
+        font-size: 16px;
+        line-height: 22px;
+        color: #888888;
+      }
+      .breadcrumb-separator {
+        width: 6px;
+        height: 12px;
+        margin-left: 2px;
+        display: inline-block;
+        background-image: url('http://qianka.b0.upaiyun.com/images/a688c7dd7a765df07ec7d9cfab76b68f.png');
+        background-size: 6px 12px;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    }
+    .breadcrumb-item:last-child {
+      cursor: text;
+    }
+  }
+
+  .title {
+    font-family: PingFangSC-Light;
+    font-size: 16px;
+    color: #888888;
+    margin-top: 7px;
+    margin-bottom: 47px;
+
+    .i.el-icon-arrow-right {
+      font-size: 12px;
+      margin: 0 5px 0 5px;
+    }
+  }
+
   .search-wrapper {
+    font-size: 0;
+    position: absolute;
+    right: 35px;
+    top: 43px;
+    height: 36px;
+    box-sizing: border-box;
+
     .el-input .el-input__inner {
+      color: #B5B5B5;
       font-size: 12px;      
       height: 36px;
       border-right: none;
     }
+
     .el-select {
       width: 110px;
     }
+
     .el-form .form-search{
       .el-input {
         width: 200px !important;
       }
     }
+
+    .el-select, .el-form, .el-button {
+      display: inline-block;
+    }
+
+    .searchIOS-btn {
+      font-family: PingFangSC-Regular;
+      width: 54px;
+      padding: 10px;
+      line-height: 14px;
+      font-size: 12px;
+    }
+    .addAd-btn {
+      border-color: #F5A623; 
+      color: #fff;
+      background: #F5A623;
+      width: 110px;
+      font-family: PingFangSC-Regular;
+      padding: 10px;
+      line-height: 14px;
+      font-size: 12px;
+    
+      .add-logo {
+        position: relative;
+        right: 5px;
+      }
+    }
   }
+
   .el-date-range-picker {
     z-index: 10001 !important;
   }
 
-  .posi {
+  .qk-tabs-text {
+    margin-bottom: 5px;
+    .el-tabs__header {
+      width: 100%;
+    }
+  }
+
+  .table-wrapper {
+    width: 100%;
+    margin: 20px 0px;
+
+    .el-table--border .el-table__body-wrapper .el-table__row.el-table__row--striped {
+      box-shadow: none !important;
+    }
+
+    .el-table__body {
+      overflow: hidden;
+    }
+
+    .aui-ellipsis {
+      display: -webkit-box;
+      overflow: hidden;
+      height: 24px;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      word-break: break-all;
+      white-space: normal !important;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+
+    .link-go {
+      font-size: 12px;
+      color: #2c97de;
+      text-decoration: underline;
+      font-family: PingFangSC-Semibold;
+    }
+
+    td[class^=el-table_1_column] {
+      a:last-child {
+        margin-right: 0px !important;
+      }
+
+      .slider-wrap {
+        opacity: 1;
+        font-size: 0;
+        position: absolute;
+        width: 0px;
+        height: 46px;
+        line-height: 46px;
+        left: -238px;
+        top: 0px;
+        padding-left: 0px;
+        overflow: hidden;
+        background: #FCFCFC;
+        box-shadow: inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+        transition: transform .5s;
+        transform: translateX(300px);
+        .el-button {
+          height: 46px;
+        }
+      }
+
+      &:hover .slider-wrap{
+        opacity: 1;
+        width: 300px;
+        transform: translateX(1px);
+      }
+
+      .three-dot {
+        font-size: 13px;
+        color: #4A90E2;
+        letter-spacing: 0;
+        text-align: center;
+      }
+    }
+
+  }
+
+  .previewDialog {
+    .preview-content {
+      .content-line {
+        position: relative;
+        /*width: 549px;*/
+        height: 46px;
+        font-family: PingFangSC-Semibold;
+        font-size: 13px;
+        color: #3A3A3A;
+        line-height: 46px;
+        // border-bottom: 1px solid rgba(153, 153, 153, 0.14);
+        .left {
+          width: 122px;
+          height: 100%;
+          text-align: center;
+          position: absolute;
+          left: 0;
+          background: #F9F9F9;
+          box-shadow: inset 0 0px 0 0 #E8E8E8, inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+        }
+        .right {
+          width: 100%;
+          height: 100%;
+          padding-left: 120px + 20px;
+          padding-right: 20px;
+          box-shadow: inset 0 0px 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+        }
+      }
+      .content-line.keyword-line:first-child {
+        border-top: 1px solid #E8E8E8;
+      }
+
+      .content-line.zs_line:first-child {
+        border-top: 1px solid #E8E8E8;        
+      }
+
+      .content-line.zs_line {
+        margin-bottom: 0px !important;
+      }
+      .content-line:nth-child(3),
+      .content-line:nth-child(6) {
+        margin-bottom: 10px;
+      }
+      .content-line:last-child {
+        margin-bottom: 10px;
+      }
+
+      .content-line.keyword-line:nth-child(3) {
+        margin-bottom: 0px;
+      }
+    }
+  }
+
+  .deleDialog {
     width: 390px;
     .el-dialog__body {
       padding-left: 45px;
@@ -377,6 +683,7 @@
       }
     }
   }
+
   .previewDialog {
     .el-dialog {
       width: 662px;
@@ -394,239 +701,6 @@
       }
       .el-dialog__body {
         padding: 25px 0px 0px 0px;
-      }
-    }
-  }
-</style>
-<style lang="scss" scoped>
-.ad-container {
-  width: 100%;
-  min-width: 1292px;
-  height: 100%;
-  padding: 43px 35px;
-  position: relative;
-
-  .breadcrumb {
-    height: 22px;
-    margin-top: 7px;
-    margin-bottom: 47px;
-    .breadcrumb-item {
-      display: inline-block;
-      float: left;
-      margin-right: 10px;
-      cursor: pointer;
-      .breadcrumb-item-inner {
-        font-family: PingFangSC-Light;
-        font-size: 16px;
-        line-height: 22px;
-        color: #888888;
-      }
-      .breadcrumb-separator {
-        width: 6px;
-        height: 12px;
-        margin-left: 2px;
-        display: inline-block;
-        background-image: url('http://qianka.b0.upaiyun.com/images/a688c7dd7a765df07ec7d9cfab76b68f.png');
-        background-size: 6px 12px;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-    }
-    .breadcrumb-item:last-child {
-      cursor: text;
-    }
-  }
-
-  .title {
-    font-family: PingFangSC-Light;
-    font-size: 16px;
-    color: #888888;
-    margin-top: 7px;
-    margin-bottom: 47px;
-
-    .i.el-icon-arrow-right {
-      font-size: 12px;
-      margin: 0 5px 0 5px;
-    }
-  };
-
-  .search-wrapper {
-    font-size: 0;
-    position: absolute;
-    right: 35px;
-    top: 43px;
-    height: 36px;
-    box-sizing: border-box;
-
-    .el-select {
-      // width: 110px;
-    }
-
-    .el-form {
-      // width: 200px;
-    }
-
-    .el-select, .el-form, .el-button {
-      display: inline-block;
-    }
-
-    .searchIOS-btn {
-      font-family: PingFangSC-Regular;
-      width: 54px;
-      padding: 10px;
-      line-height: 14px;
-      font-size: 12px;
-    }
-    .addAd-btn {
-      border-color: #F5A623; 
-      color: #fff;
-      background: #F5A623;
-      width: 110px;
-      font-family: PingFangSC-Regular;
-      padding: 10px;
-      line-height: 14px;
-      font-size: 12px;
-    
-      .add-logo {
-        position: relative;
-        right: 5px;
-      }
-    }
-  }
-
-  .qk-tabs-text {
-    margin-bottom: 5px;
-    .el-tabs__header {
-      width: 100%;
-    }
-  }
-
-  .table-wrapper {
-    width: 100%;
-    margin: 20px 0px;
-
-    .aui-ellipsis {
-      display: -webkit-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-wrap: break-word;
-      word-break: break-all;
-      white-space: normal !important;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-    }
-
-    .link-go {
-      font-size: 12px;
-      color: #2c97de;
-      text-decoration: underline;
-      font-family: PingFangSC-Semibold;
-      margin-right: 6px;
-    }
-
-    td[class^=el-table_1_column] {
-      .slider-wrap {
-        opacity: 1;
-        font-size: 0;
-        position: absolute;
-        min-width: 300px;
-        height: 46px;
-        line-height: 46px;
-        left: -238px;
-        top: 0px;
-        overflow: hidden;
-        padding-left: 18px;
-        background: #FCFCFC;
-        box-shadow: inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
-        transition: transform .5s;
-        transform: translateX(300px);
-        .el-button {
-          height: 46px;
-        }
-      }
-
-      &:hover .slider-wrap{
-        opacity: 1;
-        width: 300px;
-        transform: translateX(1px);
-      }
-
-      .three-dot {
-        font-size: 13px;
-        color: #4A90E2;
-        letter-spacing: 0;
-        text-align: center;
-      }
-    }
-
-  }
-
-  .previewDialog {
-    .preview-content {
-      .content-line {
-        position: relative;
-        /*width: 549px;*/
-        height: 46px;
-        font-family: PingFangSC-Semibold;
-        font-size: 13px;
-        color: #3A3A3A;
-        line-height: 46px;
-        // border-bottom: 1px solid rgba(153, 153, 153, 0.14);
-        .left {
-          width: 122px;
-          height: 100%;
-          text-align: center;
-          position: absolute;
-          left: 0;
-          background: #F9F9F9;
-          box-shadow: inset 0 0px 0 0 #E8E8E8, inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
-        }
-        .right {
-          width: 100%;
-          height: 100%;
-          padding-left: 120px + 20px;
-          padding-right: 20px;
-          box-shadow: inset 0 0px 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
-        }
-      }
-      .content-line.keyword-line:first-child {
-        border-top: 1px solid #E8E8E8;
-      }
-
-      .content-line.zs_line:first-child {
-        border-top: 1px solid #E8E8E8;        
-      }
-
-      .content-line.zs_line {
-        margin-bottom: 0px !important;
-      }
-        
-      // .content-line:nth-child(odd) {
-      //   .left {
-      //     background-color: #E8EDF2;
-      //   }
-      //   .right {
-      //     background-color: #F3F6FA;
-      //   }
-      // }
-      // .content-line:nth-child(even) {
-      //   .left {
-      //     background-color: #F5F6F6;
-      //   }
-      //   .right {
-      //     background-color: #FFFFFF;
-      //   }
-      // }
-      .content-line:nth-child(3),
-      .content-line:nth-child(6) {
-        margin-bottom: 10px;
-      }
-      .content-line:last-child {
-        margin-bottom: 10px;
-      }
-
-      .content-line.keyword-line:nth-child(3) {
-        margin-bottom: 0px;
       }
     }
   }
@@ -682,7 +756,8 @@
         },
         dialogPreviewVisible: false, // 预览弹层 显示开关
         dialogDeleteVisible: false, // 确认删除任务弹层 显示开关
-        deleting: null // 要删除的任务信息 json
+        deleting: null, // 要删除的任务信息 json
+        columnExpand: true // 是否展开列
       }
     },
 
@@ -728,6 +803,13 @@
     },
 
     mounted () {
+      // 监听屏幕大于1440时 表格的‘操作’展开
+      var screenWidth = document.body.clientWidth
+      screenWidth > 1440 ? self.columnExpand = true : self.columnExpand = false
+      window.onresize = function () {
+        screenWidth > 1440 ? self.columnExpand = true : self.columnExpand = false
+      }
+
       var type = this.task_status = this.$route.params.status.split('&')[0]
       this.$store.dispatch('updateIndex', 'dash_ad', { root: true })
 

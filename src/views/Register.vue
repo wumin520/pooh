@@ -11,7 +11,7 @@
                 <el-form-item class="qk-form-item" label="" prop="username">
                   <el-input class="qk-input__border-bottom" v-model="form.username" placeholder="平台账号，请输入电子邮箱"></el-input>
                 </el-form-item>
-                <el-form-item class="qk-form-item"  label="" prop="displayName">
+                <el-form-item class="qk-form-item"  label="" prop="displayName" style="margin-bottom: 65px;">
                   <el-input class="qk-input__border-bottom"  v-model="form.displayName" placeholder="姓名/公司"></el-input>
                 </el-form-item>
 
@@ -81,6 +81,7 @@
                 }
                 .btn-register {
                   width: 100%;
+                  height: 42px;
                   margin-top: 13px;
                 }
               }

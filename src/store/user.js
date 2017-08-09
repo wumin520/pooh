@@ -148,13 +148,20 @@ const actions = {
       $router.push('/login')
     })
     .catch(err => {
-      Message(err.message)
+      Message(err.err_msg)
     })
   },
 
   getDashboardData ({ commit }) {
     return fetch(URI_DASHBOARD, {
       credentials: 'same-origin'
+    })
+    .then(res => {
+      if (res.status === 401) {
+        $router.push('/login')
+      } else {
+        return res
+      }
     })
     .then(res => res.json())
     .then(data => {
