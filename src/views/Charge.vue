@@ -472,7 +472,7 @@
             }).catch((err) => {
               Message({
                 type: 'error',
-                message: err.message
+                message: err.err_msg
               })
             })
           }

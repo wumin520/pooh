@@ -12,20 +12,23 @@
     </div>
 
     <div class="search-wrapper">
-      <el-select class="select-search" v-model="searchSelect" slot="prepend" @change="searchChange(searchSelect)">
-        <el-option label="按时间搜索" value="time"></el-option>
-        <el-option label="按标题搜索" value="title"></el-option>
-      </el-select>
-      <el-form :model="searchForm">
-        <div class="block form-search">
-          <el-date-picker v-show="searchSelect === 'time'" type="daterange" align="right" v-model="dateWeekTime" placeholder="选择日期范围" :picker-options="pickerOptions2"
-          style="width:426px;" format="yyyy/MM/dd">
-          </el-date-picker>
-          <el-input style="width: 425.99px" v-show="searchSelect === 'title'" v-model="app_name" placeholder="请输入标题"></el-input>
-        </div>
-      </el-form>
-      <el-button class="searchIOS-btn" type="primary" @click="searchTask()">搜 索</el-button>
-      <el-button class="addAd-btn" @click="toAddAd()"><img class="add-logo" src="//qianka.b0.upaiyun.com/images/62ebcde46a8f43cedce613491089a1b0.png" alt=""> 添加广告</el-button>
+      <div class="input-wrapper">
+        <div class="line" style="position:absolute;width:1px;height:36px;background-color:#ddd;z-index:1;left:110px;"></div>      
+        <el-select class="select-search" v-model="searchSelect" slot="prepend" @change="searchChange(searchSelect)">
+          <el-option label="按时间搜索" value="time"></el-option>
+          <el-option label="按标题搜索" value="title"></el-option>
+        </el-select>
+        <el-form :model="searchForm">
+          <div class="block form-search">
+            <el-date-picker v-show="searchSelect === 'time'" type="daterange" align="right" v-model="dateWeekTime" placeholder="选择日期范围" :picker-options="pickerOptions2"
+            style="width:426px;" format="yyyy/MM/dd">
+            </el-date-picker>
+            <el-input style="width: 425.99px" v-show="searchSelect === 'title'" v-model="app_name" placeholder="请输入标题"></el-input>
+          </div>
+        </el-form>
+      </div>
+      <el-button class="searchIOS-btn" type="primary" @click="searchTask()">搜索</el-button>
+      <el-button class="addAd-btn" @click="toAddAd()"><img class="add-logo" src="//qianka.b0.upaiyun.com/images/62ebcde46a8f43cedce613491089a1b0.png" alt=""> 添加新广告</el-button>
     </div>
     
     <!-- tabs -->
@@ -412,44 +415,58 @@
     height: 36px;
     box-sizing: border-box;
 
-    .el-input .el-input__inner {
-      color: #B5B5B5;
-      font-size: 12px;      
-      height: 36px;
-      border-right: none;
-    }
+    .input-wrapper {
+      width: 310px;
+      display: inline-block;
+      &:hover {
+        .line {
+          background-color: #B5B5B5 !important;
+        }
+      }
 
-    .el-select {
-      width: 110px;
-    }
+      .el-input .el-input__inner {
+        color: #B5B5B5;
+        font-size: 12px;      
+        height: 36px;
+        border-right: none;
+      }
 
-    .el-form .form-search{
-      .el-input {
-        width: 200px !important;
+      .el-select {
+        width: 110px;
+      }
+
+      .el-form .form-search{
+        .el-input {
+          width: 200px !important;
+        }
+      }
+
+      .el-select, .el-form, .el-button {
+        display: inline-block;
       }
     }
 
-    .el-select, .el-form, .el-button {
-      display: inline-block;
-    }
-
     .searchIOS-btn {
-      font-family: PingFangSC-Regular;
       width: 54px;
       padding: 10px;
       line-height: 14px;
       font-size: 12px;
+      span {
+        font-family: PingFangSC-Regular !important;
+      }
     }
     .addAd-btn {
       border-color: #F5A623; 
       color: #fff;
       background: #F5A623;
       width: 110px;
-      font-family: PingFangSC-Regular;
       padding: 10px;
       line-height: 14px;
       font-size: 12px;
-    
+
+      span {
+        font-family: PingFangSC-Regular !important;        
+      }
       .add-logo {
         position: relative;
         right: 5px;
@@ -481,6 +498,7 @@
     }
 
     .aui-ellipsis {
+      font-family: PingFangSC-Regular;
       display: -webkit-box;
       overflow: hidden;
       height: 24px;
@@ -493,10 +511,10 @@
     }
 
     .link-go {
-      font-size: 12px;
-      color: #2c97de;
+      font-size: 13px;
+      color: #4A90E2;
       text-decoration: underline;
-      font-family: PingFangSC-Semibold;
+      font-family: PingFangSC-Regular;
     }
 
     td[class^=el-table_1_column] {
