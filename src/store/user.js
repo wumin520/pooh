@@ -162,6 +162,9 @@ const actions = {
       if (payload) commit(types.SYNC_DASHBOARD, payload)
       return data
     })
+    .catch(err => {
+      console.log(err)
+    })
   },
 
   getChartData ({ commit }, payload) { // 按天数、按指标类型取图表数据
