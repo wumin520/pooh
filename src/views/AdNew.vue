@@ -663,7 +663,7 @@
               this.submitButtonDisable = false
               this.fullscreenLoading = false
               setTimeout(() => {
-                this.$router.push('/d/ad/ios/pending')
+                this.$router.push('/d/ad/ios/ok')
               })
             }, 500)
           })
