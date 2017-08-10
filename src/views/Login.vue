@@ -177,8 +177,7 @@
         }).catch(err => {
           this.$message({
             message: err.err_msg,
-            iconClass: 'qk-warning',
-            duration: 3000000
+            iconClass: 'qk-warning'
           })
         })
       }

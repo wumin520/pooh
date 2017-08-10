@@ -104,7 +104,7 @@
             <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="320" label-class-name="expand-cloumn">
+        <el-table-column label="操作" class-name="custom-column" width="320" label-class-name="expand-cloumn">
           <template scope="scope">
             <!-- 投放中 ok -->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:18px" @click="goToEnded(scope.row)">完成</a>
@@ -510,6 +510,10 @@
       -webkit-box-orient: vertical;
     }
 
+    .custom-column {
+      font-size: 0px;
+    }
+
     .link-go {
       font-size: 13px;
       color: #4A90E2;
@@ -821,12 +825,9 @@
     },
 
     mounted () {
-      // 监听屏幕大于1440时 表格的‘操作’展开
       var screenWidth = document.body.clientWidth
-      screenWidth > 1440 ? self.columnExpand = true : self.columnExpand = false
-      window.onresize = function () {
-        screenWidth > 1440 ? self.columnExpand = true : self.columnExpand = false
-      }
+      screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
+      window.addEventListener('resize', this.tableResize)
 
       var type = this.task_status = this.$route.params.status.split('&')[0]
       this.$store.dispatch('updateIndex', 'dash_ad', { root: true })
@@ -854,6 +855,10 @@
       this.getAdvertisement()
     },
 
+    destroyed () {
+      window.removeEventListener('resize', this.tableResize)
+    },
+
     methods: {
       ...mapActions('ad', [
         'searchAdTask',
@@ -864,6 +869,12 @@
         'exportIDFA',
         'resume'
       ]),
+      // 监听屏幕大于1440时 表格的‘操作’展开
+      tableResize () {
+        let screenWidth = document.body.clientWidth
+        screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
+        console.log(document.body.clientWidth, this.columnExpand)
+      },
       // 搜索功能 切换时置空
       searchChange (select) {
         // console.log(select)
