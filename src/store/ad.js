@@ -106,9 +106,11 @@ const actions = {
         if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
 
         if (config.currentStatus === payload.status) {
-          if (payload.tasks.length === 0) {
-            document.getElementsByClassName('el-table__fixed')[0].style.height = '47px'
-          }
+          setTimeout(function () {
+            if (payload.tasks.length === 0) {
+              document.getElementsByClassName('el-table__fixed')[0].style.height = '47px'
+            }
+          }, 0)
           commit(types.SET_TABLE_DATA, payload.tasks)
           let statcnt = {
             taskStatcnt: payload.task_statcnt,
