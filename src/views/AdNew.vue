@@ -643,9 +643,11 @@
 
         let params = ''
         this.$route.name === 'dash_ad_edit' ? params = this.$route.params.taskId : (this.$route.name === 'dash_ad_renew' ? params = this.$route.params.taskId : params = '')
+
         let config = {
           params: params,
-          postData: postData
+          postData: postData,
+          routeName: this.$route.name
         }
         this.postForm(config)
           .then(res => {

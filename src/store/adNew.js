@@ -224,9 +224,7 @@ const actions = {
 
   postForm ({commit}, config) {
     let path = URI_POST_TASK
-    if (config.params) {
-      path = URI_POST_TASK + '/' + config.params
-    }
+    config.routeName === 'dash_ad_edit' ? path = '/v2/api/task/' + config.params : (config.routeName === 'dash_ad_renew' ? path = '/v2/api/task/copy/' + config.params : path = '/v2/api/task')
     return api(path, {method: 'post', special: true, body: config.postData})
       .then(res => res && res.payload)
       .then(payload => {
