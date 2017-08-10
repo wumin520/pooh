@@ -12,20 +12,23 @@
     </div>
 
     <div class="search-wrapper">
-      <el-select class="select-search" v-model="searchSelect" slot="prepend" @change="searchChange(searchSelect)">
-        <el-option label="按时间搜索" value="time"></el-option>
-        <el-option label="按标题搜索" value="title"></el-option>
-      </el-select>
-      <el-form :model="searchForm">
-        <div class="block form-search">
-          <el-date-picker v-show="searchSelect === 'time'" type="daterange" align="right" v-model="dateWeekTime" placeholder="选择日期范围" :picker-options="pickerOptions2"
-          style="width:426px;" format="yyyy/MM/dd">
-          </el-date-picker>
-          <el-input style="width: 425.99px" v-show="searchSelect === 'title'" v-model="app_name" placeholder="请输入标题"></el-input>
-        </div>
-      </el-form>
-      <el-button class="searchIOS-btn" type="primary" @click="searchTask()">搜 索</el-button>
-      <el-button class="addAd-btn" @click="toAddAd()"><img class="add-logo" src="//qianka.b0.upaiyun.com/images/62ebcde46a8f43cedce613491089a1b0.png" alt=""> 添加广告</el-button>
+      <div class="input-wrapper">
+        <div class="line" style="position:absolute;width:1px;height:36px;background-color:#ddd;z-index:1;left:110px;"></div>      
+        <el-select class="select-search" v-model="searchSelect" slot="prepend" @change="searchChange(searchSelect)">
+          <el-option label="按时间搜索" value="time"></el-option>
+          <el-option label="按标题搜索" value="title"></el-option>
+        </el-select>
+        <el-form :model="searchForm">
+          <div class="block form-search">
+            <el-date-picker v-show="searchSelect === 'time'" type="daterange" align="right" v-model="dateWeekTime" placeholder="选择日期范围" :picker-options="pickerOptions2"
+            style="width:426px;" format="yyyy/MM/dd">
+            </el-date-picker>
+            <el-input style="width: 425.99px" v-show="searchSelect === 'title'" v-model="app_name" placeholder="请输入标题"></el-input>
+          </div>
+        </el-form>
+      </div>
+      <el-button class="searchIOS-btn" type="primary" @click="searchTask()">搜索</el-button>
+      <el-button class="addAd-btn" @click="toAddAd()"><img class="add-logo" src="//qianka.b0.upaiyun.com/images/62ebcde46a8f43cedce613491089a1b0.png" alt=""> 添加新广告</el-button>
     </div>
     
     <!-- tabs -->
@@ -101,7 +104,7 @@
             <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="320" label-class-name="expand-cloumn">
+        <el-table-column label="操作" class-name="custom-column" width="320" label-class-name="expand-cloumn">
           <template scope="scope">
             <!-- 投放中 ok -->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:18px" @click="goToEnded(scope.row)">完成</a>
@@ -249,7 +252,7 @@
     <el-dialog title='广告预览' v-model="dialogPreviewVisible" class="el-dialog__wrapper previewDialog">
       <div class="preview-content" id="preview-content">
         <div class="content-line" style="border-top: 1px solid #E8E8E8;">
-          <div class="left">广告标题</div>
+          <div class="left">应用标题</div>
           <div class="right"  v-text="previewForm.title"></div>
         </div>
         <div class="content-line">
@@ -268,11 +271,11 @@
 
         <div class="content-line" style="border-top: 1px solid #E8E8E8;">
           <div class="left" >开始时间</div>
-          <div class="right"  v-text="previewForm.begin_time"></div>
+          <div class="right">{{ previewForm.begin_time.replace(/-/g, '/') }}</div>
         </div>
         <div class="content-line">
           <div class="left" >结束时间</div>
-          <div class="right"  v-text="previewForm.end_time"></div>
+          <div class="right">{{ previewForm.end_time.replace(/-/g, '/') }}</div>
         </div>
         <div class="content-line">
           <div class="left" >计划份数</div>
@@ -320,7 +323,7 @@
             <div class="left"  v-if="index == 0">专属任务</div>
             <div class="left" v-if="index > 0"></div>
             <div class="right"  v-if="previewForm.zs_task_needed == 0">-</div>
-            <div class="right"  v-if="previewForm.zs_task_needed == 1">第 {{zs.the_day}} 天 &nbsp;&nbsp;{{zs.univalent == 0 ? ' 免费' : '￥' + zs.univalent}}</div>
+            <div class="right"  v-if="previewForm.zs_task_needed == 1">第 {{zs.the_day}} 天 &nbsp;&nbsp;{{zs.univalent == 0 ? ' 免费' : '￥' + zs.univalent.toFixed(2)}}</div>
           </div>
         </div>
       </div>
@@ -412,44 +415,58 @@
     height: 36px;
     box-sizing: border-box;
 
-    .el-input .el-input__inner {
-      color: #B5B5B5;
-      font-size: 12px;      
-      height: 36px;
-      border-right: none;
-    }
+    .input-wrapper {
+      width: 310px;
+      display: inline-block;
+      &:hover {
+        .line {
+          background-color: #B5B5B5 !important;
+        }
+      }
 
-    .el-select {
-      width: 110px;
-    }
+      .el-input .el-input__inner {
+        color: #B5B5B5;
+        font-size: 12px;      
+        height: 36px;
+        border-right: none;
+      }
 
-    .el-form .form-search{
-      .el-input {
-        width: 200px !important;
+      .el-select {
+        width: 110px;
+      }
+
+      .el-form .form-search{
+        .el-input {
+          width: 200px !important;
+        }
+      }
+
+      .el-select, .el-form, .el-button {
+        display: inline-block;
       }
     }
 
-    .el-select, .el-form, .el-button {
-      display: inline-block;
-    }
-
     .searchIOS-btn {
-      font-family: PingFangSC-Regular;
       width: 54px;
       padding: 10px;
       line-height: 14px;
       font-size: 12px;
+      span {
+        font-family: PingFangSC-Regular !important;
+      }
     }
     .addAd-btn {
       border-color: #F5A623; 
       color: #fff;
       background: #F5A623;
       width: 110px;
-      font-family: PingFangSC-Regular;
       padding: 10px;
       line-height: 14px;
       font-size: 12px;
-    
+
+      span {
+        font-family: PingFangSC-Regular !important;        
+      }
       .add-logo {
         position: relative;
         right: 5px;
@@ -481,6 +498,7 @@
     }
 
     .aui-ellipsis {
+      font-family: PingFangSC-Regular;
       display: -webkit-box;
       overflow: hidden;
       height: 24px;
@@ -492,11 +510,15 @@
       -webkit-box-orient: vertical;
     }
 
+    .custom-column {
+      font-size: 0px;
+    }
+
     .link-go {
-      font-size: 12px;
-      color: #2c97de;
+      font-size: 13px;
+      color: #4A90E2;
       text-decoration: underline;
-      font-family: PingFangSC-Semibold;
+      font-family: PingFangSC-Regular;
     }
 
     td[class^=el-table_1_column] {
@@ -803,12 +825,9 @@
     },
 
     mounted () {
-      // 监听屏幕大于1440时 表格的‘操作’展开
       var screenWidth = document.body.clientWidth
-      screenWidth > 1440 ? self.columnExpand = true : self.columnExpand = false
-      window.onresize = function () {
-        screenWidth > 1440 ? self.columnExpand = true : self.columnExpand = false
-      }
+      screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
+      window.addEventListener('resize', this.tableResize)
 
       var type = this.task_status = this.$route.params.status.split('&')[0]
       this.$store.dispatch('updateIndex', 'dash_ad', { root: true })
@@ -836,6 +855,10 @@
       this.getAdvertisement()
     },
 
+    destroyed () {
+      window.removeEventListener('resize', this.tableResize)
+    },
+
     methods: {
       ...mapActions('ad', [
         'searchAdTask',
@@ -846,6 +869,12 @@
         'exportIDFA',
         'resume'
       ]),
+      // 监听屏幕大于1440时 表格的‘操作’展开
+      tableResize () {
+        let screenWidth = document.body.clientWidth
+        screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
+        console.log(document.body.clientWidth, this.columnExpand)
+      },
       // 搜索功能 切换时置空
       searchChange (select) {
         // console.log(select)

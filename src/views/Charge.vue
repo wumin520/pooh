@@ -53,7 +53,7 @@
               </div>
             </el-col>
           </el-row>
-          <div class="fs16-c88 mrg-t60 mrg-b19">第一步：在线提交付款信息</div>
+          <div class="step fs16-c88 mrg-t60 mrg-b19">第一步：在线提交付款信息</div>
           <el-form ref="form" :model="info" :rules="rules">
             <el-form-item prop="amount" class="w214" label="充值金额">
               <el-input v-model="info.amount" placeholder="请输入充值金额"></el-input>元
@@ -72,16 +72,16 @@
             </el-form-item>
             <!--<template>-->
               <div v-if="info.invoice_status == 1">
-              <el-form-item prop="invoice_title" label="发票抬头">
+              <el-form-item prop="invoice_title" class="w660" label="发票抬头">
                 <el-input v-model="info.invoice_title" placeholder="请输入发票抬头"></el-input>
               </el-form-item>
-              <el-form-item prop="invoice_contact_name" label="收件人">
+              <el-form-item prop="invoice_contact_name" class="w660" label="收件人">
                 <el-input v-model="info.invoice_contact_name" placeholder="请输入收件人"></el-input>
               </el-form-item>
-              <el-form-item prop="invoice_contact_phone" label="联系电话">
+              <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话">
                 <el-input v-model="info.invoice_contact_phone" placeholder="请输入联系电话"></el-input>
               </el-form-item>
-              <el-form-item prop="invoice_contact_address" label="快递地址">
+              <el-form-item prop="invoice_contact_address" class="w660" label="快递地址">
                 <el-input v-model="info.invoice_contact_address" placeholder="请输入快递地址"></el-input>
               </el-form-item>
               </div>
@@ -90,7 +90,7 @@
               <el-input v-model="info.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
             </el-form-item>
           </el-form>
-          <div class="fs16-c88 mrg-b30">第二步：请将付款款项转入以下官方账户</div>
+          <div class="step fs16-c88 mrg-b30">第二步：请将付款款项转入以下官方账户</div>
           <div><img src="//qianka.b0.upaiyun.com/images/c43051bef6427e2a590022ff1220b22c.png"/></div>
           <div><el-button @click="submitForm('form')" class="mrg-t40" type="primary">提交</el-button></div>
         </div>
@@ -110,7 +110,7 @@
         银行账户：3166 3803 0026 61224<br>
         开户银行：上海银行白玉支行</div>
       <div slot="footer" class="dialog-footer">
-        <el-button class="w70-h32" type="primary" @click="backTo('.')">确 定</el-button>
+        <el-button class="w70-h32" type="primary" @click="backTo('.')">确认</el-button>
       </div>
     </el-dialog>
   </div>
@@ -148,6 +148,13 @@
         cursor: text;
       }
     }
+    .step {
+      font-family: PingFangSC-Light;
+    }
+
+    .w660 {
+      width: 660px;
+    }
 
     .fs13-c3a {
       font-size: 13px;
@@ -158,6 +165,10 @@
       font-size: 16px;
       color: #888888;
       letter-spacing: 0;
+    }
+
+    .el-radio-group .el-radio-button__inner {
+      font-family: 'element-icons' !important;
     }
 
     .el-tabs {
@@ -472,7 +483,7 @@
             }).catch((err) => {
               Message({
                 type: 'error',
-                message: err.message
+                message: err.err_msg
               })
             })
           }

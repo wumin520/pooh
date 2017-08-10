@@ -90,9 +90,9 @@
           </el-row>
         </template>
       </el-form-item>
-      <el-form-item class="add-keyword-item">
-        <el-button type="text" icon="plus" @click="addKeyWords">添加关键词</el-button>
-      </el-form-item>
+      <div class="add-keyword-item" @click="addKeyWords()">
+        <el-button type="text" icon="plus">添加关键词</el-button>
+      </div>
 
       <!-- 应用价格 免费、付费-->
       <el-form-item prop="appstore_type" class="qk-form-item">
@@ -260,6 +260,7 @@
     }
 
     .icon-remove {
+      cursor: pointer;
       display: inline-block;
       width: 18px;
       height: 18px;
@@ -347,11 +348,13 @@
       }
 
       .icon-remove {
+        cursor: pointer;
         margin-left: 16px;
       }
     }
 
     .add-zs-task {
+      cursor: pointer;
       width: 206px;
       border: 1px dashed #dddddd;
       font-size: 13px;
@@ -398,6 +401,7 @@
   }
 
   .add-keyword-item {
+    cursor: pointer;
     width: 380px;
     height: 40px;
     border: 1px dashed #E9E9E9;
@@ -499,13 +503,19 @@
       // 续单、编辑、添加 的验证
       validForm () {
         if (this.adForm.title.length > 50) {
-          this.$message('应用标题不能超过50字符')
+          this.$message({
+            message: '应用标题不能超过50字符',
+            iconClass: 'qk-warning'
+          })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
           return false
         }
         if (this.adForm.download_url.length > 100) {
-          this.$message('iTunes地址不能超过100字符')
+          this.$message({
+            message: 'iTunes地址不能超过100字符',
+            iconClass: 'qk-warning'
+          })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
           return false
@@ -521,14 +531,20 @@
         }
 
         if (!this.adForm.begin_time_time) {
-          this.$message('请选择开始时间')
+          this.$message({
+            message: '请选择开始时间',
+            iconClass: 'qk-warning'
+          })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
           return false
         }
 
         if (!this.adForm.end_time_time) {
-          this.$message('请选择结束时间')
+          this.$message({
+            message: '请选择结束时间',
+            iconClass: 'qk-warning'
+          })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
           return false
@@ -536,7 +552,10 @@
         try {
           bt = bt.substr(0, 10) + ' ' + util.formatTime(this.adForm.begin_time_time.getTime() / 1000, 'HH:mm').substr(11)
         } catch (e) {
-          this.$message('请选择开始时间')
+          this.$message({
+            message: '请选择开始时间',
+            iconClass: 'qk-warning'
+          })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
           return false
@@ -544,26 +563,38 @@
         try {
           et = et.substr(0, 10) + ' ' + util.formatTime(this.adForm.end_time_time.getTime() / 1000, 'HH:mm').substr(11)
         } catch (e) {
-          this.$message('请选择结束时间')
+          this.$message({
+            message: '请选择结束时间',
+            iconClass: 'qk-warning'
+          })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
           return false
         }
 
         if (new Date(bt.replace(/-/g, '/')).getTime() < new Date().getTime()) {
-          this.$message('开始时间不得小于当前时间')
+          this.$message({
+            message: '开始时间不得小于当前时间',
+            iconClass: 'qk-warning'
+          })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
           return false
         } else if (new Date(bt.replace(/-/g, '/')).getTime() > new Date(et).getTime()) {
-          this.$message('结束时间不得小于开始时间')
+          this.$message({
+            message: '结束时间不得小于开始时间',
+            iconClass: 'qk-warning'
+          })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
           return false
         }
 
         if (this.adForm.download_url === this.adForm.click_notify_url) {
-          this.$message('跳转链接不可与iTunes地址相同')
+          this.$message({
+            message: '跳转链接不可与iTunes地址相同',
+            iconClass: 'qk-warning'
+          })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
           return false
@@ -620,7 +651,10 @@
           .then(res => {
             console.log('post', res)
             if (this.$route.name === 'dash_ad_renew') {
-              this.$message('续单成功！')
+              this.$message({
+                message: '续单成功！',
+                iconClass: 'qk-warning'
+              })
             }
             //  ？TODO ？ 什么作用?
             postData.platform === 1 ? postData.platform = '仅 iPhone' : (postData.platform === 2 ? postData.platform = '仅 iPad' : postData.platform = '两者都是')
@@ -629,14 +663,17 @@
               this.submitButtonDisable = false
               this.fullscreenLoading = false
               setTimeout(() => {
-                this.$router.push('/d/ad/ios/pending')
+                this.$router.push('/d/ad/ios/ok')
               })
             }, 500)
           })
           .catch((e) => {
             this.submitButtonDisable = false
             this.fullscreenLoading = false
-            this.$message(e.err_msg)
+            this.$message({
+              message: e.err_msg,
+              iconClass: 'qk-warning'
+            })
           })
       },
 
@@ -652,6 +689,7 @@
 
       // 添加专属任务
       addZS () {
+        console.log('addZS')
         this.addZSLists()
       },
 

@@ -8,7 +8,34 @@
     </div>
     <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
 
-    <el-table :data="payments" stripe border class="table-wrapper" style="width: 100%;">
+    <el-table v-show="columnExpand" :data="payments" tripe border class="table-wrapper" style="width: 100%;">
+      <el-table-column fixed prop="date" label="日期" min-width="152">
+      </el-table-column>
+       <el-table-column prop="types" label="广告主类型" min-width="98">
+      </el-table-column>
+       <el-table-column prop="drawee" label="付款人" min-width="206">
+      </el-table-column>
+       <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
+      </el-table-column>
+       <el-table-column prop="operation_number" label="操作编号" min-width="110">
+      </el-table-column>
+       <el-table-column prop="new_finance_status" label="状态" min-width="98">
+      </el-table-column>
+       <el-table-column prop="settlement_amount" label="付款金额" min-width="118">
+        <template scope="scope">
+          <div>￥ {{ scope.row.settlement_amount | addCommas_money }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="actual_arrival_amount" label="充值" min-width="118">
+      </el-table-column>
+      <el-table-column class-name="custom-column" label="操作" min-width="106">
+        <template scope="scope" class="oprate-column">
+          <a style="margin-right: 18px;" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">撤销</a>
+          <a class="link-go" type="text" @click="charge()">充值</a>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-table v-show="!columnExpand" :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column fixed prop="date" label="日期" min-width="152">
       </el-table-column>
        <el-table-column prop="types" label="广告主类型" min-width="98">
@@ -134,6 +161,18 @@
       text-align: center;
     }
 
+    .custom-column {
+      font-size: 0px;
+    }
+
+    .link-go {
+      cursor: pointer;
+      font-size: 13px;
+      color: #4A90E2;
+      text-decoration: underline;
+      font-family: PingFangSC-Regular;
+    }
+
     td[class^=el-table_1_column] {
       .slider-wrap {
         opacity: 1;
@@ -175,7 +214,8 @@
       return {
         operation_number: 0,
         curRowIndex: -1,
-        dialogVisible: false
+        dialogVisible: false,
+        columnExpand: true // 是否展开列
       }
     },
 
@@ -209,7 +249,25 @@
 
     fetchAction: 'finance/getInfo',
 
+    created () {
+      // 监听屏幕大于1440时 表格的‘操作’展开
+      var screenWidth = document.body.clientWidth
+      screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
+      window.addEventListener('resize', this.tableResize)
+    },
+
+    destroyed () {
+      window.removeEventListener('resize', this.tableResize)
+    },
+
     methods: {
+      // 监听屏幕大于1440时 表格的‘操作’展开
+      tableResize () {
+        let screenWidth = document.body.clientWidth
+        screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
+        console.log(document.body.clientWidth, this.columnExpand)
+      },
+
       currentChange (page) {
         this.getInfo({page})
       },

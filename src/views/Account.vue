@@ -20,7 +20,7 @@
       <el-form-item prop="address" label="联系地址（选填）">
         <el-input v-model="info.address" placeholder="请输入联系地址"></el-input>
       </el-form-item>
-      <el-form-item prop="password" class="mrg-t47" label="当前密码">
+      <el-form-item prop="password" class="mrg-t69" label="当前密码">
         <el-input v-model="info.password" placeholder="请输入当前密码"></el-input>
       </el-form-item>
       <el-form-item prop="new_password" label="新的密码">
@@ -69,8 +69,8 @@
       }
     }
 
-    .mrg-t47 {
-      margin-top: 47px;
+    .mrg-t69 {
+      margin-top: 69px;
     }
 
     .mrg-t20 {
@@ -83,6 +83,7 @@
     }
 
     .break-line {
+      font-family: PingFangSC-Regular;
       position: relative;
       width: 100%;
       display: inline-block;
@@ -100,7 +101,7 @@
           callback(new Error('请输入新的密码'))
         } else if (value === this.info.password) {
           callback(new Error('新密码不能与旧密码相同'))
-        } else if (value.trim().length < value.length) {
+        } else if (value.replace(/\s+/g, '').length < value.length) {
           callback(new Error('密码不能包含空格'))
         } else {
           if (this.info.confirm !== '') {
@@ -113,7 +114,7 @@
       let checkConfirm = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再输入一次新的密码'))
-        } else if (value.trim().length < value.length) {
+        } else if (value.replace(/\s+/g, '').length < value.length) {
           callback(new Error('密码不能包含空格'))
         } else if (value !== this.info.new_password) {
           callback(new Error('请确保新密码两次输入一致'))
@@ -185,10 +186,14 @@
           })
         }
         if (isValid) {
-          this.submitInfo(this.info).then(() => {
-            setTimeout(function () {
-              this.$router.push('/d/home')
-            }, 500)
+          this.submitInfo(this.info).then((res) => {
+            if (res.status === 'fail') {
+              return
+            } else {
+              setTimeout(function () {
+                this.$router.push('/d/home')
+              }, 500)
+            }
           })
         }
       }

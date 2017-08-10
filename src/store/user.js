@@ -148,7 +148,10 @@ const actions = {
       $router.push('/login')
     })
     .catch(err => {
-      Message(err.err_msg)
+      Message({
+        message: err.err_msg,
+        iconClass: 'qk-warning'
+      })
     })
   },
 

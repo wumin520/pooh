@@ -2,7 +2,7 @@
   <div class="main">
     <div class="head">
       <!-- 顶部导航 -->
-      <el-menu theme="dark" mode="horizontal" @select="onClick">
+      <el-menu class="top-nav" theme="dark" mode="horizontal" @select="onClick">
         <el-menu-item index="1" class="logo"></el-menu-item>
 
         <el-submenu index="2" class="pull-right">
@@ -59,6 +59,15 @@
     width: 100%;
     height: 60px;
     z-index: 1000;
+
+    .top-nav {
+      .el-menu-item, .el-submenu {
+        font-family: PingFangSC-Regular;
+        span {
+          font-family: PingFangSC-Regular;
+        }
+      }
+    }
 
     .logo {
       width: 180px;

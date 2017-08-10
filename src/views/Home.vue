@@ -187,7 +187,7 @@
 
     .chart-wrapper {
       height: 440px;
-      margin-bottom: 72px;
+      margin-bottom: 76px;
       padding-top: 10px;
 
       .rpt-chart {

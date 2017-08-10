@@ -170,7 +170,10 @@ const actions = {
   deleTask ({commit}, deleting) {
     return api(URI_DELE_TASK + deleting.id, {method: 'GET'})
       .then((data) => {
-        Message(data.message)
+        Message({
+          message: data.message,
+          iconClass: 'qk-warning'
+        })
         commit(types.SPLICE_TABLE_DATA, deleting.index)
       })
   },

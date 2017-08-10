@@ -83,7 +83,8 @@ const mutations = {
 
       kw_flag_needed: '0',
       zs_task_needed: '0',
-      remain_count: 100
+      remain_count: 100,
+      showKeyWordsMessage: false // 控制关键词提示Message弹层，消失后才允许第二次出现
     }
   },
 
@@ -276,7 +277,6 @@ const actions = {
       num: '',
       keyTime: Date.now()
     }
-
     if (state.advertiser_id === 45) {
       // 用户45 可无限制添加关键词
       commit(types.UPDATE_KEYWORDS_LIST, iniItem)
@@ -286,13 +286,27 @@ const actions = {
         // 已添加的关键字个数
         var total = state.adForm.planlist.length
         if (total >= 20) {
-          Message('您最多只能添加20个关键词')
+          Message({
+            message: '您最多只能添加20个关键词',
+            iconClass: 'qk-warning'
+          })
           return
         }
         commit(types.UPDATE_KEYWORDS_LIST, iniItem)
       } else {
-        // 到关键词限制
-        Message('当前份数只能支持' + count + '份,计划份数150加一个关键词')
+        if (state.showKeyWordsMessage) {
+          return
+        } else {
+          state.showKeyWordsMessage = true
+          // 到关键词限制
+          Message({
+            message: '当前份数只能支持' + count + '份,计划份数150加一个关键词',
+            iconClass: 'qk-warning',
+            onClose: function (m) {
+              state.showKeyWordsMessage = false
+            }
+          })
+        }
       }
     }
   },
