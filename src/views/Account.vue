@@ -186,10 +186,14 @@
           })
         }
         if (isValid) {
-          this.submitInfo(this.info).then(() => {
-            setTimeout(function () {
-              this.$router.push('/d/home')
-            }, 500)
+          this.submitInfo(this.info).then((res) => {
+            if (res.status === 'fail') {
+              return
+            } else {
+              setTimeout(function () {
+                this.$router.push('/d/home')
+              }, 500)
+            }
           })
         }
       }

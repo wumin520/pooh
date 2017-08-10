@@ -175,7 +175,11 @@
         }).then(data => {
           this.$router.push('/d/home')
         }).catch(err => {
-          this.$message(err.err_msg)
+          this.$message({
+            message: err.err_msg,
+            iconClass: 'qk-warning',
+            duration: 3000000
+          })
         })
       }
     }

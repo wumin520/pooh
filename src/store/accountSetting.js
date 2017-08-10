@@ -2,6 +2,7 @@ import {
   URI_ACCOUNTSETTING
 } from '@/constants'
 import api from '../fetch'
+import { Message } from 'element-ui'
 
 const types = {
   SYNC: 'sync'
@@ -47,6 +48,12 @@ const actions = {
     }).then((res) => {
       console.log(res)
       return res
+    }).catch(err => {
+      Message({
+        message: err.err_msg,
+        iconClass: 'qk-warning'
+      })
+      return err
     })
   }
 }

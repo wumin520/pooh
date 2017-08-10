@@ -241,7 +241,10 @@
               }, 1000)
             }, 3000)
           }).catch((err) => {
-            this.$message(err.message)
+            this.$message({
+              message: err.err_msg,
+              iconClass: 'qk-warning'
+            })
           })
         })
       },

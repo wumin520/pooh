@@ -252,7 +252,7 @@
     <el-dialog title='广告预览' v-model="dialogPreviewVisible" class="el-dialog__wrapper previewDialog">
       <div class="preview-content" id="preview-content">
         <div class="content-line" style="border-top: 1px solid #E8E8E8;">
-          <div class="left">广告标题</div>
+          <div class="left">应用标题</div>
           <div class="right"  v-text="previewForm.title"></div>
         </div>
         <div class="content-line">
@@ -271,11 +271,11 @@
 
         <div class="content-line" style="border-top: 1px solid #E8E8E8;">
           <div class="left" >开始时间</div>
-          <div class="right"  v-text="previewForm.begin_time"></div>
+          <div class="right">{{ previewForm.begin_time.replace(/-/g, '/') }}</div>
         </div>
         <div class="content-line">
           <div class="left" >结束时间</div>
-          <div class="right"  v-text="previewForm.end_time"></div>
+          <div class="right">{{ previewForm.end_time.replace(/-/g, '/') }}</div>
         </div>
         <div class="content-line">
           <div class="left" >计划份数</div>
@@ -323,7 +323,7 @@
             <div class="left"  v-if="index == 0">专属任务</div>
             <div class="left" v-if="index > 0"></div>
             <div class="right"  v-if="previewForm.zs_task_needed == 0">-</div>
-            <div class="right"  v-if="previewForm.zs_task_needed == 1">第 {{zs.the_day}} 天 &nbsp;&nbsp;{{zs.univalent == 0 ? ' 免费' : '￥' + zs.univalent}}</div>
+            <div class="right"  v-if="previewForm.zs_task_needed == 1">第 {{zs.the_day}} 天 &nbsp;&nbsp;{{zs.univalent == 0 ? ' 免费' : '￥' + zs.univalent.toFixed(2)}}</div>
           </div>
         </div>
       </div>
