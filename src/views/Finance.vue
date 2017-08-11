@@ -8,7 +8,7 @@
     </div>
     <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
 
-    <el-table v-show="columnExpand" :data="payments" tripe border class="table-wrapper" style="width: 100%;">
+    <el-table v-show="columnExpand" :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column fixed prop="date" label="日期" min-width="152">
       </el-table-column>
        <el-table-column prop="types" label="广告主类型" min-width="98">
@@ -27,10 +27,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="actual_arrival_amount" label="充值" min-width="118">
+         <template scope="scope">
+          <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
+        </template>
       </el-table-column>
-      <el-table-column class-name="custom-column" label="操作" min-width="106">
-        <template scope="scope" class="oprate-column">
-          <a style="margin-right: 18px;" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">撤销</a>
+      <el-table-column label="操作" min-width="106">
+        <template scope="scope">
+          <a style="margin-right: 13px;" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">撤销</a>
           <a class="link-go" type="text" @click="charge()">充值</a>
         </template>
       </el-table-column>
@@ -69,14 +72,22 @@
     </el-table>
     <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
 
-    <el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
-      <i class="el-icon-warning" style="margin-right:15px;"></i>
+    <el-dialog title="撤销" v-model="dialogVisible" :show-close="showClose" custom-class="revoke-dialog" style="top: 30%;">
+      <img class="logo" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
+      <span class="qk-title">此操作将撤销这条记录，是否继续？</span><br>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="cancle-button" size="small" @click="dialogVisible = false">取消</el-button>
+        <el-button class="goon-button" type="primary" size="small"@click="handleDelete()">继续</el-button>
+      </span>
+    </el-dialog>
+    <!--<el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
+      <img src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="" class="logo">
       <span>此操作将撤销这条记录，是否继续？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="handleDelete()">撤销</el-button>
       </span>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 <style lang="scss">
@@ -205,6 +216,24 @@
         text-align: center;
       }
     }
+
+    .revoke-dialog {
+      .el-dialog__body {
+        .qk-title {
+          position: relative;
+          top: 2px;
+        }
+      }
+      .el-dialog__footer {
+        font-size: 0px;
+        .el-button {
+          width: 70px;
+        }
+        .goon-button {
+          margin-left: 8px;
+        }
+      }
+    }
   }
 </style>
 <script>
@@ -215,6 +244,7 @@
         operation_number: 0,
         curRowIndex: -1,
         dialogVisible: false,
+        showClose: false,
         columnExpand: true // 是否展开列
       }
     },

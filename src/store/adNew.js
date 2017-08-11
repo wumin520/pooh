@@ -195,7 +195,7 @@ const actions = {
     for (var i = 0; i < payload.task.planlist.length; i++) {
       payload.task.planlist[i].keyTime = Date.now() + i
     }
-    payload.task.platform === 1 ? payload.task.platform = '仅 iPhone' : (payload.task.platform === 2 ? payload.task.platform = '仅 iPad' : payload.task.platform = '两者都是')
+    parseInt(payload.task.platform) === 1 ? payload.task.platform = '仅 iPhone' : (parseInt(payload.task.platform) === 2 ? payload.task.platform = '仅 iPad' : payload.task.platform = '两者都是')
     payload.task.appstore_type === 0 ? payload.task.appstore_type = '免费' : payload.task.appstore_type = '付费'
     payload.task.plan_type = '按投放比例'
     payload.task.remain_count = 0
