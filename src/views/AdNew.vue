@@ -468,7 +468,6 @@
         cancelDialogVisible: false, // 取消弹层 是否显示
         showClose: false, // 弹层close按钮不显示
         submitNum: 0 // 防止多次提交
-        // showTips: false // tip消失前 防止出现多次tips
       }
     },
 

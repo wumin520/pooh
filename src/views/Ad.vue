@@ -184,7 +184,7 @@
             <div class="aui-ellipsis">￥ {{ scope.row.unit_price | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="消耗" min-width="81">
+        <el-table-column label="消耗" min-width="101">
           <template scope="scope">
             <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
           </template>
