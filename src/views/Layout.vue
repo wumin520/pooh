@@ -5,12 +5,12 @@
       <el-menu class="top-nav" theme="dark" mode="horizontal" @select="onClick">
         <el-menu-item index="1" class="logo"></el-menu-item>
 
-        <el-submenu index="2" class="pull-right">
+        <el-submenu index="2" class="pull-right layout-account">
           <template slot="title"><span v-text="username" @click="toAccount()"></span></template>
           <el-menu-item index="2-1">退出</el-menu-item>
         </el-submenu>
 
-        <el-menu-item index="3" class="pull-right">充值</el-menu-item>
+        <el-menu-item index="3" class="pull-right layout-charge">充值</el-menu-item>
 
         <el-menu-item index="4" class="pull-right" style="cursor: default;">余额：¥ <span v-text="balance"></span></el-menu-item>
 
@@ -66,6 +66,23 @@
         font-family: PingFangSC-Regular;
         span {
           font-family: PingFangSC-Regular;
+        }
+      }
+      .layout-account {
+        width: 150px;
+
+        .el-submenu__title  {
+          width: 0px;
+        }
+
+        &:hover {
+          background-color: rgba(58, 58, 58, 0.3) !important;
+        }
+      }
+      .layout-charge {
+        text-decoration: underline;
+        &:hover {
+          background-color: rgba(58, 58, 58, 0.3) !important;
         }
       }
     }

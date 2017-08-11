@@ -210,7 +210,8 @@
             { min: 5, message: '长度至少为 5 个字符', trigger: 'blur' },
             { max: 50, message: '长度在 50 个字符以内', trigger: 'blur' },
             { validator: validatePass2, trigger: 'blur' }
-          ]
+          ],
+          registerNum: 0
         }
       }
     },
@@ -227,36 +228,45 @@
 
     methods: {
       register () {
-        this.$refs.registerForm.validate((valid) => {
-          if (!valid) return
-
-          api('/v2/api/register', {
-            method: 'POST',
-            body: {
-              username: this.form.username,
-              display_name: this.form.displayName,
-              password: this.form.password,
-              confirm: this.form.confirm
-            }
-          }).then((res) => {
-            setTimeout(() => {
-              this.registerSucc = true
-              var self = this
-              this.countdownId = setInterval(function () {
-                self.countdown = self.countdown - 1
-                if (self.countdown < 0) {
-                  self.toLogin()
-                  return
+        if (this.registerNum > 0) {
+          return
+        } else {
+          this.$refs.registerForm.validate((valid) => {
+            if (!valid) {
+              return
+            } else {
+              this.registerNum = 1
+              api('/v2/api/register', {
+                method: 'POST',
+                body: {
+                  username: this.form.username,
+                  display_name: this.form.displayName,
+                  password: this.form.password,
+                  confirm: this.form.confirm
                 }
-              }, 1000)
-            }, 3000)
-          }).catch((err) => {
-            this.$message({
-              message: err.err_msg,
-              iconClass: 'qk-warning'
-            })
+              }).then((res) => {
+                setTimeout(() => {
+                  this.registerNum = 0
+                  this.registerSucc = true
+                  var self = this
+                  this.countdownId = setInterval(function () {
+                    self.countdown = self.countdown - 1
+                    if (self.countdown < 0) {
+                      self.toLogin()
+                      return
+                    }
+                  }, 1000)
+                }, 3000)
+              }).catch((err) => {
+                this.registerNum = 0
+                this.$message({
+                  message: err.err_msg,
+                  iconClass: 'qk-warning'
+                })
+              })
+            }
           })
-        })
+        }
       },
 
       toLogin () {
