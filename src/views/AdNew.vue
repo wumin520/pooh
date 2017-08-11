@@ -303,7 +303,15 @@
       color: #3a3a3a;
     }
 
+    .el-date-editor .el-icon-date::before {
+      font-size: 17px;
+      display: inline-block;
+      top: 2px;
+      position: relative;
+    }
+
     .zs-task-item {
+      margin-bottom: 10px;
       .sub-item {
         display: inline-block;
         .zs_task_day {
@@ -354,6 +362,7 @@
     }
 
     .add-zs-task {
+      margin-top: 20px;
       cursor: pointer;
       width: 206px;
       border: 1px dashed #dddddd;
@@ -414,7 +423,9 @@
 
     .el-button--text {
       color: #3a3a3a;
-      font-family: PingFangSC-Regular;
+      span {
+        font-family: PingFangSC-Regular !important;
+      }
     }
 
     .el-icon-plus {

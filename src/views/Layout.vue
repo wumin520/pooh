@@ -12,7 +12,7 @@
 
         <el-menu-item index="3" class="pull-right">充值</el-menu-item>
 
-        <el-menu-item index="4" class="pull-right">余额：¥ <span v-text="balance"></span></el-menu-item>
+        <el-menu-item index="4" class="pull-right" style="cursor: default;">余额：¥ <span v-text="balance"></span></el-menu-item>
 
         <el-menu-item index="5" class="pull-right" v-if="balanceThreshold != '0.00'">最大可透支金额：¥ <span v-text="balanceThreshold"></span></el-menu-item>
       </el-menu>
@@ -57,6 +57,7 @@
     left: 0;
     top: 0;
     width: 100%;
+    min-width: 1000px;
     height: 60px;
     z-index: 1000;
 
@@ -115,6 +116,9 @@
 
       onClick (key, keyPath) {
         switch (key) {
+          case '1':
+            this.$router.push('/d/home')
+            break
           case '2-1':
             this.$store.dispatch('user/logout')
             break

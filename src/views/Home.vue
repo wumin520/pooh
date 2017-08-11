@@ -93,18 +93,30 @@
         <el-table-column
           prop="date"
           label="日期" width="122">
+          <template scope="scope">
+            <div>{{ scope.row.date.replace(/\//g, '.') }}</div>
+          </template>
         </el-table-column>
         <el-table-column
           prop="cost"
           label="消费">
+          <template scope="scope">
+            <div>{{ '￥' + scope.row.cost | addCommas_money }}</div>
+          </template>
         </el-table-column>
         <el-table-column
           prop="impression"
           label="展示">
+          <template scope="scope">
+            <div>{{ scope.row.impression | addCommas }}</div>
+          </template>
         </el-table-column>
         <el-table-column
           prop="clicks"
           label="点击">
+          <template scope="scope">
+            <div>{{ scope.row.clicks | addCommas }}</div>
+          </template>
         </el-table-column>
         <el-table-column
           prop="click_rate"
@@ -113,6 +125,9 @@
         <el-table-column
           prop="effect_actions"
           label="完成分数">
+          <template scope="scope">
+            <div>{{ scope.row.effect_actions | addCommas }}</div>
+          </template>
         </el-table-column>
         <el-table-column
           prop="effect_rate"
@@ -220,6 +235,34 @@
         return val === '0.00%'
           ? '-'
           : val
+      },
+
+      addCommas: function (value) {
+        value += ''
+        const x = value.split('.')
+        var x1 = x[0]
+        const x2 = x.length > 1 ? '.' + x[1] : ''
+        const rgx = /(\d+)(\d{3})/
+        if (rgx.test(x1)) {
+          x1 = x1.replace(rgx, '$1' + ',' + '$2')
+        }
+        return x1 + x2
+      },
+
+      addCommas_money: function (value) {
+        value += ''
+        const x = value.split('.')
+        var x1 = x[0]
+        const x2 = x.length > 1 ? '.' + x[1] : ''
+        const rgx = /(\d+)(\d{3})/
+        if (rgx.test(x1)) {
+          x1 = x1.replace(rgx, '$1' + ',' + '$2')
+        }
+        var ret = x1 + x2
+        if (ret.indexOf('.') === -1) {
+          ret = ret + '.00'
+        }
+        return ret
       }
     },
 

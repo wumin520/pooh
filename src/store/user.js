@@ -88,7 +88,7 @@ const getters = {
   },
 
   reportTypes: state => ([
-    { label: '最新7天', value: LW },
+    { label: '最近7天', value: LW },
     { label: '30天', value: L30D },
     { label: '90天', value: L90D }
   ]),
