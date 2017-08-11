@@ -158,7 +158,8 @@
             { required: true, message: '请输入密码', trigger: 'blur' },
             { min: 1, max: 50, message: '长度在 50 个字符以内', trigger: 'blur' }
           ]
-        }
+        },
+        submitNum: 0 // 防止多次提交
       }
     },
 
@@ -174,17 +175,23 @@
 
     methods: {
       login () {
-        api('/v2/api/login', {
-          method: 'POST',
-          body: this.form
-        }).then(data => {
-          this.$router.push('/d/home')
-        }).catch(err => {
-          this.$message({
-            message: err.err_msg,
-            iconClass: 'qk-warning'
+        if (this.submitNum > 0) {
+          return
+        } else {
+          this.submitNum = 1
+          api('/v2/api/login', {
+            method: 'POST',
+            body: this.form
+          }).then(data => {
+            this.$router.push('/d/home')
+          }).catch(err => {
+            this.submitNum = 0
+            this.$message({
+              message: err.err_msg,
+              iconClass: 'qk-warning'
+            })
           })
-        })
+        }
       }
     }
   }

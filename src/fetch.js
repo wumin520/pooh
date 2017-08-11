@@ -61,7 +61,10 @@ const api = (url, options) => {
         if (err.response.status === 400) {
           return err.response
         } if (err.response.status === 401) {
-          Message('请先登录！')
+          Message({
+            message: '请先登录！',
+            iconClss: 'qk-warning'
+          })
           $router.push('/')
           return
         } else {

@@ -482,8 +482,8 @@
               this.dialogVisible = true
             }).catch((err) => {
               Message({
-                type: 'error',
-                message: err.err_msg
+                message: err.err_msg,
+                iconClass: 'qk-warning'
               })
             })
           }

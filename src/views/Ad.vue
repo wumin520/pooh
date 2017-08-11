@@ -61,8 +61,8 @@
 
     <!-- table -->
     <div class="table-wrapper">
-      <el-table :data="tableData" stripe border style="width: 100%" v-show="columnExpand" v-loading="loading" element-loading-text="加载中...">
-        <el-table-column fixed label="广告" min-width="170">
+      <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-show="columnExpand" v-loading="loading" element-loading-text="加载中...">
+        <el-table-column fixed label="广告" min-width="150">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
               <div class="aui-ellipsis" v-text="scope.row.task" @click="filter(scope.row.appid)"></div>
@@ -99,7 +99,7 @@
             <div class="aui-ellipsis">￥ {{ scope.row.unit_price | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="消耗" min-width="81">
+        <el-table-column label="消耗" min-width="101">
           <template scope="scope">
             <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
           </template>
@@ -146,7 +146,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-table :data="tableData" stripe border style="width: 100%" v-show="!columnExpand" v-loading="loading" element-loading-text="加载中...">
+      <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-show="!columnExpand" v-loading="loading" element-loading-text="加载中...">
         <el-table-column fixed label="广告" min-width="170">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
@@ -460,12 +460,20 @@
     }
     .addAd-btn {
       border-color: #F5A623; 
+      border: none;
+      height: 36px;
       color: #fff;
       background: #F5A623;
       width: 110px;
       padding: 10px;
       line-height: 14px;
       font-size: 12px;
+      transition: all 0.48s ease-out;
+
+      &:hover {
+        background: rgba(245, 166, 35, 0.7);
+        border-color: rgba(245, 166, 35, 0.7);
+      }
 
       span {
         font-family: PingFangSC-Regular !important;        
@@ -498,6 +506,10 @@
   .table-wrapper {
     width: 100%;
     margin: 20px 0px;
+
+    .nodata .el-table__fixed {
+      height: 47px !important;
+    }
 
     .el-table--border .el-table__body-wrapper .el-table__row.el-table__row--striped {
       box-shadow: none !important;

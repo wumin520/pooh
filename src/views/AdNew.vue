@@ -466,7 +466,9 @@
         submitButtonDisable: false,  // 提交按钮是否禁用
         fullscreenLoading: false, // loading是否显示
         cancelDialogVisible: false, // 取消弹层 是否显示
-        showClose: false // 弹层close按钮不显示
+        showClose: false, // 弹层close按钮不显示
+        submitNum: 0 // 防止多次提交
+        // showTips: false // tip消失前 防止出现多次tips
       }
     },
 
@@ -517,14 +519,19 @@
       },
       // 续单、编辑、添加 的验证+提交
       submitForm (formName) {
+        if (this.submitNum > 0) return
+        this.submitNum = 1
         this.submitButtonDisable = true
         this.fullscreenLoading = true
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (this.validForm()) {
               this.postFormData()
+            } else {
+              this.submitNum = 0
             }
           } else {
+            this.submitNum = 0
             return false
           }
         })
@@ -635,6 +642,7 @@
 
       // 续单、编辑、添加 的提交
       postFormData () {
+        this.submitNum = 1
         var tempForm = util.clone(this.adForm)
         var beginTime = tempForm.begin_time.toString()
         var endTime = tempForm.end_time.toString()
@@ -682,6 +690,7 @@
         this.postForm(config)
           .then(res => {
             console.log('post', res)
+            this.submitNum = 0
             if (this.$route.name === 'dash_ad_renew') {
               this.$message({
                 message: '续单成功！',
@@ -700,6 +709,7 @@
             }, 500)
           })
           .catch((e) => {
+            this.submitNum = 0
             this.submitButtonDisable = false
             this.fullscreenLoading = false
             this.$message({

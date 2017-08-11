@@ -8,10 +8,10 @@
     </div>
     <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
 
-    <el-table v-show="columnExpand" :data="payments" stripe border class="table-wrapper" style="width: 100%;">
+    <el-table v-show="columnExpand" :class="{'nodata': payments.length === 0 }"  :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column fixed prop="date" label="日期" min-width="152">
       </el-table-column>
-       <el-table-column prop="types" label="广告主类型" min-width="98">
+       <el-table-column prop="types" label="广告主类型" min-width="100">
       </el-table-column>
        <el-table-column prop="drawee" label="付款人" min-width="206">
       </el-table-column>
@@ -26,7 +26,7 @@
           <div>￥ {{ scope.row.settlement_amount | addCommas_money }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="actual_arrival_amount" label="充值" min-width="118">
+      <el-table-column prop="actual_arrival_amount" label="入账金额" min-width="118">
          <template scope="scope">
           <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
         </template>
@@ -38,10 +38,10 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-table v-show="!columnExpand" :data="payments" stripe border class="table-wrapper" style="width: 100%;">
+    <el-table v-show="!columnExpand" :class="{'nodata': payments.length === 0 }" :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column fixed prop="date" label="日期" min-width="152">
       </el-table-column>
-       <el-table-column prop="types" label="广告主类型" min-width="98">
+       <el-table-column prop="types" label="广告主类型" min-width="120">
       </el-table-column>
        <el-table-column prop="drawee" label="付款人" min-width="206">
       </el-table-column>
@@ -139,6 +139,10 @@
     .table-wrapper {
       width: 1050px;
       margin-bottom: 20px;
+
+      .nodata .el-table__fixed {
+        height: 47px !important;
+      }
 
       .el-table__body {
         overflow: hidden;
