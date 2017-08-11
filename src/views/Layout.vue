@@ -111,7 +111,7 @@
 
     methods: {
       toAccount () {
-        this.$router.push('/d/account')
+        // this.$router.push('/d/account')
       },
 
       onClick (key, keyPath) {

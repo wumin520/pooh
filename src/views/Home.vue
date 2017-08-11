@@ -38,7 +38,7 @@
 
     <!-- 报表菜单 -->
     <el-row class="report-menus">
-      <el-select class="select-report-type" v-model="reportType" placeholder="请选择" @change="onSelect">
+      <el-select class="select-report-type" popper-class="select-dropdown-home" v-model="reportType" placeholder="请选择" @change="onSelect">
         <el-option
           v-for="(rt, index) in reportTypes"
           :key="index"
@@ -124,7 +124,7 @@
         </el-table-column>
         <el-table-column
           prop="effect_actions"
-          label="完成分数">
+          label="完成份数">
           <template scope="scope">
             <div>{{ scope.row.effect_actions | addCommas }}</div>
           </template>
@@ -142,11 +142,11 @@
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang='scss'>
   .container {
     width: 100%;
     min-width: 1020px;
-    padding: 32px 35px;
+    padding: 32px 35px 150px 35px;
 
     .nav {
       padding: 18px 0;
@@ -208,6 +208,13 @@
       .rpt-chart {
         width: 100%;
         height: 100%;
+      }
+    }
+  }
+  .select-dropdown-home {
+    .el-select-dropdown__item {
+      span {
+        font-size: 14px !important;      
       }
     }
   }

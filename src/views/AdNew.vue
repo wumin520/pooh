@@ -77,13 +77,14 @@
       <!-- 添加关键词 单个关键词对应投放的百分比、份数  -->
       <el-form-item v-for="(kw, index) in adForm.planlist"
         :key="kw.keyTime" 
-        :prop="'planlist.' + index + '.value'">
+        :prop="'planlist.' + index + '.value'"
+        class="keywords-list">
         <template>
           <el-row :gutter="20">
             <el-col :span="24" :offset="0">
               <el-input class="w190" v-model="kw.key" placeholder="请输入关键词"></el-input>
-              <el-input v-if="adForm.plan_type == '按投放比例'" v-model="kw.num" class="w190 mrg-l5" placeholder="请输入投放比例"></el-input>
-              <el-input v-if="adForm.plan_type == '按计划份数'" v-model="kw.num" class="w190 mrg-l5"  placeholder="请输入计划份数"></el-input>
+              <el-input @change="planAnalysis" v-if="adForm.plan_type == '按投放比例'" v-model="kw.num" class="w190 mrg-l5" placeholder="请输入投放比例"></el-input>
+              <el-input @change="planAnalysis" v-if="adForm.plan_type == '按计划份数'" v-model="kw.num" class="w190 mrg-l5"  placeholder="请输入计划份数"></el-input>
               <span class="unit" v-text="adForm.plan_type == '按投放比例' ? '%' : '份'"></span>
               <i class="icon-remove" @click="removeKeyWords(kw.keyTime)"></i>
             </el-col>
@@ -179,7 +180,7 @@
 </template>
 <style lang="scss" >
   .ad-new-container {
-    padding: 50px 0 0 35px;
+    padding: 50px 0 150px 35px;
 
     .breadcrumb {
       height: 22px;
@@ -235,9 +236,13 @@
     }
 
     .keywords-wrapper {
+      margin-bottom: 20px;
       .el-form-item__content {
         font-size: 0px;
       }
+    }
+    .keywords-list {
+      margin-bottom: 10px;
     }
     .unit-desc {
       font-family: Lato-Regular;
@@ -364,15 +369,24 @@
     .add-zs-task {
       margin-top: 20px;
       cursor: pointer;
-      width: 206px;
-      border: 1px dashed #dddddd;
+      width: 245px;
+      border: 1px dashed #DDDDDD;
       font-size: 13px;
       &:hover {
-        border: 1px dashed #B5B5B5;        
+        border: 1px dashed #B5B5B5;
+        .el-button--text {
+          color: #B5B5B5;
+        }      
       }
 
       .el-button--text {
-        color: #B5B5B5;
+        color: #DDDDDD;
+        .el-icon-plus {
+          font-weight: lighter !important;
+        }
+        span {
+          font-family: PingFangSC-Regular !important;          
+        }
       }
 
       .el-icon-plus {
@@ -411,18 +425,23 @@
 
   .add-keyword-item {
     cursor: pointer;
-    width: 380px;
+    width: 470px;
     height: 40px;
-    border: 1px dashed #E9E9E9;
-    border-radius: 4px;
-    color: #3A3A3A;
+    border: 1px dashed #DDDDDD;
+    margin-top: 20px;
     margin-bottom: 80px;
     &:hover {
-      border: 1px dashed #b5b5b5;
+      border: 1px dashed #B5B5B5;
+      .el-button--text {
+        color: #B5B5B5;
+      }
     }
 
     .el-button--text {
-      color: #3a3a3a;
+      color: #DDDDDD;
+      .el-icon-plus {
+        font-weight: lighter !important;
+      }
       span {
         font-family: PingFangSC-Regular !important;
       }
