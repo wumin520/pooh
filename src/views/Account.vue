@@ -5,7 +5,7 @@
       <el-form-item label="平台账号">
         <div class="fs13-c3a break-line" v-text="info.username">wenchuanthesharpchin@gmail.com</div>
       </el-form-item>
-      <el-form-item prop="title" label="用户名">
+      <el-form-item prop="title" label="姓名/公司">
         <el-input v-model="info.title" placeholder="请输入姓名/公司"></el-input>
       </el-form-item>
       <el-form-item prop="contact" label="联系人（选填）">
@@ -51,7 +51,7 @@
   }
 
   .account-container {
-    padding: 50px 0 0 35px;
+    padding: 50px 0 150px 35px;
 
     .title {
       font-family: PingFangSC-Light;

@@ -360,7 +360,7 @@
   width: 100%;
   min-width: 1000px;
   height: 100%;
-  padding: 43px 35px;
+  padding: 43px 35px 150px 35px;
   position: relative;
 
   .breadcrumb {
@@ -667,6 +667,9 @@
           position: absolute;
           top: 20px;
           right: 18px;
+          &:before {
+            fotn-size: 14px;            
+          }
         }
       }
     }

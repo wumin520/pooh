@@ -162,13 +162,18 @@
       }
     },
 
+    created () {
+      var self = this
+      document.onkeydown = function (event) {
+        var e = event || window.event
+        if (e && e.keyCode === 13) { // enter 键
+          self.login()
+        }
+      }
+    },
+
     methods: {
       login () {
-        // let data = new FormData()
-
-        // data.append('username', username)
-        // data.append('password', password)
-
         api('/v2/api/login', {
           method: 'POST',
           body: this.form

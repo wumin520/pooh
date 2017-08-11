@@ -215,6 +215,16 @@
       }
     },
 
+    created () {
+      var self = this
+      document.onkeydown = function (event) {
+        var e = event || window.event
+        if (e && e.keyCode === 13) { // enter 键
+          self.register()
+        }
+      }
+    },
+
     methods: {
       register () {
         this.$refs.registerForm.validate((valid) => {
