@@ -13,13 +13,13 @@
           <div slot="lowlight">前日 {{ indicesDBY[0] | index }}</div>
         </card>
       </el-col>
-      <el-col :span="6">
+      <!--<el-col :span="6">
         <card>
           <div slot="title">昨日展示</div>
           <div slot="highlight">{{ indicesLastday[1] | index }}</div>
           <div slot="lowlight">前日 {{ indicesDBY[1] | index }}</div>
         </card>
-      </el-col>
+      </el-col>-->
       <el-col :span="6">
         <card>
           <div slot="title">昨日点击</div>
@@ -57,23 +57,23 @@
       <el-tab-pane name="cost">
         <span class="qk-tabs__item-text" slot="label"><span class="tag">消费</span><span class="sub-tag">{{ reportSummary.cost > 0 ? ('¥ ' + reportSummary.cost.toFixed(2)) : '-' }}</span></span>
       </el-tab-pane>
-      <el-tab-pane name="impression">
+      <!--<el-tab-pane name="impression">
         <span class="qk-tabs__item-text" slot="label"><span>展示</span><span>{{ reportSummary.impression | index}}</span></span>
-      </el-tab-pane>
+      </el-tab-pane>-->
       <el-tab-pane name="clicks">
         <span class="qk-tabs__item-text" slot="label"><span>点击</span><span>{{ reportSummary.clicks | index }}</span></span>
       </el-tab-pane>
-      <el-tab-pane name="click_rate">
+      <!--<el-tab-pane name="click_rate">
         <span class="qk-tabs__item-text" slot="label"><span>点击率</span><span>{{ reportSummary.click_rate | rate }}</span></span>
-      </el-tab-pane>
+      </el-tab-pane>-->
       <el-tab-pane name="effect_actions">
         <span class="qk-tabs__item-text" slot="label"><span>完成</span><span>{{ reportSummary.effect_actions | index }}</span></span>
       </el-tab-pane>
       <el-tab-pane name="effect_rate">
         <span class="qk-tabs__item-text" slot="label"><span>完成率</span><span>{{ reportSummary.effect_rate | rate }}</span></span>
       </el-tab-pane>
-      <el-tab-pane name="zs_done_count">
-        <span class="qk-tabs__item-text" slot="label"><span>付费专属</span><span>{{ reportSummary.zs_done_count | index }}</span></span>
+      <el-tab-pane name="zs_finish_total_count">
+        <span class="qk-tabs__item-text" slot="label"><span>完成专属</span><span>{{ reportSummary.zs_finish_total_count | index }}</span></span>
       </el-tab-pane>
     </el-tabs>
 
@@ -104,13 +104,13 @@
             <div>{{ '￥' + scope.row.cost | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column
+        <!--<el-table-column
           prop="impression"
           label="展示">
           <template scope="scope">
             <div>{{ scope.row.impression | addCommas }}</div>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column
           prop="clicks"
           label="点击">
@@ -118,10 +118,10 @@
             <div>{{ scope.row.clicks | addCommas }}</div>
           </template>
         </el-table-column>
-        <el-table-column
+        <!--<el-table-column
           prop="click_rate"
           label="点击率">
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column
           prop="effect_actions"
           label="完成份数">
@@ -135,7 +135,7 @@
         </el-table-column>
          <el-table-column
           prop="zs_done_count"
-          label="付费专属">
+          label="完成专属">
         </el-table-column>
       </el-table>
     </el-row>

@@ -8,10 +8,10 @@
     </div>
     <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
 
-    <el-table v-show="columnExpand" :class="{'nodata': payments.length === 0 }"  :data="payments" stripe border class="table-wrapper" style="width: 100%;">
-      <el-table-column fixed prop="date" label="日期" min-width="152">
+    <el-table :class="{'nodata': payments.length === 0 }"  :data="payments" stripe border class="table-wrapper" style="width: 100%;">
+      <el-table-column prop="date" label="日期" min-width="152">
       </el-table-column>
-       <el-table-column prop="types" label="广告主类型" min-width="100">
+       <el-table-column prop="types" label="广告主类型" min-width="110">
       </el-table-column>
        <el-table-column prop="drawee" label="付款人" min-width="206">
       </el-table-column>
@@ -31,42 +31,10 @@
           <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="106">
+      <el-table-column label="操作" min-width="100">
         <template scope="scope">
-          <a style="margin-right: 13px;" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">撤销</a>
-          <a class="link-go" type="text" @click="charge()">充值</a>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-table v-show="!columnExpand" :class="{'nodata': payments.length === 0 }" :data="payments" stripe border class="table-wrapper" style="width: 100%;">
-      <el-table-column fixed prop="date" label="日期" min-width="152">
-      </el-table-column>
-       <el-table-column prop="types" label="广告主类型" min-width="120">
-      </el-table-column>
-       <el-table-column prop="drawee" label="付款人" min-width="206">
-      </el-table-column>
-       <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
-      </el-table-column>
-       <el-table-column prop="operation_number" label="操作编号" min-width="110">
-      </el-table-column>
-       <el-table-column prop="new_finance_status" label="状态" min-width="98">
-      </el-table-column>
-       <el-table-column prop="settlement_amount" label="付款金额" min-width="118">
-        <template scope="scope">
-          <div>￥ {{ scope.row.settlement_amount | addCommas_money }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="actual_arrival_amount" label="充值" min-width="118">
-      </el-table-column>
-      <el-table-column :class="'custom-column'" label="操作" width="64">
-        <template scope="scope">
-           <div class="opera hover-event">
-             <div class="three-dot">...</div>
-             <div class="slider-wrap" style="position:absolute;">
-               <el-button type="text" @click="cancel(scope.$index, scope.row)">撤销</el-button>
-               <el-button type="text" @click="charge()">充值</el-button>
-             </div>
-           </div>
+          <a style="margin-right: 13px;" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
+          <!--<a class="link-go" type="text" @click="charge()">充值</a>-->
         </template>
       </el-table-column>
     </el-table>
@@ -248,8 +216,7 @@
         operation_number: 0,
         curRowIndex: -1,
         dialogVisible: false,
-        showClose: false,
-        columnExpand: true // 是否展开列
+        showClose: false
       }
     },
 
@@ -285,9 +252,9 @@
 
     created () {
       // 监听屏幕大于1440时 表格的‘操作’展开
-      var screenWidth = document.body.clientWidth
-      screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
-      window.addEventListener('resize', this.tableResize)
+      // var screenWidth = document.body.clientWidth
+      // screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
+      // window.addEventListener('resize', this.tableResize)
     },
 
     destroyed () {
@@ -296,18 +263,18 @@
 
     methods: {
       // 监听屏幕大于1440时 表格的‘操作’展开
-      tableResize () {
-        let screenWidth = document.body.clientWidth
-        screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
-        console.log(document.body.clientWidth, this.columnExpand)
-      },
+      // tableResize () {
+      //   let screenWidth = document.body.clientWidth
+      //   screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
+      //   console.log(document.body.clientWidth, this.columnExpand)
+      // },
 
       currentChange (page) {
         this.getInfo({page})
       },
 
       invoiceFormatter (row, column, cellValue) {
-        return cellValue === '需要' ? '需要' : '—'
+        return cellValue === '需要' ? '需要' : '-'
       },
 
       cancel (index, row) {
