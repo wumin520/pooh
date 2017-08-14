@@ -91,7 +91,7 @@
             </el-form-item>
           </el-form>
           <div class="step fs16-c88 mrg-b30">第二步：请将付款款项转入以下官方账户</div>
-          <div><img src="//qianka.b0.upaiyun.com/images/c43051bef6427e2a590022ff1220b22c.png"/></div>
+          <div><img style="width:500px;height:auto;" src="//qianka.b0.upaiyun.com/images/5425ad400654d32a2bd24b0bea3bad36.png"/></div>
           <div><el-button @click="submitForm('form')" class="mrg-t40" type="primary">提交</el-button></div>
         </div>
       </el-tab-pane>

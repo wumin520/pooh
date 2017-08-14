@@ -91,7 +91,7 @@
         </el-table-column>
         <el-table-column label="完成专属" min-width="90">
           <template scope="scope">
-            <div class="aui-ellipsis">￥ {{ scope.row.zs_finish_total_count | addCommas_money }}</div>            
+            <div class="aui-ellipsis">{{ scope.row.zs_finish_total_count | addCommas }}</div>            
           </template>
         </el-table-column>
         <el-table-column label="单价" min-width="81">
@@ -99,7 +99,7 @@
             <div class="aui-ellipsis">￥ {{ scope.row.unit_price | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="消耗" min-width="101">
+        <el-table-column label="消耗" min-width="111">
           <template scope="scope">
             <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
           </template>
@@ -176,7 +176,7 @@
         </el-table-column>
         <el-table-column label="完成专属" min-width="90">
           <template scope="scope">
-            <div class="aui-ellipsis">￥ {{ scope.row.zs_finish_total_count | addCommas_money }}</div>            
+            <div class="aui-ellipsis">{{ scope.row.zs_finish_total_count | addCommas }}</div>            
           </template>
         </el-table-column>
         <el-table-column label="单价" min-width="81">
@@ -184,7 +184,7 @@
             <div class="aui-ellipsis">￥ {{ scope.row.unit_price | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="消耗" min-width="101">
+        <el-table-column label="消耗" min-width="111">
           <template scope="scope">
             <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
           </template>
@@ -331,7 +331,10 @@
 
     <!-- 续总数弹窗 -->
     <el-dialog title="" v-model="dialogContinueTotalVisible" :show-close="true" custom-class="add-total-dialog" style="top: 30%;">
-      <div class="head-content" v-text="taskName"></div>
+      <div class="head-content">
+        <div class="task-name" v-text="taskName"></div>
+        <div class="kong" style="width: 100%;height:20px;"></div>
+      </div>
       <el-form :model="continueTotalForm" style="margin-top:20px;">
         <el-form-item label="增加份数： ">
           <el-input v-model="continueTotalForm.add_number" auto-complete="off"></el-input>
@@ -669,8 +672,8 @@
   }
 
   .add-total-dialog {
-    padding: 35px 35px 0px 35px;
-    width: 640px;
+    padding: 40px 35px 0px 35px;
+    width: 500px;
     .el-dialog__header {
       .el-dialog__headerbtn {
         .el-dialog__close {
@@ -690,24 +693,31 @@
       font-family: PingFangSC-Regular;      
       padding: 0px;
       .head-content {
-        font-size: 14px;
-        line-height: 19px;
-        color: #3A3A3A;
-        padding-bottom: 35px;
+        padding-bottom: 20px;
         border-bottom: 1px solid #ddd;
+        width: 418px;
+        height: 40px;
+        overflow-y: hidden;
+        .task-name {
+          font-size: 14px;
+          line-height: 19px;
+          height: 20px;
+          overflow: hidden;
+          color: #3A3A3A;
+        }
       }
       .el-form {
-        margin-top: 25px !important;
+        margin-top: 20px !important;
         .el-form-item {
-          margin-bottom: 35px;
+          margin-bottom: 30px;
           .el-form-item__label {
-            padding: 0px 0px 9px 0px;
+            padding: 0px 0px 10px 0px;
             font-size: 13px;
             line-height: 18px;
             color: #3A3A3A;
           }
           .el-form-item__content {
-            width: 190px;
+            width: 140px;
           }
         }
       }
