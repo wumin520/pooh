@@ -161,8 +161,7 @@
             { min: 1, max: 50, message: '长度在 50 个字符以内', trigger: 'blur' }
           ]
         },
-        submitNum: 0, // 防止多次提交
-        cloeMess: true // 防止相同message连续出现
+        submitNum: 0 // 防止多次提交
       }
     },
 
@@ -178,25 +177,20 @@
 
     methods: {
       login () {
-        if (this.submitNum > 0 || this.closeMess === false) {
+        if (this.submitNum > 0) {
           return
         } else {
           this.submitNum = 1
-          this.cloeMess = false
           api('/v2/api/login', {
             method: 'POST',
             body: this.form
           }).then(data => {
-            this.cloeMess = true
             this.$router.push('/d/home')
           }).catch(err => {
             this.submitNum = 0
             this.$message({
               message: err.err_msg,
-              iconClass: 'qk-warning',
-              onClose: function () {
-                this.cloeMess = true
-              }
+              iconClass: 'qk-warning'
             })
           })
         }
