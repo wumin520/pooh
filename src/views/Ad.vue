@@ -30,23 +30,23 @@
       <el-button class="searchIOS-btn" type="primary" @click="searchTask()">搜索</el-button>
       <el-button class="addAd-btn" @click="toAddAd()"><img class="add-logo" src="//qianka.b0.upaiyun.com/images/62ebcde46a8f43cedce613491089a1b0.png" alt=""> 添加新广告</el-button>
     </div>
-    
+
     <!-- tabs -->
     <el-tabs v-model="activeName" class="qk-tabs-text" type="card" @tab-click="handleClick">
       <el-tab-pane name="tab1" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span class="tag">投放中</span><span class="sub-tag" v-text="task_statcnt.ok">33</span></span>
+        <span class="qk-tabs__item-text"  slot="label"><span class="tag">投放中</span><span class="sub-tag">{{ task_statcnt.ok | formatZero }}</span></span>
       </el-tab-pane>
       <el-tab-pane name="tab2" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span>待审核</span><span v-text="task_statcnt.pending"></span></span>
+        <span class="qk-tabs__item-text"  slot="label"><span>待审核</span><span>{{ task_statcnt.pending | formatZero }}</span></span>
       </el-tab-pane>
       <el-tab-pane name="tab3" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span>审核失败</span><span v-text="task_statcnt.rejected">22</span></span>
+        <span class="qk-tabs__item-text"  slot="label"><span>审核失败</span><span>{{ task_statcnt.rejected | formatZero }}</span></span>
       </el-tab-pane>
       <el-tab-pane name="tab4" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span>暂停</span><span v-text="task_statcnt.paused">22</span></span>
+        <span class="qk-tabs__item-text"  slot="label"><span>暂停</span><span>{{ task_statcnt.paused | formatZero }}</span></span>
       </el-tab-pane>
       <el-tab-pane name="tab5" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span>完成</span><span v-text="task_statcnt.ended">22</span></span>
+        <span class="qk-tabs__item-text"  slot="label"><span>完成</span><span>{{ task_statcnt.ended | formatZero }}</span></span>
       </el-tab-pane>
     </el-tabs>
 
@@ -62,7 +62,7 @@
     <!-- table -->
     <div class="table-wrapper">
       <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-show="columnExpand" v-loading="loading" element-loading-text="加载中...">
-        <el-table-column fixed label="广告" min-width="150">
+        <el-table-column label="广告" min-width="150">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
               <div class="aui-ellipsis" v-text="scope.row.task" @click="filter(scope.row.appid)"></div>
@@ -89,9 +89,9 @@
             <div class="aui-ellipsis">{{ scope.row.actual_count | addCommas }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="付费专属" min-width="90">
+        <el-table-column label="完成专属" min-width="90">
           <template scope="scope">
-            <div class="aui-ellipsis">￥ {{ scope.row.zs_done_count | addCommas_money }}</div>            
+            <div class="aui-ellipsis">￥ {{ scope.row.zs_finish_total_count | addCommas_money }}</div>            
           </template>
         </el-table-column>
         <el-table-column label="单价" min-width="81">
@@ -147,7 +147,7 @@
         </el-table-column>
       </el-table>
       <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-show="!columnExpand" v-loading="loading" element-loading-text="加载中...">
-        <el-table-column fixed label="广告" min-width="170">
+        <el-table-column label="广告" min-width="170">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
               <div class="aui-ellipsis" v-text="scope.row.task" @click="filter(scope.row.appid)"></div>
@@ -174,9 +174,9 @@
             <div class="aui-ellipsis">{{ scope.row.actual_count | addCommas }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="付费专属" min-width="90">
+        <el-table-column label="完成专属" min-width="90">
           <template scope="scope">
-            <div class="aui-ellipsis">￥ {{ scope.row.zs_done_count | addCommas_money }}</div>            
+            <div class="aui-ellipsis">￥ {{ scope.row.zs_finish_total_count | addCommas_money }}</div>            
           </template>
         </el-table-column>
         <el-table-column label="单价" min-width="81">
@@ -806,6 +806,14 @@
     },
 
     filters: {
+      formatZero: function (val) {
+        if (val === 0) {
+          return '-'
+        } else {
+          return val
+        }
+      },
+
       addCommas: function (value) {
         value += ''
         const x = value.split('.')

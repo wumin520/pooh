@@ -59,7 +59,8 @@ const initState = () => ({
       click_rate: '0.00%',
       effect_actions: 0,
       effect_rate: '0.00%',
-      zs_done_count: 0
+      zs_done_count: 0,
+      zs_finish_total_count: 0
     }
   }
 })
