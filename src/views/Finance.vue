@@ -21,12 +21,12 @@
       </el-table-column>
        <el-table-column prop="new_finance_status" label="状态" min-width="98">
       </el-table-column>
-       <el-table-column prop="settlement_amount" label="付款金额" min-width="118">
+       <el-table-column prop="settlement_amount" label="付款金额" min-width="140">
         <template scope="scope">
           <div>￥ {{ scope.row.settlement_amount | addCommas_money }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="actual_arrival_amount" label="入账金额" min-width="118">
+      <el-table-column prop="actual_arrival_amount" label="入账金额" min-width="140">
          <template scope="scope">
           <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
         </template>
