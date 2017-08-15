@@ -95,11 +95,128 @@
           <div><el-button @click="submitForm('form')" class="mrg-t40" type="primary">提交</el-button></div>
         </div>
       </el-tab-pane>
-      <!--<el-tab-pane :name="'alipay'">-->
-        <!--<div slot="label"><img class="alipay-img" :src="ALIPAY_IMG"/></div>-->
-        <!--支付宝支付-->
-      <!--</el-tab-pane>-->
+      <el-tab-pane :name="'alipay'">
+        <div slot="label"><img class="alipay-img" :src="ALIPAY_IMG"/></div>
+      </el-tab-pane>
     </el-tabs>
+
+    <!-- 充值优惠政策 -->
+    <p class="fs13-c3a">充值优惠政策</p>
+    <el-row type="flex" class="row-bg">
+      <el-col :span="8">
+        <div class="grid-content bg-purple mrg-l--0">
+          单笔充值<br>
+          ¥ 10,000 ~ 299,999
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content bg-purple">
+          单笔充值<br>
+          ¥ 300,000 ~ 499,999
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content bg-purple mrg-l--2">
+          单笔充值<br>
+          ¥ 500,000 及以上
+        </div>
+      </el-col>
+    </el-row>
+    <el-row type="flex" class="row-bg">
+      <el-col :span="8">
+        <div class="grid-content bg-purple-light mrg-l--0">
+          赠送<span class="fs18-c42">20%</span>等值金额
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content bg-purple-light">
+          赠送<span class="fs18-c42">25%</span>等值金额
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content bg-purple-light mrg-l--2">
+          赠送<span class="fs18-c42">35%</span>等值金额
+        </div>
+      </el-col>
+    </el-row>
+
+    <div v-show="activeTabName === 'chinabank'" class="step fs16-c88 mrg-t40 mrg-b30">第一步：在线提交付款信息</div>
+    <el-form v-show="activeTabName === 'chinabank'" ref="bankform" :model="info" :rules="rules">
+      <el-form-item prop="amount" class="w214" label="充值金额">
+        <el-input v-model="info.amount" placeholder="请输入充值金额"></el-input>元
+      </el-form-item>
+      <el-form-item prop="amount_check" class="w214" label="确认金额">
+        <el-input v-model="info.amount_check" placeholder="请再次输入充值金额"></el-input>元
+      </el-form-item>
+      <el-form-item prop="drawee" class="w214" label="付款人">
+        <el-input v-model="info.drawee" placeholder="请输入付款人/公司名称"></el-input>元
+      </el-form-item>
+      <el-form-item class="w190" label="是否开票">
+        <el-radio-group v-model="info.invoice_status">
+          <el-radio-button class="el-icon-check" label="0">不需要</el-radio-button>
+          <el-radio-button class="el-icon-check" label="1">需要</el-radio-button>
+        </el-radio-group>
+      </el-form-item>
+      <!--<template>-->
+        <div v-if="info.invoice_status == 1">
+        <el-form-item prop="invoice_title" class="w660" style="width:500px" label="发票抬头">
+          <el-input v-model="info.invoice_title" placeholder="请输入发票抬头"></el-input>
+        </el-form-item>
+        <el-form-item prop="invoice_contact_name" class="w660" label="收件人" style="width:190px">
+          <el-input v-model="info.invoice_contact_name" placeholder="请输入收件人"></el-input>
+        </el-form-item>
+        <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话" style="width:190px">
+          <el-input v-model="info.invoice_contact_phone" placeholder="请输入联系电话"></el-input>
+        </el-form-item>
+        <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:500px">
+          <el-input v-model="info.invoice_contact_address" placeholder="请输入快递地址"></el-input>
+        </el-form-item>
+        </div>
+      <!--</template>-->
+      <el-form-item class="qk-form-item" label="备注信息（选填）">
+        <el-input v-model="info.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
+      </el-form-item>
+    </el-form>
+
+    <el-form v-show="activeTabName !== 'chinabank'" class="alipay-form" ref="alipayform" :model="aliInfo" :rules="rules">
+      <el-form-item prop="ali_amount" class="w214" label="充值金额">
+        <el-input v-model="aliInfo.ali_amount" placeholder="请输入充值金额"></el-input>元
+      </el-form-item>
+      <el-form-item prop="ali_drawee" class="w214" label="付款人参考">
+        <el-input v-model="aliInfo.ali_drawee" placeholder="请输入付款人的支付宝账号"></el-input>元
+      </el-form-item>
+      <el-form-item class="w190" label="是否开票">
+        <el-radio-group v-model="aliInfo.invoice_status">
+          <el-radio-button class="el-icon-check" label="0">不需要</el-radio-button>
+          <el-radio-button class="el-icon-check" label="1">需要</el-radio-button>
+        </el-radio-group>
+      </el-form-item>
+      <!--<template>-->
+        <div v-if="aliInfo.invoice_status == 1">
+        <el-form-item prop="invoice_title" class="w660" style="width:500px" label="发票抬头">
+          <el-input v-model="aliInfo.invoice_title" placeholder="请输入发票抬头"></el-input>
+        </el-form-item>
+        <el-form-item prop="invoice_contact_name" class="w660" label="收件人" style="width:190px">
+          <el-input v-model="aliInfo.invoice_contact_name" placeholder="请输入收件人"></el-input>
+        </el-form-item>
+        <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话" style="width:190px">
+          <el-input v-model="aliInfo.invoice_contact_phone" placeholder="请输入联系电话"></el-input>
+        </el-form-item>
+        <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:500px">
+          <el-input v-model="aliInfo.invoice_contact_address" placeholder="请输入快递地址"></el-input>
+        </el-form-item>
+        </div>
+      <!--</template>-->
+      <el-form-item class="qk-form-item mrg-b40" label="备注信息（选填）">
+        <el-input v-model="aliInfo.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
+      </el-form-item>
+    </el-form>
+
+    <div v-show="activeTabName === 'chinabank'" class="step fs16-c88 mrg-b30">第二步：请将付款款项转入以下官方账户</div>
+    <div v-show="activeTabName === 'chinabank'" style="margin-bottom:40px;"><img style="width:500px;height:auto;" src="//qianka.b0.upaiyun.com/images/5425ad400654d32a2bd24b0bea3bad36.png"/></div>
+
+    <div><el-button @click="submitForm()" type="primary">提交</el-button></div>
+    
     <el-dialog class="bank-charge-success-dialog" :visible.sync="dialogVisible">
       <div slot="title">
         <div class="l-wrap"><img src="//qianka.b0.upaiyun.com/images/425ec42718c6ef5cbe6e6fe998b66d12.png"/></div>
@@ -159,6 +276,7 @@
     .fs13-c3a {
       font-size: 13px;
       color: #3a3a3a;
+      margin-bottom: 9px;
     }
 
     .el-breadcrumb {
@@ -216,12 +334,24 @@
     }
 
     .el-tabs--border-card >.el-tabs__content {
-      padding: 30px 0 9px 0;
+      padding: 17px 0 0px 0;
       width: 669px;
+    }
+
+    .el-form-item .el-form-item__label {
+      padding-top: 0px;
     }
 
     .qk-form-item .el-textarea .el-textarea__inner{
       width: 350px;
+    }
+
+    .alipay-form {
+      margin-top: 29px;
+    }
+
+    .alipay-form {
+      margin-top: 29px;
     }
 
     .grid-content {
@@ -268,16 +398,28 @@
       color: #888888;
     }
 
-    .mrg-t60 {
-      margin-top: 60px;
-    }
-
     .mrg-t40 {
       margin-top: 40px;
     }
 
+    .mrg-b40 {
+      margin-bottom: 40px;
+    }
+
+    .mrg-t60 {
+      margin-top: 60px;
+    }
+
     .mrg-b19 {
       margin-bottom: 19px;
+    }
+
+    .mrg-t10 {
+      margin-top: 10px;
+    }
+
+    .mrg-b30 {
+      margin-bottom: 30px;
     }
 
     .mrg-b30 {
@@ -456,6 +598,11 @@
           ]
         }
 
+        let aliRules = {
+          ali_drawee: [{ required: true, message: '请输入付款人的支付宝账号', trigger: 'change' }],
+          ali_amount: [{ required: true, validator: checkCoast, trigger: 'blur' }]
+        }
+
         let rulesAdded = {...rules,
           invoice_title: [{required: true, message: '请输入发票抬头', trigger: 'blur'}],
           invoice_contact_name: [{required: true, message: '请输入收件人', trigger: 'blur'}],
@@ -463,11 +610,16 @@
           invoice_contact_address: [{required: true, message: '请输入快递地址', trigger: 'blur'}]
         }
 
-        return this.invoice_status === 0 ? rules : rulesAdded
+        if (this.activeTabName === 'chinabank') {
+          return this.invoice_status === 0 ? rules : rulesAdded
+        } else {
+          return aliRules
+        }
       },
 
       ...mapState('charge', [
-        'info'
+        'info',
+        'aliInfo'
       ])
     },
 
@@ -477,7 +629,9 @@
       toFinance () {
         this.$router.push('/d/finance')
       },
-      submitForm (formName) {
+      submitForm () {
+        let formName = this.activeTabName === 'chinabank' ? 'bankform' : 'alipayform'
+        console.log(formName)
         this.$refs[formName].validate((valid) => {
           // console.log('validate result: ', valid)
           if (valid) {

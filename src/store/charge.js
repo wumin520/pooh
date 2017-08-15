@@ -22,6 +22,17 @@ const initState = () => ({
     invoice_contact_phone: '',
     invoice_contact_address: '',
     is_save_invoice: 1
+  },
+  aliInfo: {
+    ali_amount: '',
+    ali_drawee: '',
+    remark: '',
+    invoice_status: 0,
+    invoice_title: '',
+    invoice_contact_name: '',
+    invoice_contact_phone: '',
+    invoice_contact_address: '',
+    is_save_invoice: 1
   }
 })
 
