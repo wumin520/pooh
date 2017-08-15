@@ -48,6 +48,14 @@
         <el-button class="goon-button" type="primary" size="small"@click="handleDelete()">继续</el-button>
       </span>
     </el-dialog>
+    <el-dialog v-model="chargeSuccessDialogVisible" :show-close="showClose" custom-class="charge-success-dialog" style="top: 30%;">
+      <img class="logo" src="//qianka.b0.upaiyun.com/images/425ec42718c6ef5cbe6e6fe998b66d12.png" alt="">
+      <span class="qk-title">支付成功！</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" style="width:109px;" @click="backtoHome()">返回首页</el-button>
+        <el-button type="primary" style="width:109px;" size="small" @click="checkRecord()">查看记录</el-button>
+      </span>
+    </el-dialog>
     <!--<el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
       <img src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="" class="logo">
       <span>此操作将撤销这条记录，是否继续？</span>
@@ -207,6 +215,23 @@
         }
       }
     }
+
+    .charge-success-dialog {
+      .el-dialog__body {
+        padding-top: 0px;
+        .logo {
+          top: 0px;
+        }
+        .qk-title {
+          position: relative;
+          top: 7px;
+        }
+      }
+
+      .el-dialog__footer {
+        padding-top: 26px;      
+      }
+    }
   }
 </style>
 <script>
@@ -217,7 +242,8 @@
         operation_number: 0,
         curRowIndex: -1,
         dialogVisible: false,
-        showClose: false
+        showClose: false,
+        chargeSuccessDialogVisible: false
       }
     },
 
@@ -269,6 +295,15 @@
       //   screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
       //   console.log(document.body.clientWidth, this.columnExpand)
       // },
+      backtoHome () {
+        this.chargeSuccessDialogVisible = false
+        this.$router.push('/d/home')
+      },
+
+      checkRecord () {
+        this.chargeSuccessDialogVisible = false
+        this.getInfo()
+      },
 
       currentChange (page) {
         this.getInfo({page})

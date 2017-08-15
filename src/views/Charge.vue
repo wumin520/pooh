@@ -11,92 +11,12 @@
       </span>
     </div>
 
-    <el-tabs v-model="activeTabName" type="border-card">
-      <el-tab-pane :name="'chinabank'">
-        <span slot="label"><img class="china-bank-img" :src="CHINA_BANK_IMG"/></span>
-        <div>
-          <p class="fs13-c3a">充值优惠政策</p>
-          <el-row type="flex" class="row-bg">
-            <el-col :span="8">
-              <div class="grid-content bg-purple mrg-l--0">
-                单笔充值<br>
-                ¥ 100,000 ~ 299,999
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="grid-content bg-purple">
-                单笔充值<br>
-                ¥ 300,000 ~ 499,999
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="grid-content bg-purple mrg-l--2">
-                单笔充值<br>
-                ¥ 500,000 及以上
-              </div>
-            </el-col>
-          </el-row>
-          <el-row type="flex" class="row-bg">
-            <el-col :span="8">
-              <div class="grid-content bg-purple-light mrg-l--0">
-                赠送<span class="fs18-c42">20%</span>等值金额
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="grid-content bg-purple-light">
-                赠送<span class="fs18-c42">25%</span>等值金额
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="grid-content bg-purple-light mrg-l--2">
-                赠送<span class="fs18-c42">30%</span>等值金额
-              </div>
-            </el-col>
-          </el-row>
-          <div class="step fs16-c88 mrg-t60 mrg-b19">第一步：在线提交付款信息</div>
-          <el-form ref="form" :model="info" :rules="rules">
-            <el-form-item prop="amount" class="w214" label="充值金额">
-              <el-input v-model="info.amount" placeholder="请输入充值金额"></el-input>元
-            </el-form-item>
-            <el-form-item prop="amount_check" class="w214" label="确认金额">
-              <el-input v-model="info.amount_check" placeholder="请再次输入充值金额"></el-input>元
-            </el-form-item>
-            <el-form-item prop="drawee" class="w214" label="付款人">
-              <el-input v-model="info.drawee" placeholder="请输入付款人/公司名称"></el-input>
-            </el-form-item>
-            <el-form-item class="w190" label="是否开票">
-              <el-radio-group v-model="info.invoice_status">
-                <el-radio-button class="el-icon-check" label="0">不需要</el-radio-button>
-                <el-radio-button class="el-icon-check" label="1">需要</el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-            <!--<template>-->
-              <div v-if="info.invoice_status == 1">
-              <el-form-item prop="invoice_title" class="w660" style="width:350px" label="发票抬头">
-                <el-input v-model="info.invoice_title" placeholder="请输入发票抬头"></el-input>
-              </el-form-item>
-              <el-form-item prop="invoice_contact_name" class="w660" label="收件人" style="width:350px">
-                <el-input v-model="info.invoice_contact_name" placeholder="请输入收件人"></el-input>
-              </el-form-item>
-              <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话" style="width:350px">
-                <el-input v-model="info.invoice_contact_phone" placeholder="请输入联系电话"></el-input>
-              </el-form-item>
-              <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:350px">
-                <el-input v-model="info.invoice_contact_address" placeholder="请输入快递地址"></el-input>
-              </el-form-item>
-              </div>
-            <!--</template>-->
-            <el-form-item class="qk-form-item" label="备注信息（选填）">
-              <el-input v-model="info.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
-            </el-form-item>
-          </el-form>
-          <div class="step fs16-c88 mrg-b30">第二步：请将付款款项转入以下官方账户</div>
-          <div><img style="width:500px;height:auto;" src="//qianka.b0.upaiyun.com/images/5425ad400654d32a2bd24b0bea3bad36.png"/></div>
-          <div><el-button @click="submitForm('form')" class="mrg-t40" type="primary">提交</el-button></div>
-        </div>
+    <el-tabs v-model="activeTabName" class="qk-tabs-image" type="card">
+      <el-tab-pane name="chinabank">
+        <span class="qk-tabs__item-image" slot="label"><img src="//qianka.b0.upaiyun.com/images/dad6498ed6cc685630beacababb08241.png" alt=""></span>
       </el-tab-pane>
-      <el-tab-pane :name="'alipay'">
-        <div slot="label"><img class="alipay-img" :src="ALIPAY_IMG"/></div>
+      <el-tab-pane name="alipay">
+        <span class="qk-tabs__item-image" slot="label"><img src="//qianka.b0.upaiyun.com/images/ceec6fa324b37e93b9676ca3e841c96a.png" alt=""></span>
       </el-tab-pane>
     </el-tabs>
 
@@ -230,6 +150,17 @@
         <el-button class="w70-h32" type="primary" @click="backTo('.')">确认</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog class="alipay-charge-dialog" :visible.sync="alipayDialogVisible">
+      <div class="dialog-header">
+        <img src="//qianka.b0.upaiyun.com/images/e7364777ab36294d35cafc4a9d8a1aba.png"/>
+        <span class="title">正在支付...</span>
+      </div>
+      <div class="dialog-content">
+        <div class="charge-status">支付成功 <span class="link">查看充值记录</span></div>
+        <div class="charge-status">支付失败 <span class="link">先不充了</span></div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <style lang="scss">
@@ -293,49 +224,8 @@
       margin-top: 47px;
     }
 
-    .el-tabs--border-card {
-      border: none;
-      box-shadow: none;
-    }
-
     .el-tabs__header {
-      height: 60px;
-      /*overflow: hidden;*/
-      width: 660px;
-      background: #fff;
-      border-bottom: 1px solid #dddddd;
-    }
-
-    .el-tabs--border-card >.el-tabs__header .el-tabs__item {
-      width: 139px;
-      height: 60px;
-      padding: 0;
-      background: #F5F5F5;
-      box-shadow: inset 0 1px 0 0 #DDDDDD, inset 0 -1px 0 0 #DDDDDD, inset -1px 0 0 0 #DDDDDD;
-      border: none;
-      position: relative;
-      vertical-align: top;
-    }
-
-    .el-tabs--border-card >.el-tabs__header .el-tabs__item.is-active {
-      background: #FFFFFF;
-      box-shadow: inset 0 2px 0 0 #4A90E2, inset -1px 0 0 0 #DDDDDD, inset 1px 0 0 0 #DDDDDD;
-      margin-right: 1px;
-      border: none;
-      margin-left: 0;
-    }
-
-    .el-tabs__item .china-bank-img {
-      margin: 16px;
-    }
-
-    .el-tabs__item .alipay-img {
-      margin: 16px 0 0 30px;
-    }
-
-    .el-tabs--border-card >.el-tabs__content {
-      padding: 17px 0 0px 0;
-      width: 669px;
+      margin-bottom: 17px;
     }
 
     .el-form-item .el-form-item__label {
@@ -453,6 +343,61 @@
       height: 40px;
     }
 
+    .alipay-charge-dialog {
+      .el-dialog {
+        padding: 0px;
+        top: 30% !important;
+        .el-dialog__header {
+          .el-dialog__headerbtn {
+            padding: 20px;
+            line-height: 1;
+            .el-icon-close {
+              font-size: 14px;
+            }
+          }
+        }
+        .el-dialog__body {
+          padding: 0px;
+          .dialog-header {
+            font-size: 0x;
+            padding: 40px 25px 30px;
+            img {
+              vertical-align: middle;
+            }
+            .title {
+              display: inline-block;
+              position: relative;
+              top: 2px;
+              left: 11px;
+              font-family: PingFangSC;
+              font-size: 16px;
+              color: #253238;
+            }
+          }
+          .dialog-content {
+            width: 390px;
+            height: 105px;
+            background-color: #ffffff;
+            padding: 20px 70px 30px;
+            box-shadow: 0 -1px 0 0 rgba(153, 153, 153, 0.14);
+            .charge-status {
+              font-family: PingFangSC;
+              font-size: 14px;
+              color: #888888;
+              line-height: 20px;
+              margin-bottom: 15px;
+              .link {
+                color: #4a90e2;
+              }
+            }
+            .charge-status:last-child {
+              margin-bottom: 0px;
+            }
+          }
+        }
+      }
+    }
+
     .bank-charge-success-dialog {
       .el-dialog--small {
         width: 390px;
@@ -530,7 +475,8 @@
       return {
         isNeedInvoice: false,
         activeTabName: 'chinabank',
-        dialogVisible: false
+        dialogVisible: false,
+        alipayDialogVisible: false
       }
     },
 
