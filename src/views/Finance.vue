@@ -33,7 +33,7 @@
       </el-table-column>
       <el-table-column label="操作" min-width="100">
         <template scope="scope">
-          <a style="margin-right: 13px;" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
+          <a style="margin-right: 13px;" v-if="scope.row.status === 0" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
           <!--<a class="link-go" type="text" @click="charge()">充值</a>-->
         </template>
       </el-table-column>
