@@ -17,7 +17,7 @@
       <el-form-item prop="qq" label="联系QQ（选填）">
         <el-input v-model="info.qq" placeholder="请输入联系QQ"></el-input>
       </el-form-item>
-      <el-form-item prop="address" label="联系地址（选填）" style="width: 500px;">
+      <el-form-item prop="address" label="联系地址（选填）" style="width: 350px;">
         <el-input v-model="info.address" placeholder="请输入联系地址"></el-input>
       </el-form-item>
       <el-form-item prop="password" class="mrg-t69" label="当前密码">
