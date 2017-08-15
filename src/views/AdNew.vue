@@ -27,7 +27,7 @@
       </el-form-item>
 
       <!-- 开始 日期+时间 -->            
-      <el-form-item class="qk-form-item" label="开始时间" prop="begin_time">
+      <el-form-item class="qk-form-item" style="width:500px;" label="开始时间" prop="begin_time">
         <el-date-picker 
           type="date"
           v-model="adForm.begin_time"
@@ -44,7 +44,7 @@
         </el-time-picker>
       </el-form-item>
       <!-- 结束 日期+时间 -->                  
-      <el-form-item class="qk-form-item" label="结束时间" prop="end_time">
+      <el-form-item class="qk-form-item" style="width:500px;" label="结束时间" prop="end_time">
         <el-date-picker 
           v-model="adForm.end_time"
           type="date"
