@@ -420,7 +420,7 @@
   }
 
   .el-form-item {
-    width: 500px;
+    width: 350px;
   }
 
   .add-keyword-item {
