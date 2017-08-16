@@ -29,7 +29,7 @@
       <el-form-item prop="confirm" label="确认密码">
         <el-input v-model="info.confirm" placeholder="请再输入一次新的密码"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item style="margin-top: 40px;">
         <el-button @click="submitForm('infoForm')" type="primary" class="w130">提交</el-button>
       </el-form-item>
     </el-form>
