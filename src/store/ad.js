@@ -121,15 +121,18 @@ const actions = {
   },
   taskToEnd ({commit}, id) {
     let path = URI_TASK_TO_END + id
-    api(path, {method: 'GET'})
-      .then(res => res && res.payload)
-      .then((data) => {
-        return data
+    return api(path, {method: 'GET'})
+      .then(res => res)
+      .catch(e => {
+        Message({
+          message: e.err_msg,
+          iconClass: 'qk-warning'
+        })
       })
   },
   addTaskNumber ({commit}, config) {
     let url = URI_ADD_TASK_NUMBER + config.currentTaskId + '/add_number/' + config.addNumber
-    api(url, {method: 'GET'})
+    return api(url, {method: 'GET'})
       .then(res => res.payload)
       .then((data) => {
         window.location.reload()
@@ -185,9 +188,12 @@ const actions = {
 
   resume ({commit}, id) {
     return api(URI_RESUME_TASK + id, {method: 'GET'})
-      .then(res => res.data)
-      .then((data) => {
-        return data
+      .then(res => res)
+      .catch(e => {
+        Message({
+          message: e.err_msg,
+          iconClass: 'qk-warning'
+        })
       })
   }
 
