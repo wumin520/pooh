@@ -508,6 +508,11 @@
   .table-wrapper {
     width: 100%;
     margin: 20px 0px;
+    .el-table {
+      .el-loading-mask {
+        z-index: 100;
+      }
+    }
 
     .nodata .el-table__fixed {
       height: 47px !important;
