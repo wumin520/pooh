@@ -21,7 +21,7 @@ export const URI_TASK_TO_END = '/v2/api/task/end/' // 任务状态变成 ‘完�
 export const URI_ADD_TASK_NUMBER = '/v2/api/task/' // 续总数、下载idfa
 export const URI_PREVIEW_TASK = '/v2/api/task/view/' // 预览
 export const URI_DELE_TASK = '/v2/api/task/delete/' // 预览,
-export const URI_RESUME_TASK = '/api/task/resume/' // 重新开启任务,
+export const URI_RESUME_TASK = '/v2/api/task/resume/' // 重新开启任务,
 
 export const URI_FETCH_NEW_PRE = '/v2/api/task/new' // 新加广告 前的相关信息
 export const URI_POST_TASK = '/v2/api/task'  // 提交广告
