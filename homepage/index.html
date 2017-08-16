@@ -9,10 +9,10 @@
       var LOGIN_USER = 'lu'
 
       function get_cookie (name) {
-        var re = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
+        var reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
         var result = document.cookie.match(reg)
         if (result) {
-          return unescape(arr[2])
+          return unescape(result[2])
         }
         return null
       }

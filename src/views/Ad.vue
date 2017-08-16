@@ -679,6 +679,7 @@
           font-size: 14px;
           color: #b5b5b5;
           position: absolute;
+          z-index: 2px;
           top: 20px;
           right: 20px;
           &:before {
