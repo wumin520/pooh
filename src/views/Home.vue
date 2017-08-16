@@ -131,7 +131,7 @@
         </el-table-column>
         <el-table-column
           prop="effect_rate"
-          label="转化率">
+          label="完成率">
         </el-table-column>
         <el-table-column
           prop="zs_done_count"
