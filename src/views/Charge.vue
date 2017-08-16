@@ -75,10 +75,10 @@
               <el-form-item prop="invoice_title" class="w660" style="width:350px" label="发票抬头">
                 <el-input v-model="info.invoice_title" placeholder="请输入发票抬头"></el-input>
               </el-form-item>
-              <el-form-item prop="invoice_contact_name" class="w660" label="收件人" style="width:190px">
+              <el-form-item prop="invoice_contact_name" class="w660" label="收件人" style="width:350px">
                 <el-input v-model="info.invoice_contact_name" placeholder="请输入收件人"></el-input>
               </el-form-item>
-              <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话" style="width:190px">
+              <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话" style="width:350px">
                 <el-input v-model="info.invoice_contact_phone" placeholder="请输入联系电话"></el-input>
               </el-form-item>
               <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:350px">

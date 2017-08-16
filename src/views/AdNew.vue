@@ -96,7 +96,7 @@
       </div>
 
       <!-- 应用价格 免费、付费-->
-      <el-form-item prop="appstore_type" class="qk-form-item">
+      <el-form-item prop="appstore_type" class="qk-form-item" style="width: 660px">
         <div class="left-wrap">
             <div class="fs13-c3a">应用价格</div>
             <div style="font-size:0px;">
@@ -236,12 +236,14 @@
     }
 
     .keywords-wrapper {
+      width: 450px;
       margin-bottom: 20px;
       .el-form-item__content {
         font-size: 0px;
       }
     }
     .keywords-list {
+      width: 500px;
       margin-bottom: 10px;
     }
     .unit-desc {
