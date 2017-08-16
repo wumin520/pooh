@@ -133,7 +133,7 @@
           prop="effect_rate"
           label="转化率">
         </el-table-column>
-         <el-table-column
+        <el-table-column
           prop="zs_done_count"
           label="完成专属">
         </el-table-column>
@@ -214,7 +214,8 @@
   .select-dropdown-home {
     .el-select-dropdown__item {
       span {
-        font-size: 14px !important;      
+        font-size: 14px !important; 
+        color: #3a3a3a;     
       }
     }
   }

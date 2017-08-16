@@ -333,11 +333,10 @@
     <el-dialog title="" v-model="dialogContinueTotalVisible" :show-close="true" custom-class="add-total-dialog" style="top: 30%;">
       <div class="head-content">
         <div class="task-name" v-text="taskName"></div>
-        <div class="kong" style="width: 100%;height:20px;"></div>
       </div>
-      <el-form :model="continueTotalForm" style="margin-top:20px;">
+      <el-form :model="continueTotalForm">
         <el-form-item label="增加份数： ">
-          <el-input v-model="continueTotalForm.add_number" auto-complete="off"></el-input>
+          <el-input v-model="continueTotalForm.add_number" auto-complete="off" placeholder="请输入增加份数"></el-input>
         </el-form-item>
       </el-form>
       <div class="footer">
@@ -672,16 +671,16 @@
   }
 
   .add-total-dialog {
-    padding: 40px 35px 0px 35px;
-    width: 500px;
+    padding: 0px;
+    width: 390px;
     .el-dialog__header {
       .el-dialog__headerbtn {
         .el-dialog__close {
-          width: 14px;
-          height: 14px;
+          font-size: 14px;
+          color: #b5b5b5;
           position: absolute;
           top: 20px;
-          right: 18px;
+          right: 20px;
           &:before {
             fotn-size: 14px;            
           }
@@ -693,23 +692,26 @@
       font-family: PingFangSC-Regular;      
       padding: 0px;
       .head-content {
-        padding-bottom: 20px;
-        border-bottom: 1px solid #ddd;
-        width: 418px;
-        height: 40px;
-        overflow-y: hidden;
+        padding: 25px;
+        width: 100%;
         .task-name {
-          font-size: 14px;
-          line-height: 19px;
-          height: 20px;
+          width: 312px;
+          font-family: PingFangSC;
+          font-size: 16px;
+          line-height: 1.0;
+          color: #3a3a3a;
+          height: 16px;
           overflow: hidden;
-          color: #3A3A3A;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
       }
       .el-form {
-        margin-top: 20px !important;
+        box-shadow: 0 -1px 0 0 rgba(153, 153, 153, 0.14);
+        padding: 25px;
+        height: 117px;
         .el-form-item {
-          margin-bottom: 30px;
+          margin-bottom: 25px;
           .el-form-item__label {
             padding: 0px 0px 10px 0px;
             font-size: 13px;
@@ -726,8 +728,8 @@
         font-size: 0px;
         margin-top: 0px;
         position: absolute;
-        bottom: 0px;
-        right: 0px;
+        bottom: 25px;
+        right: 25px;
         .el-button {
           width: 70px;
         }
@@ -1045,9 +1047,11 @@
       // 手动 完成
       goToEnded (row) {
         this.taskToEnd(row.id).then(data => {
-          this.$route.params.status = 'ended'
-          this.activeName = 'tab5' // 要留在vue文件中
-          this.searchTask()
+          if (data && data.status === 'ok') {
+            this.$route.params.status = 'ended'
+            this.activeName = 'tab5' // 要留在vue文件中
+            this.searchTask()
+          }
         })
       },
 
@@ -1058,6 +1062,12 @@
           addNumber: this.continueTotalForm.add_number
         }
         this.addTaskNumber(config)
+        .catch(e => {
+          this.$message({
+            message: e.err_msg,
+            iconClass: 'qk-warning'
+          })
+        })
       },
       // 显示 续总数弹窗
       addNumber (row) {
@@ -1112,9 +1122,12 @@
       },
       // 开启
       resumeTask (row) {
-        this.resume(row.id).then(_ => {
-          this.$route.params.status = 'ok'
-          this.getAdvertisement()
+        this.resume(row.id).then(data => {
+          if (data && data.status === 'ok') {
+            this.$route.params.status = 'ok'
+            this.activeName = 'tab1' // 要留在vue文件中
+            this.getAdvertisement()
+          }
         })
       }
     }
