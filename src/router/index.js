@@ -10,6 +10,7 @@ import AdNew from '@/views/AdNew'
 import Finance from '@/views/Finance'
 import Account from '@/views/Account'
 import Charge from '@/views/Charge'
+import Price from '@/views/Price'
 
 Vue.use(Router)
 
@@ -63,6 +64,11 @@ export default new Router({
           name: 'dash_finance_charge',
           path: 'finance/charge',
           component: Charge
+        },
+        {
+          name: 'dash_finance_price',
+          path: 'finance/price',
+          component: Price
         },
         {
           name: 'dash_finance_edit',
