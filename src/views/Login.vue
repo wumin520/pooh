@@ -185,7 +185,7 @@
             method: 'POST',
             body: this.form
           }).then(data => {
-            switch (data.payoad && data.payload.atype) {
+            switch (data.payload && data.payload.atype) {
               case '2':
                 this.$router.push('/d/home')
                 break
