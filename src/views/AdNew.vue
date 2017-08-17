@@ -489,7 +489,7 @@
         this.fetchPreRenew(params)
       } else if (path === 'dash_ad_new') {
         // 添加
-        this.$store.dispatch('updateIndex', 'dash_ad_new', { root: true })
+        this.$store.dispatch('updateIndex', 'dash_ad', { root: true })
         this.page_sub_title = '添加新广告'
         this.fetchPreNew()
       } else {

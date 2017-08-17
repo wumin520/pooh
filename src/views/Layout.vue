@@ -22,6 +22,8 @@
           <el-menu-item index="2-1">退出</el-menu-item>
         </el-submenu>
 
+        <el-menu-item index="6" class="pull-right layout-charge">价格体系</el-menu-item>        
+
         <el-menu-item index="3" class="pull-right layout-charge">充值</el-menu-item>
 
         <el-menu-item index="4" class="pull-right" style="cursor: default;">余额：¥ <span v-text="balance"></span></el-menu-item>
@@ -151,6 +153,9 @@
             break
           case '3':
             this.$router.push('/d/finance/charge')
+            break
+          case '6':
+            this.$router.push('/d/finance/price')
             break
         }
       },
