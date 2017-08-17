@@ -26,19 +26,19 @@
       <el-col :span="8">
         <div class="grid-content bg-purple mrg-l--0">
           单笔充值<br>
-          ¥ 10,000 ~ 299,999
+          ¥ 10,000 ~ 29,999
         </div>
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple">
           单笔充值<br>
-          ¥ 300,000 ~ 499,999
+          ¥ 30,000 ~ 49,999
         </div>
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple mrg-l--2">
           单笔充值<br>
-          ¥ 500,000 及以上
+          ¥ 50,000 及以上
         </div>
       </el-col>
     </el-row>
