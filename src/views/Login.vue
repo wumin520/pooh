@@ -74,7 +74,7 @@
                   .el-form-item__content {
                     .password {
                       .el-input__inner {
-                        font-size: 28px !important;                      
+                        font-size: 28px !important;
                       }
 
                       .el-input__inner::-webkit-input-placeholder {
@@ -123,7 +123,7 @@
 
 <script>
   import api from '@/fetch'
-  
+
   export default {
     name: 'login',
 
@@ -185,7 +185,13 @@
             method: 'POST',
             body: this.form
           }).then(data => {
-            this.$router.push('/d/home')
+            switch (data.payoad && data.payload.atype) {
+              case '2':
+                this.$router.push('/d/home')
+                break
+              default:
+                location.href = '/dashboard/'
+            }
           }).catch(err => {
             this.submitNum = 0
             this.$message({

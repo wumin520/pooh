@@ -7,6 +7,7 @@
     <title>钱咖广告投放平台</title>
     <script type="text/javascript">
       var LOGIN_USER = 'lu'
+      var LOGIN_ROLE = 'atype'
 
       function get_cookie (name) {
         var reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
@@ -18,7 +19,13 @@
       }
 
       if (get_cookie(LOGIN_USER) == 1) {
-        location.href = '/v2/d/home'
+        switch (get_cookie(LOGIN_ROLE)) {
+          case '2':
+            location.href = '/v2/d/home'
+            break
+          default:
+            location.href = '/dashboard/' // 老的 tigger
+        }
       }
     </script>
     <link href="http://unpkg.qkcdn.com/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
