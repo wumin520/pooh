@@ -20,7 +20,7 @@
 
       if (get_cookie(LOGIN_USER) == 1) {
         switch (get_cookie(LOGIN_ROLE)) {
-          case 2:
+          case '2':
             location.href = '/v2/d/home'
             break
           default:
