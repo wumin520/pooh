@@ -353,6 +353,12 @@
             line-height: 1;
             .el-icon-close {
               font-size: 14px;
+              color: #b5b5b5;
+              position: absolute;
+              z-index: 2;
+              top: 20px;
+              right: 20px;
+              cursor: pointer;
             }
           }
         }
