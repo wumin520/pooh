@@ -1,3 +1,6 @@
+// Promise Polyfill
+import 'es6-promise/auto'
+
 import 'normalize.css/normalize.css'
 // import 'element-ui/lib/theme-default/index.css'
 // 使用定制的 element 钱咖主题
