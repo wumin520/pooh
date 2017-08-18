@@ -70,11 +70,12 @@ export default new Router({
           path: 'finance/price',
           component: Price
         },
-        {
-          name: 'dash_finance_edit',
-          path: 'finance/edit/:id',
-          component: Charge
-        },
+        // 该路由已废弃
+        // {
+        //   name: 'dash_finance_edit',
+        //   path: 'finance/edit/:id',
+        //   component: Charge
+        // },
         {
           name: 'dash_account',
           path: 'account',

@@ -1,12 +1,10 @@
 import {
   URI_CHARGE,
-  URI_CHARGE_INVOICE,
-  URI_CHARGE_EDIT
+  URI_CHARGE_INVOICE
 } from '@/constants'
 import api from '../fetch'
 
 const types = {
-  SYNC: 'sync',
   SYNC_INVOICE: 'syncInvocie'
 }
 
@@ -43,6 +41,7 @@ const getters = {
 }
 
 const mutations = {
+<<<<<<< c23603a6b6b24dd2f6a004b47edda6a82d97a1c0
   [types.SYNC] ({info}, payload) {
     // console.log('mutation:payload: ' + types.SYNC, payload)
     info.amount = payload.coast
@@ -53,28 +52,25 @@ const mutations = {
 
   [types.SYNC_INVOICE] ({info}, {title, name, phone, address, remark}) {
     // console.log('mutation title: ' + types.SYNC_INVOICE, title)
+=======
+  [types.SYNC_INVOICE] ({info, aliInfo}, {title, name, phone, address, remark}) {
+    console.log('mutation title: ' + types.SYNC_INVOICE, title)
+>>>>>>> alipay 功能完善
     info.invoice_title = title
     info.invoice_contact_name = name
     info.invoice_contact_phone = phone
     info.invoice_contact_address = address
     info.remark = remark
+    aliInfo.invoice_title = title
+    aliInfo.invoice_contact_name = name
+    aliInfo.invoice_contact_phone = phone
+    aliInfo.invoice_contact_address = address
+    aliInfo.remark = remark
     // Object.assign(state.info, {...payload.invoice})
   }
 }
 
 const actions = {
-  getInfo ({commit}, id) {
-    return api(URI_CHARGE_EDIT + id)
-      .then(res => {
-        let payload = res.payload
-        if (payload) {
-          commit(types.SYNC, payload)
-          commit(types.SYNC_INVOICE, payload.invoice)
-        }
-        return res
-      })
-  },
-
   getInvoiceInfo ({dispatch, commit}) {
     dispatch('updateIndex', 'dash_finance_charge', { root: true })
     return api(URI_CHARGE_INVOICE).then((res) => {

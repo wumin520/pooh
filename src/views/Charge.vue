@@ -98,7 +98,7 @@
       </el-form-item>
     </el-form>
 
-    <el-form v-show="activeTabName !== 'chinabank'" class="alipay-form" ref="alipayform" :model="aliInfo" :rules="rules">
+    <el-form v-show="activeTabName !== 'chinabank'" class="alipay-form" ref="alipayform" :model="aliInfo" :rules="alirules">
       <el-form-item prop="ali_amount" class="w214" label="充值金额">
         <el-input v-model="aliInfo.ali_amount" placeholder="请输入充值金额"></el-input>元
       </el-form-item>
@@ -132,7 +132,7 @@
       </el-form-item>
     </el-form>
 
-    <div v-show="activeTabName === 'chinabank'" class="step fs16-c88 mrg-b30">第二步：请将付款款项转入以下官方账户</div>
+    <div v-show="activeTabName === 'activeTabName'" class="step fs16-c88 mrg-b30">第二步：请将付款款项转入以下官方账户</div>
     <div v-show="activeTabName === 'chinabank'" style="margin-bottom:40px;"><img style="width:500px;height:auto;" src="//qianka.b0.upaiyun.com/images/5425ad400654d32a2bd24b0bea3bad36.png"/></div>
 
     <div><el-button @click="submitForm()" type="primary">提交</el-button></div>
@@ -157,8 +157,8 @@
         <span class="title">正在支付...</span>
       </div>
       <div class="dialog-content">
-        <div class="charge-status">支付成功 <span class="link">查看充值记录</span></div>
-        <div class="charge-status">支付失败 <span class="link">先不充了</span></div>
+        <div class="charge-status">支付成功 <span class="link" @click="toFinance()">查看充值记录</span></div>
+        <div class="charge-status">支付失败 <span class="link" @click="alipayDialogVisible = false">重新付款</span></div>
       </div>
     </el-dialog>
   </div>
@@ -388,6 +388,7 @@
               margin-bottom: 15px;
               .link {
                 color: #4a90e2;
+                cursor: pointer;
               }
             }
             .charge-status:last-child {
@@ -469,6 +470,8 @@
 <script>
   import {mapState, mapActions} from 'vuex'
   import {Message} from 'element-ui'
+  import qs from 'qs'
+  import _ from 'lodash'
 
   export default {
     data () {
@@ -483,18 +486,6 @@
     computed: {
       currentPageTitle () {
         return this.$router.currentRoute.name === 'dash_finance_charge' ? '充值' : '编辑'
-      },
-
-      CHINA_BANK_IMG () {
-        return this.activeTabName === 'chinabank'
-          ? '//qianka.b0.upaiyun.com/images/dad6498ed6cc685630beacababb08241.png'
-          : '//qianka.b0.upaiyun.com/images/39f3fed161d6e367570a677ced3be44a.png'
-      },
-
-      ALIPAY_IMG () {
-        return this.activeTabName === 'chinabank'
-          ? '//qianka.b0.upaiyun.com/images/dce2fe77ee35e1b84cb2f88012380dcc.png'
-          : '//qianka.b0.upaiyun.com/images/ceec6fa324b37e93b9676ca3e841c96a.png'
       },
 
       rules () {
@@ -544,11 +535,6 @@
           ]
         }
 
-        let aliRules = {
-          ali_drawee: [{ required: true, message: '请输入付款人的支付宝账号', trigger: 'change' }],
-          ali_amount: [{ required: true, validator: checkCoast, trigger: 'blur' }]
-        }
-
         let rulesAdded = {...rules,
           invoice_title: [{required: true, message: '请输入发票抬头', trigger: 'blur'}],
           invoice_contact_name: [{required: true, message: '请输入收件人', trigger: 'blur'}],
@@ -556,11 +542,47 @@
           invoice_contact_address: [{required: true, message: '请输入快递地址', trigger: 'blur'}]
         }
 
-        if (this.activeTabName === 'chinabank') {
-          return this.invoice_status === 0 ? rules : rulesAdded
-        } else {
-          return aliRules
+        return this.invoice_status === 0 ? rules : rulesAdded
+      },
+
+      alirules () {
+        let checkCoast = (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('充值金额不能为空'))
+          }
+          setTimeout(() => {
+            if (!/(?=^[.\d]+$)(?=^.*\.?)(?!^\d*\.\d*\.)[.\d]*$/.test(value)) {
+              callback(new Error('请输入有效金额格式'))
+            }
+            if (value < 1000) {
+              callback(new Error('金额必须大于1000'))
+            } else {
+              callback()
+            }
+          }, 1000)
         }
+
+        let checkPhone = (rule, value, callback) => {
+          if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
+            callback(new Error('手机号格式不正确'))
+          } else {
+            callback()
+          }
+        }
+
+        let aliRules = {
+          ali_drawee: [{ required: true, message: '请输入付款人的支付宝账号', trigger: 'change' }],
+          ali_amount: [{ required: true, validator: checkCoast, trigger: 'blur' }]
+        }
+
+        let alirulesAdded = {...aliRules,
+          invoice_title: [{required: true, message: '请输入发票抬头', trigger: 'blur'}],
+          invoice_contact_name: [{required: true, message: '请输入收件人', trigger: 'blur'}],
+          invoice_contact_phone: [{required: true, validator: checkPhone, trigger: 'blur'}],
+          invoice_contact_address: [{required: true, message: '请输入快递地址', trigger: 'blur'}]
+        }
+
+        return this.invoice_status === 0 ? aliRules : alirulesAdded
       },
 
       ...mapState('charge', [
@@ -576,22 +598,34 @@
         this.$router.push('/d/finance')
       },
       submitForm () {
-        let formName = this.activeTabName === 'chinabank' ? 'bankform' : 'alipayform'
-        console.log(formName)
-        this.$refs[formName].validate((valid) => {
-          // console.log('validate result: ', valid)
-          if (valid) {
-            this.submitInfo(this.info).then((res) => {
-              console.log('submitInfo result res: ', res)
-              this.dialogVisible = true
-            }).catch((err) => {
-              Message({
-                message: err.err_msg,
-                iconClass: 'qk-warning'
+        if (this.activeTabName === 'chinabank') {
+          this.$refs['bankform'].validate((valid) => {
+            if (valid) {
+              this.submitInfo(this.info).then((res) => {
+                this.dialogVisible = true
+              }).catch((err) => {
+                Message({
+                  message: err.err_msg,
+                  iconClass: 'qk-warning'
+                })
               })
-            })
-          }
-        })
+            }
+          })
+        } else {
+          this.$refs['alipayform'].validate((valid) => {
+            if (valid) {
+              this.alipayDialogVisible = true
+              var info = this.aliInfo
+              var postInfo = {}
+              _.each(info, function (val, key) {
+                postInfo[key] = encodeURI(val)
+              })
+              let params = qs.stringify(postInfo)
+              let url = 'http://www.baidu.com?' + params
+              window.open(url)
+            }
+          })
+        }
       },
 
       backTo () {
@@ -601,7 +635,6 @@
       },
 
       ...mapActions('charge', [
-        'getInfo',
         'getInvoiceInfo',
         'submitInfo'
       ])
