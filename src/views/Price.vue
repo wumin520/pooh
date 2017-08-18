@@ -61,19 +61,19 @@
         <el-col :span="8">
           <div class="h70 bg-grey list-larger-cell">
             单笔充值<br>
-            ¥ 10,000 ~ 29,999
+            ¥ 10,000 ~ 299,999
           </div>
         </el-col>
         <el-col :span="8">
           <div class="h70 bg-grey list-larger-cell">
             单笔充值<br>
-            ¥ 30,000 ~ 49,999
+            ¥ 300,000 ~ 499,999
           </div>
         </el-col>
         <el-col :span="8">
           <div class="h70 bg-grey list-larger-cell">
             单笔充值<br>
-            ¥ 50,000 及以上
+            ¥ 500,000 及以上
           </div>
         </el-col>
       </el-row>
@@ -169,14 +169,14 @@
           }
         }
         .list-larger-cell {
-          width: 220px;          
+          width: 220px;
           font-family: PingFangSC;
           font-size: 13px;
           line-height: 23px;
           text-align: center;
           color: #3a3a3a;
           padding: 12px;
-	        box-shadow: inset 1px 0 0 0 #e8e8e8, inset 0 1px 0 0 #e8e8e8;          
+	        box-shadow: inset 1px 0 0 0 #e8e8e8, inset 0 1px 0 0 #e8e8e8;
         }
         .larger-list-cell {
           width: 220px;
@@ -186,7 +186,7 @@
           font-size: 13px;
           text-align: center;
           color: #3a3a3a;
-	        box-shadow: inset 1px 0 0 0 #e8e8e8, inset 0 1px 0 0 #e8e8e8;          
+	        box-shadow: inset 1px 0 0 0 #e8e8e8, inset 0 1px 0 0 #e8e8e8;
         }
         .larger-cell {
           line-height: 65px;
