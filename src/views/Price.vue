@@ -61,7 +61,7 @@
         <el-col :span="8">
           <div class="h70 bg-grey list-larger-cell">
             单笔充值<br>
-            ¥ 10,000 ~ 299,999
+            ¥ 100,000 ~ 299,999
           </div>
         </el-col>
         <el-col :span="8">
