@@ -62,6 +62,7 @@
   .finance-container {
     width: 100%;
     height: 100%;
+    min-width: 100%;
     padding: 50px 35px 150px 35px;
 
     .w76-h30 {
