@@ -32,6 +32,7 @@
       }
     </script>
     <link href="http://unpkg.qkcdn.com/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://unpkg.qkcdn.com/swiper@3.4.2/dist/css/swiper.min.css" rel="stylesheet">
     <!-- light font -->
     <link href='http://cdn.webfont.youziku.com/webfonts/nomal/105132/46865/596871dff629d8142063a4b6.css' rel='stylesheet' type='text/css' />
     <!-- normal font -->
@@ -58,10 +59,24 @@
       </div>
     </div>
 
-    <div class="qk-banner">
+    <!-- <div class="qk-banner">
       <img src="http://qianka.b0.upaiyun.com/images/b1dda64d727c75ea9b7d8f4b0eb434d6.png" alt="" class="title">
       <a href="/v2/register" class="btn register" style="cursor: pointer;">免费注册</a>
       <img src="http://qianka.b0.upaiyun.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">
+    </div> -->
+    <div class="swiper-container qk-banner">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide pic1">
+          <img src="http://qianka.b0.upaiyun.com/images/b1dda64d727c75ea9b7d8f4b0eb434d6.png" alt="" class="title">
+          <a href="/v2/register" class="btn register" style="cursor: pointer;">免费注册</a>
+          <img src="http://qianka.b0.upaiyun.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">
+        </div>
+        <div class="swiper-slide pic2">
+          <a href="/v2/register" class="btn register" style="cursor: pointer;">免费注册</a>
+          <img src="http://qianka.b0.upaiyun.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">
+          <!-- <img src="http://assets.qkcdn.com/images/03edba18bb4af94b1b20a1a15b561a92.png" alt="">           -->
+        </div>
+      </div>
     </div>
 
     <div class="qk-list pdb-780">
@@ -210,13 +225,18 @@
 
     <!-- jQuery -->
     <script src="http://unpkg.qkcdn.com/jquery@3.2.1/dist/jquery.min.js"></script>
+    <script src="http://unpkg.qkcdn.com/swiper@3.4.2/dist/js/swiper.min.js"></script>
     <script>
       $(function() {
+        var mySwiper = new Swiper('.swiper-container', {
+          autoplay: 1000,//可选选项，自动滑动
+        })
+
         function initNavbar() {
           if ($(window).scrollTop() > 666) {
             $('.qk-navbar').css('background', '#0A2335')
           }else  {
-            $('.qk-navbar').css('background', 'rgba(0, 0, 0, 0.25)');
+            $('.qk-navbar').css('background', 'none');
           }
         }
 

@@ -19,25 +19,26 @@ body {
       }
 
       .nav-btn-wrapper {
-        width: 170px;
+        width: 146px;
         position: absolute;
         right: 80px;
-        top: 26px;
+        top: 28px;
 
         a.qk-btn {
-          height: 28px;
-          width: 80px;
-          line-height: 28px;
+          height: 22px;
+          width: 64px;
+          // line-height: 28px;
           padding: 0px;
           text-decoration: none;
-          font-family: Source-Han-Normbe51b067e19aac;
-          font-size: 13px;
+          font-family: PingFangSC;
+          font-size: 16px;
+          font-weight: 600;
           float: left;
           opacity: 0.75;
           text-align: center;
-          background: rgba(255,255,255,0.25);
-          border: 1px solid #FFFFFF;
-          border-radius: 100px;
+          // background: rgba(255,255,255,0.25);
+          // border: 1px solid #FFFFFF;
+          // border-radius: 100px;
           color: #fff;
           transition: all 0.48s ease-out;
 
@@ -47,37 +48,64 @@ body {
         }
 
         a.btn-login {
-          margin-left: 10px;
+          width: 32px;
+          margin-left: 50px;
         }
       }
     }
     .qk-banner {
       text-align: center;
       height: 750px;
-      background-image: url('http://qianka.b0.upaiyun.com/images/89d6730bad9ccff5563a2c95fd1fc801.png');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
+      
+      .swiper-wrapper {
+        .swiper-slide {
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+        }
+        .pic1 {
+          background-image: url('http://qianka.b0.upaiyun.com/images/89d6730bad9ccff5563a2c95fd1fc801.png');
+          
+          .title {
+            margin-top: 277px;
+          }
 
-      .title {
-        margin-top: 277px;
-      }
-
-      .register {
-        display: block;
-        margin: 40px auto 180px auto;
-        font-family: Source-Han-Normbe51b067e19aac;
-        font-size: 18px;
-        color: #FFFFFF;
-        width: 200px;
-        height: 60px;
-        background: #1B80C3;
-        border-radius: 100px;
-        line-height: 47px;
-        transition: all 0.48s ease-out;
-      }
-      .register:hover {
-        background-color: #06598F;
+          .register {
+            display: block;
+            margin: 40px auto 180px auto;
+            font-family: Source-Han-Normbe51b067e19aac;
+            font-size: 18px;
+            color: #FFFFFF;
+            width: 200px;
+            height: 60px;
+            background: #1B80C3;
+            border-radius: 100px;
+            line-height: 47px;
+            transition: all 0.48s ease-out;
+          }
+          .register:hover {
+            background-color: #06598F;
+          }
+        }
+        .pic2 {
+          background-image: url('http://assets.qkcdn.com/images/03edba18bb4af94b1b20a1a15b561a92.png');
+          .register {
+            display: block;
+            margin: 446px auto 104px auto;
+            font-family: Source-Han-Normbe51b067e19aac;
+            font-size: 18px;
+            color: #FFFFFF;
+            width: 200px;
+            height: 60px;
+            background: #1B80C3;
+            border-radius: 100px;
+            line-height: 47px;
+            transition: all 0.48s ease-out;
+          }
+          .register:hover {
+            background-color: #06598F;
+          }
+        }  
       }
     }
 
