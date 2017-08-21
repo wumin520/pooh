@@ -200,6 +200,9 @@
     data () {
       return {}
     },
+
+    fetchAction: 'priceSys/getInfo',
+
     mounted () {
       this.$store.dispatch('updateIndex', 'dash_finance', { root: true })
     },

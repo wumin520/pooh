@@ -11,6 +11,7 @@ export const URI_CHARGE_EDIT = '/v2/api/charge_edit/'
 export const URI_CHARGE = '/v2/api/charge'
 export const URI_FINANCE = '/v2/api/finance'
 export const URI_FINANCE_CHARGE_CANCEL = '/v2/api/cancel/'
+export const URI_PRICE_SYS = '/v2/api/charge/get_price_system'
 
 // Report Types
 export const LW = 'LW' // 最近7天
