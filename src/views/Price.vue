@@ -90,7 +90,7 @@
         </el-col>
         <el-col :span="8">
           <div class="h64 list-cell">
-            赠送<span class="fs18-c42">35%</span>等值金额
+            赠送<span class="fs18-c42">30%</span>等值金额
           </div>
         </el-col>
       </el-row>
