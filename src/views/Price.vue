@@ -43,7 +43,7 @@
       </el-row>
       <el-row type="flex" class="row-bg" style="box-shadow: inset -1px 0 0 0 #e8e8e8, inset 0 -1px 0 0 #e8e8e8;">
         <el-col :span="6">
-          <div class="h65 bg-grey list-cell larger-cell">商品功能说明</div>
+          <div class="h65 bg-grey list-cell larger-cell" style="border-bottom: 1px solid #e8e8e8;">商品功能说明</div>
         </el-col>
         <el-col :span="6">
           <div class="h65 larger-list-cell">iOS免费应用获得全新真实用户的下载以及激活试玩</div>

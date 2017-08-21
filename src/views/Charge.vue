@@ -62,7 +62,7 @@
               <el-input v-model="info.amount_check" placeholder="请再次输入充值金额"></el-input>元
             </el-form-item>
             <el-form-item prop="drawee" class="w214" label="付款人">
-              <el-input v-model="info.drawee" placeholder="请输入付款人/公司名称"></el-input>元
+              <el-input v-model="info.drawee" placeholder="请输入付款人/公司名称"></el-input>
             </el-form-item>
             <el-form-item class="w190" label="是否开票">
               <el-radio-group v-model="info.invoice_status">
@@ -479,7 +479,7 @@
       },
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
-          console.log('validate result: ', valid)
+          // console.log('validate result: ', valid)
           if (valid) {
             this.submitInfo(this.info).then((res) => {
               console.log('submitInfo result res: ', res)

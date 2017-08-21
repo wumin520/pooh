@@ -163,7 +163,7 @@ const actions = {
         payload.task.begin_time = util.formatTime(payload.task.begin_time)
         payload.task.end_time = util.formatTime(payload.task.end_time)
         commit(types.UPDATE_PREVIEW_FORM, payload.task)
-        console.log('state.previewForm', state.previewForm)
+        // console.log('state.previewForm', state.previewForm)
       })
   },
 

@@ -42,7 +42,7 @@ const mutations = {
         state.activeIndex = '4'
         break
     }
-    console.log('commit activeIndex', state.activeIndex)
+    // console.log('commit activeIndex', state.activeIndex)
   }
 }
 

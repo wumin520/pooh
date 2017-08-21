@@ -180,7 +180,7 @@
             isValid = valid
             if (valid) {
             } else {
-              console.log('error submit!!')
+              // console.log('error submit!!')
               return false
             }
           })

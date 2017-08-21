@@ -690,7 +690,7 @@
         }
         this.postForm(config)
           .then(res => {
-            console.log('post', res)
+            // console.log('post', res)
             this.submitNum = 0
             if (this.$route.name === 'dash_ad_renew') {
               this.$message({
@@ -732,7 +732,7 @@
 
       // 添加专属任务
       addZS () {
-        console.log('addZS')
+        // console.log('addZS')
         this.addZSLists()
       },
 

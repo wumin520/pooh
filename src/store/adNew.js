@@ -218,7 +218,7 @@ const actions = {
       payload.task.zs_task[payload.task.zs_task.length - 1].can_delete = true
     }
 
-    console.log('>>>payload.task.zs_task', payload.task.zs_task)
+    // console.log('>>>payload.task.zs_task', payload.task.zs_task)
     commit(types.UPDATE_ADFORM, payload.task)
   },
 

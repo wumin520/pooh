@@ -161,7 +161,7 @@
       },
 
       handleSelect (key, keyPath) {
-        console.log(key, keyPath)
+        // console.log(key, keyPath)
         let activeIndex = keyPath[keyPath.length - 1]
 
         switch (activeIndex) {
