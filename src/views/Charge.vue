@@ -479,7 +479,7 @@
       },
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
-          console.log('validate result: ', valid)
+          // console.log('validate result: ', valid)
           if (valid) {
             this.submitInfo(this.info).then((res) => {
               console.log('submitInfo result res: ', res)

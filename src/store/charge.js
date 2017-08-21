@@ -33,7 +33,7 @@ const getters = {
 
 const mutations = {
   [types.SYNC] ({info}, payload) {
-    console.log('mutation:payload: ' + types.SYNC, payload)
+    // console.log('mutation:payload: ' + types.SYNC, payload)
     info.amount = payload.coast
     info.amount_check = payload.coast
     info.drawee = payload.drawee
@@ -41,7 +41,7 @@ const mutations = {
   },
 
   [types.SYNC_INVOICE] ({info}, {title, name, phone, address, remark}) {
-    console.log('mutation title: ' + types.SYNC_INVOICE, title)
+    // console.log('mutation title: ' + types.SYNC_INVOICE, title)
     info.invoice_title = title
     info.invoice_contact_name = name
     info.invoice_contact_phone = phone
@@ -68,7 +68,7 @@ const actions = {
     dispatch('updateIndex', 'dash_finance_charge', { root: true })
     return api(URI_CHARGE_INVOICE).then((res) => {
       // commit(res)
-      console.log('getInvoiceInfo', res)
+      // console.log('getInvoiceInfo', res)
       commit(types.SYNC_INVOICE, res.payload)
       return res
     })
@@ -79,7 +79,7 @@ const actions = {
       method: 'POST',
       body: payload
     }).then((res) => {
-      console.log(res)
+      // console.log(res)
       return res
     })
   }

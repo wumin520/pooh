@@ -21,7 +21,7 @@ const getters = {
 const mutations = {
   [types.SYNC] (state, payload) {
     // TODO: 入口逻辑
-    console.log(payload)
+    // console.log(payload)
     Object.assign(state, {info: {...payload.info, password: '', new_password: '', confirm: ''}})
     // state.info = payload.info
   }
@@ -46,7 +46,7 @@ const actions = {
       method: 'POST',
       body: payload
     }).then((res) => {
-      console.log(res)
+      // console.log(res)
       return res
     }).catch(err => {
       Message({
