@@ -169,7 +169,11 @@
             this.$router.push('/d/home')
             break
           case '2':
-            this.$router.push('/d/ad/ios/ok')
+            if (this.$router.currentRoute.name === 'dash_ad') {
+              location.reload()
+            } else {
+              this.$router.push('/d/ad/ios/ok')
+            }
             break
           case '2-1':
             this.$router.push('/d/ad/new')
