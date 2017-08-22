@@ -420,6 +420,7 @@
     .input-wrapper {
       width: 310px;
       display: inline-block;
+      float: left;
       &:hover {
         .line {
           background-color: #B5B5B5 !important;
@@ -438,11 +439,31 @@
 
       .el-select {
         width: 110px;
+        float: left;
+      }
+
+      .el-form {
+        float: left;
       }
 
       .el-form .form-search{
         .el-input {
           width: 200px !important;
+          .el-input__inner {
+            color: #3a3a3a;
+          }
+          // chrome safari
+          .el-input__inner::-webkit-input-placeholder {
+            color: #b5b5b5;
+          }
+          // ff
+          .el-input__inner::-moz-placeholder {
+            color: #b5b5b5;
+          }
+          // ie10
+          .el-input__inner::-ms-input-placeholder {
+            color: #b5b5b5;
+          }
         }
       }
 
@@ -974,7 +995,7 @@
         // }
         // 按标题搜索
         if (this.searchSelect === 'title') {
-          this.currentPage = 1
+          this.currentPage === 1 ? this.currentPage = 1 : this.currentPage = this.currentPage
           url += '&app_name=' + this.app_name
         }
         let config = {
