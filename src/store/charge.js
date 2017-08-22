@@ -41,21 +41,8 @@ const getters = {
 }
 
 const mutations = {
-<<<<<<< c23603a6b6b24dd2f6a004b47edda6a82d97a1c0
-  [types.SYNC] ({info}, payload) {
-    // console.log('mutation:payload: ' + types.SYNC, payload)
-    info.amount = payload.coast
-    info.amount_check = payload.coast
-    info.drawee = payload.drawee
-    info.invoice_status = payload.invoice_status
-  },
-
-  [types.SYNC_INVOICE] ({info}, {title, name, phone, address, remark}) {
-    // console.log('mutation title: ' + types.SYNC_INVOICE, title)
-=======
   [types.SYNC_INVOICE] ({info, aliInfo}, {title, name, phone, address, remark}) {
     console.log('mutation title: ' + types.SYNC_INVOICE, title)
->>>>>>> alipay 功能完善
     info.invoice_title = title
     info.invoice_contact_name = name
     info.invoice_contact_phone = phone
