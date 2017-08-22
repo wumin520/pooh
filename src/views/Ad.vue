@@ -310,7 +310,7 @@
 
         <div class="content-line" style="margin-top: 10px;margin-bottom: 10px;border-top: 1px solid #E8E8E8;">
           <div class="left" >投放平台</div>
-          <div class="right">两者都显示</div>
+          <div class="right" v-text="previewForm.platform"></div>
         </div>
 
         <div class="content-line" v-if="previewForm.zs_task_needed == 0" style="border-top: 1px solid #E8E8E8;">
@@ -420,6 +420,7 @@
     .input-wrapper {
       width: 310px;
       display: inline-block;
+      float: left;
       &:hover {
         .line {
           background-color: #B5B5B5 !important;
@@ -438,11 +439,31 @@
 
       .el-select {
         width: 110px;
+        float: left;
+      }
+
+      .el-form {
+        float: left;
       }
 
       .el-form .form-search{
         .el-input {
           width: 200px !important;
+          .el-input__inner {
+            color: #3a3a3a;
+          }
+          // chrome safari
+          .el-input__inner::-webkit-input-placeholder {
+            color: #b5b5b5;
+          }
+          // ff
+          .el-input__inner::-moz-placeholder {
+            color: #b5b5b5;
+          }
+          // ie10
+          .el-input__inner::-ms-input-placeholder {
+            color: #b5b5b5;
+          }
         }
       }
 
@@ -961,21 +982,22 @@
         let url = '/v2/api/task?status=' + this.$route.params.status.split('&')[0] + '&page_index=' + this.currentPage
         // 按时间搜索
         if (this.searchSelect === 'time' && this.dateWeekTime !== '' && this.dateWeekTime.length >= 2 && this.dateWeekTime[0] !== null) {
-          this.currentPage = 1
+          this.currentPage === 1 ? this.currentPage = 1 : this.currentPage = this.currentPage
           url += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + util.formatTime(this.dateWeekTime[1].getTime() / 1000)
         }
         //  解决 时间范围模式 但是时间范围的数组为空   通常在刷新后出现
         // ？todo ？ 地址栏中参数有时间时 填充搜索框的日期范围 遇到的问题： yyyy-mm-dd hh:mm:ss 怎么转为 CTS 时间格式
-        if (this.$route.params.status.split('&').length > 1) {
-          this.currentPage = 1
-          url = '/v2/api/task?status=' + this.$route.params.status
-        }
+        // if (this.dateWeekTime.length === 0 && this.$route.params.status.split('&').length > 1) {
+        //   console.log('case 2', this.dateWeekTime, this.$route.params.status)
+        //   this.searchSelect = 'time'
+        //   this.currentPage = 1
+        //   url = '/v2/api/task?status=' + this.$route.params.status
+        // }
         // 按标题搜索
         if (this.searchSelect === 'title') {
-          this.currentPage = 1
+          this.currentPage === 1 ? this.currentPage = 1 : this.currentPage = this.currentPage
           url += '&app_name=' + this.app_name
         }
-
         let config = {
           url: url,
           status: this.$route.params.status.split('&')[0],
@@ -1030,10 +1052,10 @@
             break
         }
 
-        if (this.dateWeekTime.length >= 2 && this.dateWeekTime[0] != null) {
+        // if (this.dateWeekTime.length >= 2 && this.dateWeekTime[0] != null) {
           // console.log('this.dateWeekTime', this.dateWeekTime)
-          routePath += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + util.formatTime(this.dateWeekTime[1].getTime() / 1000)
-        }
+          // routePath += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + util.formatTime(this.dateWeekTime[1].getTime() / 1000)
+        // }
 
         this.currentPage = 1
         this.activeName = name

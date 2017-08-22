@@ -76,8 +76,20 @@
                       .el-input__inner {
                         font-size: 28px !important;
                       }
-
+                      // chrome safari
                       .el-input__inner::-webkit-input-placeholder {
+                        position: relative;
+                        font-size: 12px;
+                        top: -5px;
+                      }
+                      // ff
+                      .el-input__inner::-moz-placeholder {
+                        position: relative;
+                        font-size: 12px;
+                        top: -5px;
+                      }
+                      // ie10
+                      .el-input__inner::-ms-input-placeholder {
                         position: relative;
                         font-size: 12px;
                         top: -5px;
