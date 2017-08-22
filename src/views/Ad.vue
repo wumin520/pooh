@@ -310,7 +310,7 @@
 
         <div class="content-line" style="margin-top: 10px;margin-bottom: 10px;border-top: 1px solid #E8E8E8;">
           <div class="left" >投放平台</div>
-          <div class="right">两者都显示</div>
+          <div class="right" v-text="previewForm.platform"></div>
         </div>
 
         <div class="content-line" v-if="previewForm.zs_task_needed == 0" style="border-top: 1px solid #E8E8E8;">

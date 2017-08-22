@@ -157,7 +157,7 @@ const actions = {
           }
         }
 
-        payload.task.platform === 1 ? payload.task.platform = '只在iPhone显示' : (payload.task.platform === 2 ? payload.task.platform = '只在iPad显示' : payload.task.platform = '两者都显示')
+        parseInt(payload.task.platform) === 1 ? payload.task.platform = '只在iPhone显示' : (parseInt(payload.task.platform) === 2 ? payload.task.platform = '只在iPad显示' : payload.task.platform = '两者都显示')
         payload.task.appstore_type === 0 ? payload.task.appstore_type = '免费' : payload.task.appstore_type = '付费'
 
         payload.task.begin_time = util.formatTime(payload.task.begin_time)
