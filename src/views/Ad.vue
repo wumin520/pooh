@@ -961,21 +961,22 @@
         let url = '/v2/api/task?status=' + this.$route.params.status.split('&')[0] + '&page_index=' + this.currentPage
         // 按时间搜索
         if (this.searchSelect === 'time' && this.dateWeekTime !== '' && this.dateWeekTime.length >= 2 && this.dateWeekTime[0] !== null) {
-          this.currentPage = 1
+          this.currentPage === 1 ? this.currentPage = 1 : this.currentPage = this.currentPage
           url += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + util.formatTime(this.dateWeekTime[1].getTime() / 1000)
         }
         //  解决 时间范围模式 但是时间范围的数组为空   通常在刷新后出现
         // ？todo ？ 地址栏中参数有时间时 填充搜索框的日期范围 遇到的问题： yyyy-mm-dd hh:mm:ss 怎么转为 CTS 时间格式
-        if (this.$route.params.status.split('&').length > 1) {
-          this.currentPage = 1
-          url = '/v2/api/task?status=' + this.$route.params.status
-        }
+        // if (this.dateWeekTime.length === 0 && this.$route.params.status.split('&').length > 1) {
+        //   console.log('case 2', this.dateWeekTime, this.$route.params.status)
+        //   this.searchSelect = 'time'
+        //   this.currentPage = 1
+        //   url = '/v2/api/task?status=' + this.$route.params.status
+        // }
         // 按标题搜索
         if (this.searchSelect === 'title') {
           this.currentPage = 1
           url += '&app_name=' + this.app_name
         }
-
         let config = {
           url: url,
           status: this.$route.params.status.split('&')[0],
@@ -1030,10 +1031,10 @@
             break
         }
 
-        if (this.dateWeekTime.length >= 2 && this.dateWeekTime[0] != null) {
+        // if (this.dateWeekTime.length >= 2 && this.dateWeekTime[0] != null) {
           // console.log('this.dateWeekTime', this.dateWeekTime)
-          routePath += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + util.formatTime(this.dateWeekTime[1].getTime() / 1000)
-        }
+          // routePath += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + util.formatTime(this.dateWeekTime[1].getTime() / 1000)
+        // }
 
         this.currentPage = 1
         this.activeName = name
