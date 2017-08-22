@@ -277,11 +277,11 @@
 
     fetchAction: 'finance/getInfo',
 
-    created () {
-      // 监听屏幕大于1440时 表格的‘操作’展开
-      // var screenWidth = document.body.clientWidth
-      // screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
-      // window.addEventListener('resize', this.tableResize)
+    mounted () {
+      let alipaySuccess = this.$route.query.alipay_success
+      if (parseInt(alipaySuccess) === 1) {
+        this.chargeSuccessDialogVisible = true
+      }
     },
 
     destroyed () {
@@ -289,12 +289,6 @@
     },
 
     methods: {
-      // 监听屏幕大于1440时 表格的‘操作’展开
-      // tableResize () {
-      //   let screenWidth = document.body.clientWidth
-      //   screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
-      //   console.log(document.body.clientWidth, this.columnExpand)
-      // },
       backtoHome () {
         this.chargeSuccessDialogVisible = false
         this.$router.push('/d/home')

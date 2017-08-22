@@ -627,7 +627,7 @@
                 postInfo[key] = encodeURI(val)
               })
               let params = qs.stringify(postInfo)
-              let url = 'http://www.baidu.com?' + params
+              let url = 'http://' + location.host + '/v2/err?' + params
               window.open(url)
             }
           })
