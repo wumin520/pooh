@@ -627,7 +627,7 @@
                 postInfo[key] = encodeURI(val)
               })
               let params = qs.stringify(postInfo)
-              let url = 'http://' + location.host + '/v2/err?' + params
+              let url = 'http://' + location.host + '/api/alipay/trade?' + params
               window.open(url)
             }
           })

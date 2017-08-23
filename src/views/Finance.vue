@@ -31,6 +31,11 @@
           <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
         </template>
       </el-table-column>
+      <el-table-column prop="cousume_amount" label="消耗金额" min-width="140">
+         <template scope="scope">
+          <div>￥ {{ scope.row.cousume_amount | addCommas_money }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" min-width="100">
         <template scope="scope">
           <a style="margin-right: 13px;" v-if="scope.row.status === 0" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
