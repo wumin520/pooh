@@ -562,6 +562,8 @@
             }
             if (value < 1000) {
               callback(new Error('金额必须大于1000'))
+            } else if (value > 99999999) {
+              callback(new Error('金额必须小于99999999'))
             } else {
               callback()
             }
