@@ -61,20 +61,20 @@
 
     <div class="swiper-container qk-banner">
       <div class="swiper-wrapper">
-         <div class="swiper-slide pic1">
+        <div class="swiper-slide pic1">
           <img src="http://qianka.b0.upaiyun.com/images/b1dda64d727c75ea9b7d8f4b0eb434d6.png" alt="" class="title">
           <a href="/v2/register" class="btn register" style="cursor: pointer;">免费注册</a>
           <div class="banner-footer">
             <img src="http://qianka.b0.upaiyun.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">            
           </div>
-        </div>   
-         <div class="swiper-slide pic2">
+        </div> 
+        <div class="swiper-slide pic2">
           <img src="http://assets.qkcdn.com/images/d9d7dc9bbebdae1fe48e67a178c3e747.png" alt="" class="title">           
           <a href="/v2/register" class="btn register" style="cursor: pointer;">免费注册</a>
           <div class="banner-footer ">
             <img src="http://qianka.b0.upaiyun.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">            
           </div>
-        </div>
+        </div> 
       </div>
       <div class="swiper-pagination"></div>
     </div>
@@ -228,33 +228,66 @@
     <script src="http://unpkg.qkcdn.com/swiper@3.4.2/dist/js/swiper.min.js"></script>
     <script>
       $(function() {
+        var activePaginationIndex = 0
         var mySwiper = new Swiper('.swiper-container', {
           autoplay: 5000,//可选选项，自动滑动
           pagination: '.swiper-pagination',
+          paginaClickable: true,
           effect : 'fade',
+          autoResize: true,
+          autoplayDisableOnInteraction : false, //手动切换之后 是否禁止自动滚动  默认为true
           paginationBulletRender: function (swiper, index, className) {
             return '<svg viewBox="0 0 100 100" id="pagination' + index + '"style="width: 14px;"><path d="M 50,50 m 0,-45 a 45,45 0 1 1 0,90 a 45,45 0 1 1 0,-90" stroke="rgba(255,255,255,0.2)" stroke-width="10" fill-opacity="0"></path><path d="M 50,50 m 0,-45 a 45,45 0 1 1 0,90 a 45,45 0 1 1 0,-90" stroke="#fff" stroke-width="10" fill-opacity="0" style="stroke-dasharray: 282.783, 282.783; stroke-dashoffset: 282.783;"></path></svg>';
           },
           onSlideChangeStart: function(swiper){
-            console.log(swiper.activeIndex);
             if (swiper.activeIndex == 0) {
+              activePaginationIndex = 1
               $('#pagination0').removeClass('active')
+              $('#pagination1').addClass('active')               
             } else {
-              $('#pagination1').removeClass('active')              
+              activePaginationIndex = 0
+              $('#pagination1').removeClass('active')
+              $('#pagination0').addClass('active')                          
             }
           },
           onSlideChangeEnd: function(swiper){
             if (swiper.activeIndex == 0) {
+              activePaginationIndex = 0
               $('#pagination0').addClass('active')
               $('#pagination1').removeClass('active')                            
             } else {
+              activePaginationIndex = 1
               $('#pagination1').addClass('active') 
               $('#pagination0').removeClass('active')                           
             }
-            console.log(swiper.activeIndex) //切换结束时，告诉我现在是第几个slide
           }
         })
+
         $('#pagination0').addClass('active')
+
+        $(window).resize(function() {
+          if (activePaginationIndex === 0) {
+            $('#pagination0').addClass('active')
+            $('#pagination1').removeClass('active')
+          } else {
+            $('#pagination1').addClass('active') 
+            $('#pagination0').removeClass('active') 
+          }
+
+          $('#pagination0').on('click', function() {
+            mySwiper.slideTo(0)
+          })
+          $('#pagination1').on('click', function() {
+            mySwiper.slideTo(1)
+          })
+        })
+
+        $('#pagination0').on('click', function() {
+          mySwiper.slideTo(0)
+        })
+        $('#pagination1').on('click', function() {
+          mySwiper.slideTo(1)
+        })
 
         function initNavbar() {
           if ($(window).scrollTop() > 666) {
