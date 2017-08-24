@@ -31,6 +31,7 @@
       if (params) {
         this.message = decodeURI(params)
         alert(this.message)
+        window.close()
       }
     },
 
