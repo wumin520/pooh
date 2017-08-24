@@ -11,7 +11,7 @@
     <el-table :class="{'nodata': payments.length === 0 }"  :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column prop="date" label="日期" min-width="152">
       </el-table-column>
-       <el-table-column prop="types" label="广告主类型" min-width="110">
+       <el-table-column prop="pay_type" label="付款方式" min-width="110">
       </el-table-column>
        <el-table-column prop="drawee" label="付款人" min-width="206">
       </el-table-column>
@@ -31,13 +31,14 @@
           <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="cousume_amount" label="消耗金额" min-width="140">
+      <el-table-column prop="consume_amount" label="消耗金额" min-width="140">
          <template scope="scope">
-          <div>￥ {{ scope.row.cousume_amount | addCommas_money }}</div>
+          <div>￥ {{ scope.row.consume_amount | addCommas_money }}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="100">
         <template scope="scope">
+          <!-- status: 0 待审核（可删除） 1 入账 2 广告主取消 -->
           <a style="margin-right: 13px;" v-if="scope.row.status === 0" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
           <!--<a class="link-go" type="text" @click="charge()">充值</a>-->
         </template>

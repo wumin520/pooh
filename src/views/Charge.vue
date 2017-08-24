@@ -103,7 +103,7 @@
         <el-input v-model="aliInfo.ali_amount" placeholder="请输入充值金额"></el-input>元
       </el-form-item>
       <el-form-item prop="ali_drawee" class="w214" label="付款人参考">
-        <el-input v-model="aliInfo.ali_drawee" placeholder="请输入付款人的支付宝账号"></el-input>元
+        <el-input v-model="aliInfo.ali_drawee" placeholder="请输入付款人的支付宝账号"></el-input>
       </el-form-item>
       <el-form-item class="w190" label="是否开票">
         <el-radio-group v-model="aliInfo.invoice_status">
