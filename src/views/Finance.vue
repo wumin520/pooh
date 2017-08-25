@@ -17,9 +17,9 @@
       </el-table-column>
        <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
       </el-table-column>
-       <el-table-column prop="operation_number" label="操作编号" min-width="110">
+       <el-table-column prop="operation_number" label="操作编号" min-width="90">
       </el-table-column>
-       <el-table-column prop="new_finance_status" label="状态" min-width="98">
+       <el-table-column prop="new_finance_status" label="状态" min-width="90">
       </el-table-column>
        <el-table-column prop="settlement_amount" label="付款金额" min-width="140">
         <template scope="scope">
@@ -36,10 +36,10 @@
           <div>￥ {{ scope.row.consume_amount | addCommas_money }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="100">
+      <el-table-column label="操作" min-width="65">
         <template scope="scope">
           <!-- status: 0 待审核（可删除） 1 入账 2 广告主取消 -->
-          <a style="margin-right: 13px;" v-if="scope.row.status === 0" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
+          <a v-if="scope.row.status === 0" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
           <!--<a class="link-go" type="text" @click="charge()">充值</a>-->
         </template>
       </el-table-column>

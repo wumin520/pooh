@@ -132,8 +132,33 @@
       </el-form-item>
     </el-form>
 
-    <div v-show="activeTabName === 'activeTabName'" class="step fs16-c88 mrg-b30">第二步：请将付款款项转入以下官方账户</div>
-    <div v-show="activeTabName === 'chinabank'" style="margin-bottom:40px;"><img style="width:500px;height:auto;" src="//qianka.b0.upaiyun.com/images/5425ad400654d32a2bd24b0bea3bad36.png"/></div>
+    <div v-show="activeTabName === 'chinabank'" class="step fs16-c88 mrg-b30 mrg-t60">第二步：请将付款款项转入以下官方账户</div>
+    <div v-show="activeTabName === 'chinabank'" style="margin-bottom:40px;" class="qk-account-info">
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <div class="h47 bg-grey list-cell">公司名称</div>
+        </el-col>
+        <el-col :span="12">
+          <div class="h47 list-cell">宁波钱咖广告传媒有限公司</div>
+        </el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <div class="h47 bg-grey list-cell">银行账号</div>
+        </el-col>
+        <el-col :span="12">
+          <div class="h47 list-cell">3166 3803 0026 61224</div>
+        </el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg" style="box-shadow: inset -1px 0 0 0 #e8e8e8, inset 0 -1px 0 0 #e8e8e8;">
+        <el-col :span="12">
+          <div class="h47 bg-grey list-cell" style="border-bottom: 1px solid #e8e8e8;">开户银行</div>
+        </el-col>
+        <el-col :span="12">
+          <div class="h47 list-cell">上海银行白玉兰支行</div>
+        </el-col>
+      </el-row>
+    </div>
 
     <div><el-button @click="submitForm()" type="primary">提交</el-button></div>
     
@@ -198,6 +223,39 @@
     }
     .step {
       font-family: PingFangSC-Light;
+    }
+
+    .qk-account-info {
+      width: 440px;
+      .row-bg {
+        box-shadow: inset -1px 0 0 0 #e8e8e8;
+        .h47 {
+          height: 47px;
+        }
+        .h65 {
+          height: 65px;
+        }
+        .h70 {
+          height: 70px;
+        }
+        .bg-grey {
+          background-color: #f9f9f9;
+        }
+        .list-cell {
+          width: 220px;
+          font-family: PingFangSC;
+          font-size: 13px;
+          line-height: 47px;
+          text-align: center;
+          color: #3a3a3a;
+	        box-shadow: inset 1px 0 0 0 #e8e8e8, inset 0 1px 0 0 #e8e8e8;
+          .fs18-c42 {
+            font-size: 18px;
+            color: #4A90E2;
+            margin: 0 5px;
+          }
+        }
+      }
     }
 
     .w660 {

@@ -50,14 +50,14 @@
       </el-tab-pane>
     </el-tabs>
 
-    <el-pagination
+    <!--<el-pagination
       v-if="tableData.length > 0"
       layout="prev, pager, next"
       @current-change="handleCurrentChange"
       :current-page="currentPage" 
       :page-size="30" 
       :total="totalTasks">
-    </el-pagination>
+    </el-pagination>-->
 
     <!-- table -->
     <div class="table-wrapper">
@@ -128,16 +128,16 @@
             style="margin-right:13px" @click="readd(scope.row)">续单</a>
             <!-- </router-link> -->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[1] == 1" size="small" type="info"
-            style="margin-right:13px" @click="exportIdfa(1, scope.row)">导出IDFA1</a>
+            style="margin-right:13px" @click="exportIdfa(1, scope.row)">提取IDFA1</a>
             <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[1] == 2" size="small"
-            type="info" style="margin-right:13px">正在导出IDFA1</a>
+            type="info" style="margin-right:13px">正在提取IDFA1</a>
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[2] == 1" size="small" type="info"
             style="margin-right:13px" @click="downloadIdfa(1, scope.row)">下载IDFA1</a>
 
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[3] == 1" size="small" type="info"
-            style="margin-right:13px" @click="exportIdfa(2, scope.row)">导出IDFA2</a>
+            style="margin-right:13px" @click="exportIdfa(2, scope.row)">提取IDFA2</a>
             <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[3] == 2" size="small"
-            type="info" style="margin-right:13px">正在导出IDFA2</a>
+            type="info" style="margin-right:13px">正在提取IDFA2</a>
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[4] == 1" size="small" type="info"
             style="margin-right:13px" @click="downloadIdfa(2, scope.row)">下载IDFA2</a>
 
@@ -216,16 +216,16 @@
                 style="margin-left:13px" @click="readd(scope.row)">续单</a>
                 <!-- </router-link> -->
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[1] == 1" size="small" type="info"
-                style="margin-left:13px" @click="exportIdfa(1, scope.row)">导出IDFA1</a>
+                style="margin-left:13px" @click="exportIdfa(1, scope.row)">提取IDFA1</a>
                 <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[1] == 2" size="small"
-                type="info" style="margin-left:13px">正在导出IDFA1</a>
+                type="info" style="margin-left:13px">正在提取IDFA1</a>
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[2] == 1" size="small" type="info"
                 style="margin-left:13px" @click="downloadIdfa(1, scope.row)">下载IDFA1</a>
 
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[3] == 1" size="small" type="info"
-                style="margin-left:13px" @click="exportIdfa(2, scope.row)">导出IDFA2</a>
+                style="margin-left:13px" @click="exportIdfa(2, scope.row)">提取IDFA2</a>
                 <a class="link-go" href="javascript:void(0);" disabled v-if="currentStatus == 'ended' && scope.row.button[3] == 2" size="small"
-                type="info" style="margin-left:13px">正在导出IDFA2</a>
+                type="info" style="margin-left:13px">正在提取IDFA2</a>
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[4] == 1" size="small" type="info"
                 style="margin-left:13px" @click="downloadIdfa(2, scope.row)">下载IDFA2</a>
 
@@ -520,7 +520,7 @@
   }
 
   .qk-tabs-text {
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     .el-tabs__header {
       width: 100%;
     }
@@ -983,7 +983,10 @@
         // 按时间搜索
         if (this.searchSelect === 'time' && this.dateWeekTime !== '' && this.dateWeekTime.length >= 2 && this.dateWeekTime[0] !== null) {
           this.currentPage === 1 ? this.currentPage = 1 : this.currentPage = this.currentPage
-          url += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + util.formatTime(this.dateWeekTime[1].getTime() / 1000)
+          // 结束时间取值到 23:59:59
+          let end = util.formatTime(this.dateWeekTime[1].getTime() / 1000)
+          end = end.split(' ')[0] + ' 23:59:59'
+          url += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + end
         }
         //  解决 时间范围模式 但是时间范围的数组为空   通常在刷新后出现
         // ？todo ？ 地址栏中参数有时间时 填充搜索框的日期范围 遇到的问题： yyyy-mm-dd hh:mm:ss 怎么转为 CTS 时间格式
@@ -1134,7 +1137,7 @@
       readd (row) {
         this.$router.push({ name: 'dash_ad_renew', params: { taskId: row.id } })
       },
-      // 导出idfa
+      // 提取idfa
       exportIdfa (type, row) {
         let config = {
           type: type,
