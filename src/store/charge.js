@@ -42,7 +42,7 @@ const getters = {
 
 const mutations = {
   [types.SYNC_INVOICE] ({info, aliInfo}, {title, name, phone, address, remark}) {
-    console.log('mutation title: ' + types.SYNC_INVOICE, title)
+    // console.log('mutation title: ' + types.SYNC_INVOICE, title)
     info.invoice_title = title
     info.invoice_contact_name = name
     info.invoice_contact_phone = phone

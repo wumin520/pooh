@@ -26,19 +26,19 @@
       <el-col :span="8">
         <div class="grid-content bg-purple mrg-l--0">
           单笔充值<br>
-          ¥ 10,000 ~ 29,999
+          ¥ 100,000 ~ 299,999
         </div>
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple">
           单笔充值<br>
-          ¥ 30,000 ~ 49,999
+          ¥ 300,000 ~ 499,999
         </div>
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple mrg-l--2">
           单笔充值<br>
-          ¥ 50,000 及以上
+          ¥ 500,000 及以上
         </div>
       </el-col>
     </el-row>
@@ -55,7 +55,7 @@
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple-light mrg-l--2">
-          赠送<span class="fs18-c42">35%</span>等值金额
+          赠送<span class="fs18-c42">30%</span>等值金额
         </div>
       </el-col>
     </el-row>
@@ -687,7 +687,7 @@
                 postInfo[key] = encodeURI(val)
               })
               let params = qs.stringify(postInfo)
-              let url = 'http://' + location.host + '/api/alipay/trade?' + params
+              let url = 'http://' + location.host + '/v2/api/alipay?' + params
               window.open(url)
             }
           })
