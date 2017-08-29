@@ -46,7 +46,11 @@ const initState = () => ({
     paused: '',
     ended: ''
   },
-  tableData: []
+  tableData: [],
+  newProductActivity: { // 新品活动
+    is_new_app_open: 0,
+    mobile: ''
+  }
 })
 
 // 应用状态
@@ -63,7 +67,8 @@ const types = {
   SET_TASK_STATCNT: 'set_task_statcnt',
   UPDATE_AD_PRICE: 'update_ad_price',
   UPDATE_PREVIEW_FORM: 'update_preview_form',
-  SPLICE_TABLE_DATA: 'splice_table_data'
+  SPLICE_TABLE_DATA: 'splice_table_data',
+  NEW_PRODUCT_ACTIVITY: 'new_product_activity'
 }
 
 // 更新应用状态
@@ -93,6 +98,10 @@ const mutations = {
   },
   [types.SPLICE_TABLE_DATA] (statet, index) {
     state.tableData.splice(index, 1)
+  },
+  [types.NEW_PRODUCT_ACTIVITY] (state, {mobile, isOpen}) {
+    state.newProductActivity.mobile = mobile
+    state.newProductActivity.is_new_app_open = isOpen
   }
 }
 
@@ -113,6 +122,8 @@ const actions = {
           }
           commit(types.SET_TASK_STATCNT, statcnt)
         }
+        // 新品活动
+        commit(types.NEW_PRODUCT_ACTIVITY, {mobile: payload.navbar.mobile, isOpen: payload.is_new_app_open})
         commit(types.CHANGE_DIALOG_SEARCH_VISIBLE, false)
         // state.set_operation_column_width()
       }).catch((e) => {

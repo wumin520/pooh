@@ -2,7 +2,8 @@ import {
   URI_FETCH_NEW_PRE,
   URI_POST_TASK,
   URI_FETCH_EDIT_PRE,
-  URI_FETCH_RENEW_PRE
+  URI_FETCH_RENEW_PRE,
+  URI_CHECK_APPID
 } from '@/constants'
 
 import { Message } from 'element-ui'
@@ -32,7 +33,9 @@ const initState = () => ({
 
     kw_flag_needed: '0', // 告诉后台 是否有关键词
     zs_task_needed: '0', // 告诉后台 是否有专属任务
-    remain_count: 100  // 添加的关键字列表 剩余可分配数
+    remain_count: 100,  // 添加的关键字列表 剩余可分配数
+    appid: 'a',
+    isNew: false // 是否新品app
   },
   ad_price: {  // 任务价格  unit_price:应用免费单价    unit_price_level2:应用付费单价   zs_unit_price：未知数据？？？
     unit_price: 0,
@@ -57,7 +60,8 @@ const types = {
   UPDATE_KEYWORDS_LIST: 'update_keywords_list',
   UPDATE_ZS_LISTS: 'update_zs_lists',
   REMOVE_ZS_ITEM: 'remove_zs_item',
-  REMOVE_KEYWORDS_ITEM: 'remove_keywords_item'
+  REMOVE_KEYWORDS_ITEM: 'remove_keywords_item',
+  IS_NEW_APPID: 'is_new_appid'
 }
 
 // 更新应用状态
@@ -84,7 +88,10 @@ const mutations = {
       kw_flag_needed: '0',
       zs_task_needed: '0',
       remain_count: 100,
-      showKeyWordsMessage: false // 控制关键词提示Message弹层，消失后才允许第二次出现
+      showKeyWordsMessage: false, // 控制关键词提示Message弹层，消失后才允许第二次出现
+      appid: '',
+      isHasBindMobile: false,
+      isNew: false // 是否新品app
     }
   },
 
@@ -135,6 +142,11 @@ const mutations = {
       }
     }
     state.adForm.planlist = _temporary
+  },
+
+  [types.IS_NEW_APPID] (state, {isNew, isHasBindMobile}) {
+    state.adForm.isNew = isNew
+    state.adForm.isHasBindMobile = isHasBindMobile
   }
 }
 
@@ -351,6 +363,25 @@ const actions = {
   // 删除专属任务
   removeZSItem ({commit}, itemKey) {
     commit(types.REMOVE_ZS_ITEM, itemKey)
+  },
+
+  // 判断广告主是否绑定手机和appid是否是新品
+  checkAppId ({commit}, appid) {
+    let uri = `${URI_CHECK_APPID}?appid=${appid}`
+    return api(uri).then((res) => {
+      let payload = res.payload
+      let isNew = false
+      if (payload.code === '20004') {
+        isNew = true
+        commit(types.IS_NEW_APPID, {isNew, isHasBindMobile: payload.mobile})
+      } else {
+        Message({
+          message: payload.msg,
+          iconClss: 'qk-warning'
+        })
+      }
+      return {isNew}
+    })
   }
 }
 

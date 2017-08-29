@@ -1,5 +1,8 @@
 import {
-  URI_ACCOUNTSETTING
+  URI_ACCOUNTSETTING,
+  URI_BIND_MOBILE,
+  URI_SEND_CHECKCODE,
+  URI_VALIDATE_MOBILE
 } from '@/constants'
 import api from '../fetch'
 import { Message } from 'element-ui'
@@ -22,7 +25,13 @@ const mutations = {
   [types.SYNC] (state, payload) {
     // TODO: 入口逻辑
     // console.log(payload)
-    Object.assign(state, {info: {...payload.info, password: '', new_password: '', confirm: ''}})
+    Object.assign(state, {info: {
+      ...payload.info,
+      password: '',
+      new_password: '',
+      confirm: '',
+      mobile: payload.navbar.mobile
+    }})
     // state.info = payload.info
   }
 }
@@ -47,6 +56,49 @@ const actions = {
       body: payload
     }).then((res) => {
       // console.log(res)
+      return res
+    }).catch(err => {
+      Message({
+        message: err.err_msg,
+        iconClass: 'qk-warning'
+      })
+      return err
+    })
+  },
+
+  sendCode ({commit}, phone) {
+    let uri = `${URI_SEND_CHECKCODE}?phone=${phone}`
+    return api(uri)
+      .then((res) => {
+        return res
+      }).catch(err => {
+        Message({
+          message: err.err_msg,
+          iconClass: 'qk-warning'
+        })
+        return err
+      })
+  },
+
+  bindMobile ({commit}, {mobile, code}) {
+    return api(URI_BIND_MOBILE, {
+      method: 'POST',
+      body: {phone: mobile, code}
+    })
+      .then((res) => {
+        return res
+      }).catch(err => {
+        Message({
+          message: err.err_msg,
+          iconClass: 'qk-warning'
+        })
+        return err
+      })
+  },
+
+  validateMobile ({commit}, {phone, code}) {
+    let uri = `${URI_VALIDATE_MOBILE}?phone=${phone}&code=${code}`
+    return api(uri).then((res) => {
       return res
     }).catch(err => {
       Message({

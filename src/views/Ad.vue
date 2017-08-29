@@ -4,16 +4,16 @@
     <div class="breadcrumb">
       <span class="breadcrumb-item">
         <span class="breadcrumb-item-inner">iOS广告</span>
-        <span class="breadcrumb-separator" v-if="dateWeekTime != '' && dateWeekTime.length >=2 && dateWeekTime[0] != null"></span>        
+        <span class="breadcrumb-separator" v-if="dateWeekTime != '' && dateWeekTime.length >=2 && dateWeekTime[0] != null"></span>
       </span>
       <span class="breadcrumb-item" v-if="dateWeekTime != '' && dateWeekTime.length >=2 && dateWeekTime[0] != null">
-        <span class="breadcrumb-item-inner">按时间搜索</span>        
+        <span class="breadcrumb-item-inner">按时间搜索</span>
       </span>
     </div>
 
     <div class="search-wrapper">
       <div class="input-wrapper">
-        <div class="line" id="line" style="position:absolute;width:1px;height:36px;background-color:#ddd;z-index:1;left:110px;"></div>      
+        <div class="line" id="line" style="position:absolute;width:1px;height:36px;background-color:#ddd;z-index:1;left:110px;"></div>
         <el-select class="select-search" v-model="searchSelect" slot="prepend" @visible-change="focusEvent" @change="searchChange(searchSelect)">
           <el-option label="按时间搜索" value="time"></el-option>
           <el-option label="按标题搜索" value="title"></el-option>
@@ -49,16 +49,8 @@
         <span class="qk-tabs__item-text"  slot="label"><span>完成</span><span>{{ task_statcnt.ended | formatZero }}</span></span>
       </el-tab-pane>
     </el-tabs>
-
-    <!--<el-pagination
-      v-if="tableData.length > 0"
-      layout="prev, pager, next"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage" 
-      :page-size="30" 
-      :total="totalTasks">
-    </el-pagination>-->
-
+    <div v-if="newProductActivity.is_new_app_open && !newProductActivity.mobile" class="unbind-tel-wrap">新品2元优惠，<a class="c42" @click="showTelDialog()" href="javascript:;">绑定手机</a> 即可体验！</div>
+    <bind-phone-dialog ref="bindPhoneDialog"></bind-phone-dialog>
     <!-- table -->
     <div class="table-wrapper">
       <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-show="columnExpand" v-loading="loading" element-loading-text="加载中...">
@@ -91,7 +83,7 @@
         </el-table-column>
         <el-table-column label="完成专属" min-width="90">
           <template scope="scope">
-            <div class="aui-ellipsis">{{ scope.row.zs_finish_total_count | addCommas }}</div>            
+            <div class="aui-ellipsis">{{ scope.row.zs_finish_total_count | addCommas }}</div>
           </template>
         </el-table-column>
         <el-table-column label="单价" min-width="81">
@@ -176,7 +168,7 @@
         </el-table-column>
         <el-table-column label="完成专属" min-width="90">
           <template scope="scope">
-            <div class="aui-ellipsis">{{ scope.row.zs_finish_total_count | addCommas }}</div>            
+            <div class="aui-ellipsis">{{ scope.row.zs_finish_total_count | addCommas }}</div>
           </template>
         </el-table-column>
         <el-table-column label="单价" min-width="81">
@@ -242,8 +234,8 @@
       v-if="tableData.length > 0"
       layout="prev, pager, next"
       @current-change="handleCurrentChange"
-      :current-page="currentPage" 
-      :page-size="30" 
+      :current-page="currentPage"
+      :page-size="30"
       :total="totalTasks"
       >
     </el-pagination>
@@ -294,7 +286,7 @@
             <div class="right" >{{keyword.key}} &nbsp;&nbsp;{{keyword.num + '%'}}</div>
           </div>
         </div>
-        
+
         <div class="content-line" style="margin-top: 10px;border-top: 1px solid #E8E8E8;">
           <div class="left" >应用价格</div>
           <div class="right" v-text="previewForm.appstore_type" ></div>
@@ -358,6 +350,19 @@
   </div>
 </template>
 <style lang="scss">
+  .unbind-tel-wrap {
+    height: 18px;
+    line-height: 18px;
+    font-size: 13px;
+    color: #de4948;
+
+    .c42 {
+      font-weight: 600;
+      color: #4a90e2;
+      text-decoration: underline;
+    }
+  }
+
 .ad-container {
   width: 100%;
   min-width: 1000px;
@@ -429,7 +434,7 @@
 
       .el-input .el-input__inner {
         color: #B5B5B5;
-        font-size: 12px;      
+        font-size: 12px;
         height: 36px;
         border-right: none;
         &:focus {
@@ -482,7 +487,7 @@
       }
     }
     .addAd-btn {
-      border-color: #F5A623; 
+      border-color: #F5A623;
       border: none;
       height: 36px;
       color: #fff;
@@ -499,7 +504,7 @@
       }
 
       span {
-        font-family: PingFangSC-Regular !important;        
+        font-family: PingFangSC-Regular !important;
       }
       .add-logo {
         position: relative;
@@ -642,7 +647,7 @@
       }
 
       .content-line.zs_line:first-child {
-        border-top: 1px solid #E8E8E8;        
+        border-top: 1px solid #E8E8E8;
       }
 
       .content-line.zs_line {
@@ -709,14 +714,14 @@
           top: 20px;
           right: 20px;
           &:before {
-            fotn-size: 14px;            
+            fotn-size: 14px;
           }
         }
       }
     }
 
     .el-dialog__body {
-      font-family: PingFangSC-Regular;      
+      font-family: PingFangSC-Regular;
       padding: 0px;
       .head-content {
         padding: 25px;
@@ -792,8 +797,13 @@
 <script>
   import util from '@/utils'
   import { mapState, mapActions } from 'vuex'
+  import BindPhoneDialog from '@/components/BindPhoneDialog.vue'
 
   export default {
+    components: {
+      BindPhoneDialog
+    },
+
     data () {
       return {
         loading: true, // loading 显示开关
@@ -889,7 +899,8 @@
         'tableData',
         'searchForm',
         'previewForm',
-        'ad_price'
+        'ad_price',
+        'newProductActivity'
       ])
     },
 
@@ -1160,6 +1171,12 @@
             this.getAdvertisement()
           }
         })
+      },
+
+      showTelDialog () {
+        let telDialog = this.$refs.bindPhoneDialog
+        console.log(telDialog)
+        telDialog.showBindTelDialog()
       }
     }
   }
