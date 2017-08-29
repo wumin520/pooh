@@ -69,8 +69,17 @@ const actions = {
   sendCode ({commit}, phone) {
     let uri = `${URI_SEND_CHECKCODE}?phone=${phone}`
     return api(uri)
-      .then((res) => {
-        return res
+      .then(res => res.payload)
+      .then((payload) => {
+        let success = true
+        if (payload.code !== 1483) {
+          Message({
+            message: payload.msg,
+            iconClass: 'qk-warning'
+          })
+          success = false
+        }
+        return {success}
       }).catch(err => {
         Message({
           message: err.err_msg,
@@ -86,7 +95,11 @@ const actions = {
       body: {phone: mobile, code}
     })
       .then((res) => {
-        return res
+        let success = false
+        if (res.status === 'ok') {
+          success = true
+        }
+        return {success}
       }).catch(err => {
         Message({
           message: err.err_msg,
@@ -99,7 +112,11 @@ const actions = {
   validateMobile ({commit}, {phone, code}) {
     let uri = `${URI_VALIDATE_MOBILE}?phone=${phone}&code=${code}`
     return api(uri).then((res) => {
-      return res
+      let success = false
+      if (res.status === 'ok') {
+        success = true
+      }
+      return {success}
     }).catch(err => {
       Message({
         message: err.err_msg,

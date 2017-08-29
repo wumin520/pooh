@@ -1,5 +1,5 @@
 <template>
-  <el-dialog class="bind-tel-dialog" :visible.sync="visible" :title="title">
+  <el-dialog top="32%" class="bind-tel-dialog" :visible.sync="visible" @close="resetForm" :title="title">
     <el-form ref="bindTelForm" :model="bindTelForm" :rules="bindTelRules">
       <el-form-item prop="mobile" label="手机号">
         <el-input v-model="bindTelForm.mobile" placeholder="请输入手机号"></el-input>
@@ -86,7 +86,9 @@
   export default {
     data () {
       let checkPhone = (rule, value, callback) => {
-        if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
+        if (value === '') {
+          callback(new Error('请输入手机号'))
+        } else if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
           callback(new Error('手机号格式不正确'))
         } else {
           callback()
@@ -114,39 +116,38 @@
       ]),
 
       requestCheckCode (formName) {
-        let isValid = false
+        let downCounting = () => {
+          let $btn = this.$refs['btnCheckCode'].$el
+          console.log(this.$refs)
+          let countDownClass = 'count-down'
+          if ($btn.classList.contains(countDownClass)) {
+            return
+          }
+          let $sp = $btn.querySelector('span')
+          console.log($sp)
+          let count = 60
+          $btn.classList.add(countDownClass)
+          $sp.innerHTML = count + 's'
+          let st = setInterval(() => {
+            count--
+            if (count > 0) {
+              $sp.innerHTML = count + 's'
+            } else {
+              $sp.innerHTML = '发送验证码'
+              $btn.classList.remove(countDownClass)
+              clearInterval(st)
+            }
+          }, 1000)
+        }
         this.$refs[formName].validateField('mobile', (err) => {
           if (!err) {
-            isValid = true
-            this.sendCode(this.bindTelForm.mobile)
+            this.sendCode(this.bindTelForm.mobile).then(res => {
+              if (res.success) {
+                downCounting()
+              }
+            })
           }
         })
-
-        if (!isValid) {
-          return
-        }
-
-        let $btn = this.$refs['btnCheckCode'].$el
-        console.log(this.$refs)
-        let countDownClass = 'count-down'
-        if ($btn.classList.contains(countDownClass)) {
-          return
-        }
-        let $sp = $btn.querySelector('span')
-        console.log($sp)
-        let count = 60
-        $btn.classList.add(countDownClass)
-        $sp.innerHTML = count + 's'
-        let st = setInterval(() => {
-          count--
-          if (count > 0) {
-            $sp.innerHTML = count + 's'
-          } else {
-            $sp.innerHTML = '发送验证码'
-            $btn.classList.remove(countDownClass)
-            clearInterval(st)
-          }
-        }, 1000)
       },
 
       hide () {
@@ -161,26 +162,27 @@
         this.visible = true
       },
 
-      initForm () {
-        this.bindTelForm.mobile = ''
-        this.bindTelForm.code = ''
+      resetForm (formName = 'bindTelForm') {
+        this.$refs[formName].resetFields()
       },
 
       submitInfo (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (this.title === '验证手机') {
-              this.validateMobile({phone: this.bindTelForm.mobile, code: this.bindTelForm.code})
-                .then((res) => {
-                  if (res.status === 'ok') {
-                    this.title = '更换手机'
-                    this.initForm()
-                  }
-                })
+              this.validateMobile({
+                phone: this.bindTelForm.mobile,
+                code: this.bindTelForm.code
+              }).then((res) => {
+                if (res.success) {
+                  this.title = '更换手机'
+                  this.resetForm()
+                }
+              })
             } else {
               this.bindMobile(this.bindTelForm)
                 .then((res) => {
-                  if (res.status === 'ok') {
+                  if (res.success) {
                     this.visible = false
                   }
                 })

@@ -377,7 +377,7 @@ const actions = {
       } else {
         Message({
           message: payload.msg,
-          iconClss: 'qk-warning'
+          iconClass: 'qk-warning'
         })
       }
       return {isNew}
