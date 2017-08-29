@@ -79,16 +79,16 @@
       </el-form-item>
       <!--<template>-->
         <div v-if="info.invoice_status == 1">
-        <el-form-item prop="invoice_title" class="w660" style="width:500px" label="发票抬头">
+        <el-form-item prop="invoice_title" class="w660" style="width:350px" label="发票抬头">
           <el-input v-model="info.invoice_title" placeholder="请输入发票抬头"></el-input>
         </el-form-item>
-        <el-form-item prop="invoice_contact_name" class="w660" label="收件人" style="width:190px">
+        <el-form-item prop="invoice_contact_name" class="w660" label="收件人" style="width:350px">
           <el-input v-model="info.invoice_contact_name" placeholder="请输入收件人"></el-input>
         </el-form-item>
-        <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话" style="width:190px">
+        <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话" style="width:350px">
           <el-input v-model="info.invoice_contact_phone" placeholder="请输入联系电话"></el-input>
         </el-form-item>
-        <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:500px">
+        <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:350px">
           <el-input v-model="info.invoice_contact_address" placeholder="请输入快递地址"></el-input>
         </el-form-item>
         </div>
@@ -102,8 +102,8 @@
       <el-form-item prop="ali_amount" class="w214" label="充值金额">
         <el-input v-model="aliInfo.ali_amount" placeholder="请输入充值金额"></el-input>元
       </el-form-item>
-      <el-form-item prop="ali_drawee" class="w214" label="付款人参考">
-        <el-input v-model="aliInfo.ali_drawee" placeholder="请输入付款人的支付宝账号"></el-input>
+      <el-form-item prop="ali_drawee" class="w214" label="付款账号">
+        <el-input v-model="aliInfo.ali_drawee" placeholder="请输入付款的支付宝账号"></el-input>
       </el-form-item>
       <el-form-item class="w190" label="是否开票">
         <el-radio-group v-model="aliInfo.invoice_status">
@@ -113,16 +113,16 @@
       </el-form-item>
       <!--<template>-->
         <div v-if="aliInfo.invoice_status == 1">
-        <el-form-item prop="invoice_title" class="w660" style="width:500px" label="发票抬头">
+        <el-form-item prop="invoice_title" class="w660" style="width:350px" label="发票抬头">
           <el-input v-model="aliInfo.invoice_title" placeholder="请输入发票抬头"></el-input>
         </el-form-item>
-        <el-form-item prop="invoice_contact_name" class="w660" label="收件人" style="width:190px">
+        <el-form-item prop="invoice_contact_name" class="w660" label="收件人" style="width:350px">
           <el-input v-model="aliInfo.invoice_contact_name" placeholder="请输入收件人"></el-input>
         </el-form-item>
-        <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话" style="width:190px">
+        <el-form-item prop="invoice_contact_phone" class="w660" label="联系电话" style="width:350px">
           <el-input v-model="aliInfo.invoice_contact_phone" placeholder="请输入联系电话"></el-input>
         </el-form-item>
-        <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:500px">
+        <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:350px">
           <el-input v-model="aliInfo.invoice_contact_address" placeholder="请输入快递地址"></el-input>
         </el-form-item>
         </div>
@@ -619,9 +619,9 @@
               callback(new Error('请输入有效金额格式'))
             }
             if (value < 1000) {
-              callback(new Error('金额必须大于1000'))
+              callback(new Error('最小充值金额1000元'))
             } else if (value > 99999999) {
-              callback(new Error('金额必须小于99999999'))
+              callback(new Error('最大充值金额99999999元'))
             } else {
               callback()
             }
