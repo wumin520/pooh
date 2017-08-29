@@ -39,7 +39,7 @@
       <el-table-column label="操作" min-width="65">
         <template scope="scope">
           <!-- status: 0 待审核（可删除） 1 入账 2 广告主取消 -->
-          <a v-if="scope.row.status === 0" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
+          <a v-if="scope.row.status === 0 && scope.row.pay_type !== '支付宝'" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
           <!--<a class="link-go" type="text" @click="charge()">充值</a>-->
         </template>
       </el-table-column>
@@ -302,7 +302,8 @@
 
       checkRecord () {
         this.chargeSuccessDialogVisible = false
-        this.getInfo()
+        location.href = 'http://' + location.host + '/v2/d/finance'
+        // this.getInfo()
       },
 
       currentChange (page) {
