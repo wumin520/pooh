@@ -236,7 +236,7 @@
 
     .bg-purple {
       height: 70px;
-      padding: 12px 50px;
+      padding: 12px 40px;
       background: #F9F9F9;
       box-shadow: inset 0 1px 0 0 #E8E8E8, inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
 
