@@ -4,10 +4,10 @@
     <div class="breadcrumb">
       <span class="breadcrumb-item" @click="toIOS()">
         <span class="breadcrumb-item-inner">iOS广告</span>
-        <span class="breadcrumb-separator"></span>        
+        <span class="breadcrumb-separator"></span>
       </span>
       <span class="breadcrumb-item">
-        <span class="breadcrumb-item-inner" v-text="page_sub_title"></span>        
+        <span class="breadcrumb-item-inner" v-text="page_sub_title"></span>
       </span>
     </div>
 
@@ -17,18 +17,22 @@
       <el-form-item class="qk-form-item" label="应用标题" prop="title">
         <el-input v-model="adForm.title"  placeholder="请输入应用标题"></el-input>
       </el-form-item>
-      <!-- iTunes地址 -->      
-      <el-form-item class="qk-form-item" label="iTunes地址" prop="download_url">
-        <el-input v-model="adForm.download_url" placeholder="请输入iTunes地址"></el-input>
+      <!-- iTunes地址 -->
+      <!--<el-form-item class="qk-form-item" label="iTunes地址" prop="download_url">-->
+        <!--<el-input v-model="adForm.download_url" placeholder="请输入iTunes地址"></el-input>-->
+      <!--</el-form-item>-->
+      <!--AppId-->
+      <el-form-item class="qk-form-item" label="App ID" prop="appId">
+        <el-input @blur="appIdCheck" v-model="adForm.appid" placeholder="请输入App ID"></el-input>
       </el-form-item>
-      <!-- 跳转地址（选填） -->            
+      <!-- 跳转地址（选填） -->
       <el-form-item class="qk-form-item mgb-80" label="跳转地址（选填）" prop="click_notify_url">
         <el-input v-model="adForm.click_notify_url" placeholder="请输入跳转链接"></el-input>
       </el-form-item>
 
-      <!-- 开始 日期+时间 -->            
+      <!-- 开始 日期+时间 -->
       <el-form-item class="qk-form-item" style="width:500px;" label="开始时间" prop="begin_time">
-        <el-date-picker 
+        <el-date-picker
           type="date"
           v-model="adForm.begin_time"
           placeholder="选择日期">
@@ -43,9 +47,9 @@
           class="mrg-l5">
         </el-time-picker>
       </el-form-item>
-      <!-- 结束 日期+时间 -->                  
+      <!-- 结束 日期+时间 -->
       <el-form-item class="qk-form-item" style="width:500px;" label="结束时间" prop="end_time">
-        <el-date-picker 
+        <el-date-picker
           v-model="adForm.end_time"
           type="date"
           placeholder="选择日期">
@@ -60,13 +64,13 @@
           class="mrg-l5">
         </el-time-picker>
       </el-form-item>
-      <!-- 计划分数 -->                        
+      <!-- 计划分数 -->
       <el-form-item class="qk-form-item mgb-80" label="计划份数" prop="plan_count">
         <el-input  @change="planAnalysis" v-model="adForm.plan_count" placeholder="300份起" class="w190"></el-input>
       </el-form-item>
 
 
-      <!-- 关键词添加方式 -->                              
+      <!-- 关键词添加方式 -->
       <el-form-item class="qk-form-item keywords-wrapper" label="关键词" >
         <el-radio-group v-model="adForm.plan_type" @change="rePlanAnalysis">
           <el-radio-button class="el-icon-check" label="按投放比例"></el-radio-button>
@@ -76,7 +80,7 @@
       </el-form-item>
       <!-- 添加关键词 单个关键词对应投放的百分比、份数  -->
       <el-form-item v-for="(kw, index) in adForm.planlist"
-        :key="kw.keyTime" 
+        :key="kw.keyTime"
         :prop="'planlist.' + index + '.value'"
         class="keywords-list">
         <template>
@@ -105,6 +109,7 @@
                 <el-radio-button class="el-icon-check" label="付费"></el-radio-button>
               </el-radio-group>
               <span class="mrg-l30 unit-desc" v-text="'单价 ￥' + (adForm.appstore_type === '付费' ? ad_price.unit_price_level2 : ad_price.unit_price)"></span>
+              <span class="new-app-hint mrg-l30" v-if="adForm.appstore_type !== '付费' && adForm.isNew">（新品应用前5000次投放，单价优惠至2元/份，先抢先得！）</span>
             </div>
         </div>
         <div v-if="adForm.appstore_type == '付费'" class="right-wrap">
@@ -176,9 +181,46 @@
         <el-button class="goon-button" type="primary" style="width: 70px;" size="small" @click="toAd()">继续</el-button>
       </span>
     </el-dialog>
+
+    <!--新品优惠活动-->
+    <el-dialog
+      title="活动提示"
+      :visible.sync="promotionDialogVisible"
+      size="tiny"
+      :show-close="false"
+      class="promotion-dialog"
+      top="38%">
+      <span>您的应用可参与新品体验活动，应用的前5000次投放实际单价=2元，先抢先得。绑定手机即可参与活动</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="continueSubmit">继续提交</el-button>
+        <el-button type="primary" @click="bindTel">绑定手机</el-button>
+      </span>
+    </el-dialog>
+    <phone-bind-dialog ref="bindPhoneDialog" :bind-phone-success="bindPhoneSuccess"></phone-bind-dialog>
   </div>
 </template>
 <style lang="scss" >
+  .promotion-dialog {
+    .el-dialog {
+      width: 390px;
+      height: 200px;
+    }
+
+    .el-dialog__body {
+      line-height: 1.5;
+      padding: 30px 0;
+    }
+
+    .el-button {
+      width: 109px;
+      height: 32px;
+      line-height: 3px;
+    }
+
+    .el-dialog__footer {
+      padding: 0;
+    }
+  }
   .ad-new-container {
     padding: 50px 0 150px 35px;
 
@@ -213,7 +255,7 @@
     }
 
     .addAd-form {
-      margin-top: 47px; 
+      margin-top: 47px;
 
       .qk-form-item {
         .el-radio-group {
@@ -250,6 +292,14 @@
       font-family: Lato-Regular;
       font-size: 14px;
       color: #3A3A3A;
+      vertical-align: middle;
+    }
+
+    .new-app-hint {
+      width: 385px;
+      height: 20px;
+      font-size: 14px;
+      color: #3a3a3a;
       vertical-align: middle;
     }
 
@@ -334,7 +384,7 @@
           line-height: 40px;
         }
       }
-      
+
       .border-cd {
         display: inline-block;
         width: 44px;
@@ -378,7 +428,7 @@
         border: 1px dashed #B5B5B5;
         .el-button--text {
           color: #B5B5B5;
-        }      
+        }
       }
 
       .el-button--text {
@@ -387,7 +437,7 @@
           font-weight: lighter !important;
         }
         span {
-          font-family: PingFangSC-Regular !important;          
+          font-family: PingFangSC-Regular !important;
         }
       }
 
@@ -460,10 +510,16 @@
   import util from '@/utils'
   import _ from 'lodash'
   import { mapState, mapActions } from 'vuex'
+  import PhoneBindDialog from '@/components/BindPhoneDialog.vue'
 
   export default {
+    components: {
+      PhoneBindDialog
+    },
+
     data () {
       return {
+        promotionDialogVisible: false,
         page_sub_title: '添加新广告',  // ？todo 检查是否冗余？
         submitButtonDisable: false,  // 提交按钮是否禁用
         fullscreenLoading: false, // loading是否显示
@@ -511,7 +567,8 @@
         'addKeyWordList',
         'removeKeyWordsItem',
         'addZSLists',
-        'removeZSItem'
+        'removeZSItem',
+        'checkAppId'
       ]),
 
       // 回IOS广告页
@@ -520,6 +577,10 @@
       },
       // 续单、编辑、添加 的验证+提交
       submitForm (formName) {
+        if (!this.adForm.isHasBindMobile && this.adForm.isNew && this.adForm.appstore_type !== '付费') {
+          this.promotionDialogVisible = true
+          return
+        }
         if (this.submitNum > 0) return
         this.submitNum = 1
         this.submitButtonDisable = true
@@ -549,10 +610,20 @@
           this.fullscreenLoading = false
           return false
         }
-        if (this.adForm.download_url.length > 100) {
+//        if (this.adForm.download_url.length > 100) {
+//          this.$message({
+//            message: 'iTunes地址不能超过100字符',
+//            iconClass: 'qk-warning'
+//          })
+//          this.submitButtonDisable = false
+//          this.fullscreenLoading = false
+//          return false
+//        }
+
+        if (!this.adForm.appid) {
           this.$message({
-            message: 'iTunes地址不能超过100字符',
-            iconClass: 'qk-warning'
+            message: '请输入App ID',
+            iconClss: 'qk-warning'
           })
           this.submitButtonDisable = false
           this.fullscreenLoading = false
@@ -627,18 +698,18 @@
           this.fullscreenLoading = false
           return false
         }
+        return true
 
-        if (this.adForm.download_url === this.adForm.click_notify_url) {
-          this.$message({
-            message: '跳转链接不可与iTunes地址相同',
-            iconClass: 'qk-warning'
-          })
-          this.submitButtonDisable = false
-          this.fullscreenLoading = false
-          return false
-        } else {
-          return true
-        }
+//        if (this.adForm.download_url === this.adForm.click_notify_url) {
+//          this.$message({
+//            message: '跳转链接不可与iTunes地址相同',
+//            iconClass: 'qk-warning'
+//          })
+//          this.submitButtonDisable = false
+//          this.fullscreenLoading = false
+//          return false
+//        } else {
+//        }
       },
 
       // 续单、编辑、添加 的提交
@@ -743,6 +814,38 @@
 
       toAd () {
         this.$router.push('/d/ad/ios/ok')
+      },
+
+      appIdCheck () {
+        if (this.adForm.appid === '' || /[^\d]/g.test(this.adForm.appid)) {
+          let message = '请输入App ID'
+          if (this.adForm.appid !== '') {
+            message = 'App ID只能为数字'
+          }
+          this.$message({
+            message: message,
+            iconClass: 'qk-warning'
+          })
+          return
+        }
+        this.checkAppId(this.adForm.appid).then(() => {
+        })
+      },
+
+      bindTel () {
+        this.promotionDialogVisible = false
+        let phoneDialog = this.$refs.bindPhoneDialog
+        phoneDialog.show()
+      },
+
+      bindPhoneSuccess () {
+        this.adForm.isHasBindMobile = true
+      },
+
+      continueSubmit () {
+        this.promotionDialogVisible = false
+        this.adForm.isHasBindMobile = true
+        this.submitForm('adFormRef')
       }
     }
   }

@@ -8,11 +8,16 @@
       <el-form-item prop="title" label="姓名/公司">
         <el-input v-model="info.title" placeholder="请输入姓名/公司"></el-input>
       </el-form-item>
+      <el-form-item prop="phone" label="联系电话（选填）">
+        <!--<el-input v-model="info.phone" placeholder="请输入联系电话"></el-input>-->
+        <div class="phone-wrap">
+            <span>{{info.mobile ? info.mobile : '未绑定手机'}}</span>
+          <a @click="showBindPhoneDialog" href="javascript:;" class="c42 mrg-l31">
+            {{info.mobile ? '修改手机' : '绑定手机'}}</a>
+        </div>
+      </el-form-item>
       <el-form-item prop="contact" label="联系人（选填）">
         <el-input v-model="info.contact" placeholder="请输入联系人"></el-input>
-      </el-form-item>
-      <el-form-item prop="phone" label="联系电话（选填）">
-        <el-input v-model="info.phone" placeholder="请输入联系电话"></el-input>
       </el-form-item>
       <el-form-item prop="qq" label="联系QQ（选填）">
         <el-input v-model="info.qq" placeholder="请输入联系QQ"></el-input>
@@ -33,6 +38,7 @@
         <el-button @click="submitForm('infoForm')" type="primary" class="w130">提交</el-button>
       </el-form-item>
     </el-form>
+    <bind-phone-dialog :refresh-phone-after-bind-success="refreshPhoneAfterBindSuccess" ref="bindPhoneDialog"></bind-phone-dialog>
   </div>
 </template>
 <style lang="scss">
@@ -52,6 +58,22 @@
 
   .account-container {
     padding: 50px 0 150px 35px;
+
+    .phone-wrap {
+      display: inline-block;
+      width: 100%;
+      line-height: 18px;
+
+      .mrg-l31 {
+        margin-left: 31px;
+      }
+
+      .c42 {
+        font-weight: 600;
+        color: #4a90e2;
+        text-decoration: underline;
+      }
+    }
 
     .title {
       font-family: PingFangSC-Light;
@@ -93,8 +115,13 @@
 </style>
 <script>
   import { mapState, mapActions } from 'vuex'
+  import BindPhoneDialog from '@/components/BindPhoneDialog'
 
   export default {
+    components: {
+      BindPhoneDialog
+    },
+
     data () {
       let checkNewPassword = (rule, value, callback) => {
         if (value === '') {
@@ -196,6 +223,19 @@
             }
           })
         }
+      },
+
+      refreshPhoneAfterBindSuccess (mobile) {
+        this.info.mobile = mobile
+      },
+
+      showBindPhoneDialog () {
+        let phoneDialog = this.$refs.bindPhoneDialog
+        let title = ''
+        if (this.info.mobile) {
+          title = '验证手机'
+        }
+        phoneDialog.show({title, mobile: this.info.mobile})
       }
     }
   }
