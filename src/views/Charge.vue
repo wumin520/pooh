@@ -102,9 +102,9 @@
       <el-form-item prop="ali_amount" class="w214" label="充值金额">
         <el-input v-model="aliInfo.ali_amount" placeholder="请输入充值金额"></el-input>元
       </el-form-item>
-      <el-form-item prop="ali_drawee" class="w214" label="付款账号">
+      <!--<el-form-item prop="ali_drawee" class="w214" label="付款账号">
         <el-input v-model="aliInfo.ali_drawee" placeholder="请输入付款的支付宝账号"></el-input>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item class="w190" label="是否开票">
         <el-radio-group v-model="aliInfo.invoice_status">
           <el-radio-button class="el-icon-check" label="0">不需要</el-radio-button>
@@ -642,7 +642,7 @@
         }
 
         let aliRules = {
-          ali_drawee: [{ required: true, message: '请输入付款人的支付宝账号', trigger: 'change' }],
+          // ali_drawee: [{ required: true, message: '请输入付款人的支付宝账号', trigger: 'change' }],
           ali_amount: [{ required: true, validator: checkCoast, trigger: 'blur' }]
         }
 

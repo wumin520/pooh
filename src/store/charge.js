@@ -23,7 +23,7 @@ const initState = () => ({
   },
   aliInfo: {
     ali_amount: '',
-    ali_drawee: '',
+    // ali_drawee: '',
     remark: '',
     invoice_status: 0,
     invoice_title: '',
