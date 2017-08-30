@@ -109,6 +109,7 @@
                 <el-radio-button class="el-icon-check" label="付费"></el-radio-button>
               </el-radio-group>
               <span class="mrg-l30 unit-desc" v-text="'单价 ￥' + (adForm.appstore_type === '付费' ? ad_price.unit_price_level2 : ad_price.unit_price)"></span>
+              <span class="new-app-hint mrg-l30" v-if="adForm.appstore_type !== '付费' && adForm.isNew">（新品应用前5000次投放，单价优惠至2元/份，先抢先得！）</span>
             </div>
         </div>
         <div v-if="adForm.appstore_type == '付费'" class="right-wrap">
@@ -195,7 +196,7 @@
         <el-button type="primary" @click="bindTel">绑定手机</el-button>
       </span>
     </el-dialog>
-    <phone-bind-dialog ref="bindPhoneDialog"></phone-bind-dialog>
+    <phone-bind-dialog ref="bindPhoneDialog" :bind-phone-success="bindPhoneSuccess"></phone-bind-dialog>
   </div>
 </template>
 <style lang="scss" >
@@ -207,6 +208,7 @@
 
     .el-dialog__body {
       line-height: 1.5;
+      padding: 30px 0;
     }
 
     .el-button {
@@ -290,6 +292,14 @@
       font-family: Lato-Regular;
       font-size: 14px;
       color: #3A3A3A;
+      vertical-align: middle;
+    }
+
+    .new-app-hint {
+      width: 385px;
+      height: 20px;
+      font-size: 14px;
+      color: #3a3a3a;
       vertical-align: middle;
     }
 
@@ -567,7 +577,7 @@
       },
       // 续单、编辑、添加 的验证+提交
       submitForm (formName) {
-        if (!this.adForm.isHasBindMobile && this.adForm.isNew) {
+        if (!this.adForm.isHasBindMobile && this.adForm.isNew && this.adForm.appstore_type !== '付费') {
           this.promotionDialogVisible = true
           return
         }
@@ -807,6 +817,17 @@
       },
 
       appIdCheck () {
+        if (this.adForm.appid === '' || /[^\d]/g.test(this.adForm.appid)) {
+          let message = '请输入App ID'
+          if (this.adForm.appid !== '') {
+            message = 'App ID只能为数字'
+          }
+          this.$message({
+            message: message,
+            iconClass: 'qk-warning'
+          })
+          return
+        }
         this.checkAppId(this.adForm.appid).then(() => {
         })
       },
@@ -815,6 +836,10 @@
         this.promotionDialogVisible = false
         let phoneDialog = this.$refs.bindPhoneDialog
         phoneDialog.show()
+      },
+
+      bindPhoneSuccess () {
+        this.adForm.isHasBindMobile = true
       },
 
       continueSubmit () {

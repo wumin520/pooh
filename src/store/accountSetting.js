@@ -66,18 +66,13 @@ const actions = {
     })
   },
 
-  sendCode ({commit}, phone) {
-    let uri = `${URI_SEND_CHECKCODE}?phone=${phone}`
+  sendCode ({commit}, {mobile, checkBind}) {
+    let uri = `${URI_SEND_CHECKCODE}?phone=${mobile}&check_bind=${checkBind}`
     return api(uri)
-      .then(res => res.payload)
-      .then((payload) => {
-        let success = true
-        if (payload.code !== 1483) {
-          Message({
-            message: payload.msg,
-            iconClass: 'qk-warning'
-          })
-          success = false
+      .then((res) => {
+        let success = false
+        if (res.status === 'ok') {
+          success = true
         }
         return {success}
       }).catch(err => {
@@ -98,6 +93,10 @@ const actions = {
         let success = false
         if (res.status === 'ok') {
           success = true
+          Message({
+            message: res.payload.message,
+            type: 'success'
+          })
         }
         return {success}
       }).catch(err => {

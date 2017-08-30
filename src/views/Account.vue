@@ -8,16 +8,16 @@
       <el-form-item prop="title" label="姓名/公司">
         <el-input v-model="info.title" placeholder="请输入姓名/公司"></el-input>
       </el-form-item>
-      <el-form-item prop="contact" label="联系人（选填）">
-        <el-input v-model="info.contact" placeholder="请输入联系人"></el-input>
-      </el-form-item>
       <el-form-item prop="phone" label="联系电话（选填）">
         <!--<el-input v-model="info.phone" placeholder="请输入联系电话"></el-input>-->
         <div class="phone-wrap">
-            <span>{{info.mobile ? info.mobile : (info.phone ? info.phone : '未绑定手机')}}</span>
+            <span>{{info.mobile ? info.mobile : '未绑定手机'}}</span>
           <a @click="showBindPhoneDialog" href="javascript:;" class="c42 mrg-l31">
             {{info.mobile ? '修改手机' : '绑定手机'}}</a>
         </div>
+      </el-form-item>
+      <el-form-item prop="contact" label="联系人（选填）">
+        <el-input v-model="info.contact" placeholder="请输入联系人"></el-input>
       </el-form-item>
       <el-form-item prop="qq" label="联系QQ（选填）">
         <el-input v-model="info.qq" placeholder="请输入联系QQ"></el-input>
@@ -38,7 +38,7 @@
         <el-button @click="submitForm('infoForm')" type="primary" class="w130">提交</el-button>
       </el-form-item>
     </el-form>
-    <bind-phone-dialog ref="bindPhoneDialog"></bind-phone-dialog>
+    <bind-phone-dialog :refresh-phone-after-bind-success="refreshPhoneAfterBindSuccess" ref="bindPhoneDialog"></bind-phone-dialog>
   </div>
 </template>
 <style lang="scss">
@@ -225,13 +225,17 @@
         }
       },
 
+      refreshPhoneAfterBindSuccess (mobile) {
+        this.info.mobile = mobile
+      },
+
       showBindPhoneDialog () {
         let phoneDialog = this.$refs.bindPhoneDialog
         let title = ''
         if (this.info.mobile) {
           title = '验证手机'
         }
-        phoneDialog.show({title})
+        phoneDialog.show({title, mobile: this.info.mobile})
       }
     }
   }

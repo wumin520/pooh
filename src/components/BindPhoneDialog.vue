@@ -1,20 +1,24 @@
 <template>
-  <el-dialog top="32%" class="bind-tel-dialog" :visible.sync="visible" @close="resetForm" :title="title">
-    <el-form ref="bindTelForm" :model="bindTelForm" :rules="bindTelRules">
-      <el-form-item prop="mobile" label="手机号">
-        <el-input v-model="bindTelForm.mobile" placeholder="请输入手机号"></el-input>
-      </el-form-item>
-      <el-form-item prop="code" label="验证码">
-        <el-input v-model="bindTelForm.code" placeholder="请输入验证码">
-        </el-input>
-        <el-button ref="btnCheckCode" @click="requestCheckCode('bindTelForm')" class="btn-checkcode" type="primary">发送验证码</el-button>
-      </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button class="size-normal" @click="hide()">取 消</el-button>
-      <el-button class="size-normal" type="primary" @click="submitInfo('bindTelForm')">确 定</el-button>
-    </div>
-  </el-dialog>
+  <div>
+    <slot></slot>
+    <el-dialog top="32%" class="bind-tel-dialog" :visible.sync="visible" @close="resetForm" :title="title">
+      <el-form ref="bindTelForm" :model="bindTelForm" :rules="bindTelRules">
+        <el-form-item prop="mobile" label="手机号">
+          <span class="tel-span" v-if="telInputLock" v-text="bindTelForm.mobile"></span>
+          <el-input v-if="!telInputLock" :readonly="telInputLock" v-model="bindTelForm.mobile" placeholder="请输入手机号"></el-input>
+        </el-form-item>
+        <el-form-item prop="code" label="验证码">
+          <el-input v-model="bindTelForm.code" placeholder="请输入验证码">
+          </el-input>
+          <el-button ref="btnCheckCode" @click="requestCheckCode('bindTelForm')" class="btn-checkcode" type="primary">发送验证码</el-button>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button class="size-normal" @click="hide()">取 消</el-button>
+        <el-button class="size-normal" type="primary" @click="submitInfo('bindTelForm')">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 <style lang="scss">
   .bind-tel-dialog {
@@ -23,8 +27,7 @@
       width: 300px;
 
       .el-dialog__body {
-        padding-top: 14px;
-        padding-bottom: 0px;
+        padding: 14px 0 0 0;
         margin-top: 25px;
         box-shadow: 0 -1px 0 0 rgba(153, 153, 153, 0.14);
       }
@@ -79,11 +82,21 @@
       height: 32px;
       line-height: 3px;
     }
+
+    .tel-span {
+      display: inline-block;
+      width: 100%;
+    }
   }
 </style>
 <script>
   import {mapActions} from 'vuex'
   export default {
+    props: {
+      bindPhoneSuccess: Function,
+      refreshPhoneAfterBindSuccess: Function
+    },
+
     data () {
       let checkPhone = (rule, value, callback) => {
         if (value === '') {
@@ -104,7 +117,9 @@
           mobile: [{required: true, validator: checkPhone, trigger: 'blur'}],
           code: [{required: true, message: '请输入验证码', trigger: 'blur'}]
         },
-        title: '绑定手机'
+        title: '绑定手机',
+        telInputLock: false,
+        st: 0
       }
     },
 
@@ -115,33 +130,46 @@
         'validateMobile'
       ]),
 
-      requestCheckCode (formName) {
+      requestCheckCode (formName, options = {}) {
+        let $btn = this.$refs['btnCheckCode'].$el
+        let $sp = $btn.querySelector('span')
+        let countDownClass = 'count-down'
+        let st
+
         let downCounting = () => {
-          let $btn = this.$refs['btnCheckCode'].$el
-          console.log(this.$refs)
-          let countDownClass = 'count-down'
-          if ($btn.classList.contains(countDownClass)) {
-            return
-          }
-          let $sp = $btn.querySelector('span')
-          console.log($sp)
           let count = 60
           $btn.classList.add(countDownClass)
           $sp.innerHTML = count + 's'
-          let st = setInterval(() => {
+          st = setInterval(() => {
             count--
             if (count > 0) {
               $sp.innerHTML = count + 's'
             } else {
-              $sp.innerHTML = '发送验证码'
-              $btn.classList.remove(countDownClass)
-              clearInterval(st)
+              resetBtn()
             }
           }, 1000)
+          this.st = st
         }
+        let resetBtn = () => {
+          clearInterval(this.st)
+          $sp.innerHTML = '发送验证码'
+          $btn.classList.remove(countDownClass)
+        }
+        if (options.stop) {
+          resetBtn()
+          return
+        }
+        if ($btn.classList.contains(countDownClass)) {
+          return
+        }
+
         this.$refs[formName].validateField('mobile', (err) => {
           if (!err) {
-            this.sendCode(this.bindTelForm.mobile).then(res => {
+            let checkBind = 1
+            if (this.title === '验证手机') {
+              checkBind = 0
+            }
+            this.sendCode({mobile: this.bindTelForm.mobile, checkBind}).then(res => {
               if (res.success) {
                 downCounting()
               }
@@ -152,18 +180,23 @@
 
       hide () {
         this.visible = false
-        this.initForm()
+        this.resetForm()
       },
 
       show (options = {}) {
         if (options.title) {
+          // 验证手机，默认绑定手机
           this.title = options.title
+          this.bindTelForm.mobile = options.mobile
+          this.telInputLock = true
         }
         this.visible = true
       },
 
       resetForm (formName = 'bindTelForm') {
         this.$refs[formName].resetFields()
+        this.bindTelForm.mobile = ''
+        this.requestCheckCode('', {stop: true})
       },
 
       submitInfo (formName) {
@@ -176,13 +209,19 @@
               }).then((res) => {
                 if (res.success) {
                   this.title = '更换手机'
+                  this.telInputLock = false
                   this.resetForm()
+                  this.requestCheckCode('', {stop: true})
                 }
               })
             } else {
               this.bindMobile(this.bindTelForm)
                 .then((res) => {
                   if (res.success) {
+                    // 添加广告页
+                    this.bindPhoneSuccess && this.bindPhoneSuccess()
+                    // 账户设置页
+                    this.refreshPhoneAfterBindSuccess && this.refreshPhoneAfterBindSuccess(this.bindTelForm.mobile)
                     this.visible = false
                   }
                 })

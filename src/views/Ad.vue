@@ -49,8 +49,20 @@
         <span class="qk-tabs__item-text"  slot="label"><span>完成</span><span>{{ task_statcnt.ended | formatZero }}</span></span>
       </el-tab-pane>
     </el-tabs>
-    <div v-if="newProductActivity.is_new_app_open && !newProductActivity.mobile" class="unbind-tel-wrap">新品2元优惠，<a class="c42" @click="showTelDialog()" href="javascript:;">绑定手机</a> 即可体验！</div>
-    <bind-phone-dialog ref="bindPhoneDialog"></bind-phone-dialog>
+
+    <!--<el-pagination-->
+      <!--v-if="tableData.length > 0"-->
+      <!--layout="prev, pager, next"-->
+      <!--@current-change="handleCurrentChange"-->
+      <!--:current-page="currentPage" -->
+      <!--:page-size="30" -->
+      <!--:total="totalTasks">-->
+    <!--</el-pagination>-->
+    <bind-phone-dialog :refresh-phone-after-bind-success="refreshPhoneAfterBindSuccess" ref="bindPhoneDialog">
+      <div v-if="newProductActivity.is_new_app_open && !newProductActivity.mobile" class="unbind-tel-wrap">
+        新品2元优惠，<a class="c42" @click="showTelDialog()" href="javascript:;">绑定手机</a> 即可体验！
+      </div>
+    </bind-phone-dialog>
     <!-- table -->
     <div class="table-wrapper">
       <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-show="columnExpand" v-loading="loading" element-loading-text="加载中...">
@@ -1175,8 +1187,11 @@
 
       showTelDialog () {
         let telDialog = this.$refs.bindPhoneDialog
-        console.log(telDialog)
-        telDialog.showBindTelDialog()
+        telDialog.show()
+      },
+
+      refreshPhoneAfterBindSuccess (mobile) {
+        this.newProductActivity.mobile = mobile
       }
     }
   }

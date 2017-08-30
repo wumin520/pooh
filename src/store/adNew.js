@@ -102,7 +102,7 @@ const mutations = {
   },
 
   [types.UPDATE_ADFORM] (state, form) {
-    state.adForm = form
+    state.adForm = {...form, isNew: false, isHasBindMobile: false}
   },
 
   [types.UPDATE_REMAIN_COUNT] (state, remain) {
@@ -371,15 +371,15 @@ const actions = {
     return api(uri).then((res) => {
       let payload = res.payload
       let isNew = false
-      if (payload.code === '20004') {
+      if (payload.code === 20004) {
         isNew = true
-        commit(types.IS_NEW_APPID, {isNew, isHasBindMobile: payload.mobile})
-      } else {
-        Message({
-          message: payload.msg,
-          iconClass: 'qk-warning'
-        })
       }
+      commit(types.IS_NEW_APPID, {isNew, isHasBindMobile: payload.mobile})
+
+      Message({
+        message: payload.msg,
+        iconClass: 'qk-warning'
+      })
       return {isNew}
     })
   }
