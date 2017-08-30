@@ -32,10 +32,13 @@
       }
     </script>
     <link href="http://unpkg.qkcdn.com/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://unpkg.qkcdn.com/swiper@3.4.2/dist/css/swiper.min.css" rel="stylesheet">
     <!-- light font -->
     <link href='http://cdn.webfont.youziku.com/webfonts/nomal/105132/46865/596871dff629d8142063a4b6.css' rel='stylesheet' type='text/css' />
     <!-- normal font -->
     <link href='http://cdn.webfont.youziku.com/webfonts/nomal/105132/46863/59686f09f629d8142063a4b4.css' rel='stylesheet' type='text/css' />
+    <!-- medium font  -->
+    <link href='http://cdn.webfont.youziku.com/webfonts/nomal/105132/46861/599d1ef2f629d8117c40c3d8.css' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
@@ -58,10 +61,24 @@
       </div>
     </div>
 
-    <div class="qk-banner">
-      <img src="http://qianka.b0.upaiyun.com/images/b1dda64d727c75ea9b7d8f4b0eb434d6.png" alt="" class="title">
-      <a href="/v2/register" class="btn register" style="cursor: pointer;">免费注册</a>
-      <img src="http://qianka.b0.upaiyun.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">
+    <div class="swiper-container qk-banner">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide pic1">
+          <img src="http://qianka.b0.upaiyun.com/images/b1dda64d727c75ea9b7d8f4b0eb434d6.png" alt="" class="title">
+          <a href="/v2/register" class="btn register" style="cursor: pointer;">免费注册</a>
+          <div class="banner-footer">
+            <img src="http://qianka.b0.upaiyun.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">            
+          </div>
+        </div> 
+        <div class="swiper-slide pic2">
+          <img src="http://assets.qkcdn.com/images/d9d7dc9bbebdae1fe48e67a178c3e747.png" alt="" class="title">           
+          <a href="/v2/register" class="btn register" style="cursor: pointer;">免费注册</a>
+          <div class="banner-footer ">
+            <img src="http://qianka.b0.upaiyun.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">            
+          </div>
+        </div> 
+      </div>
+      <div class="swiper-pagination"></div>
     </div>
 
     <div class="qk-list pdb-780">
@@ -210,13 +227,75 @@
 
     <!-- jQuery -->
     <script src="http://unpkg.qkcdn.com/jquery@3.2.1/dist/jquery.min.js"></script>
+    <script src="http://unpkg.qkcdn.com/swiper@3.4.2/dist/js/swiper.min.js"></script>
     <script>
       $(function() {
+        var activePaginationIndex = 0
+        var mySwiper = new Swiper('.swiper-container', {
+          autoplay: 5000,//可选选项，自动滑动
+          pagination: '.swiper-pagination',
+          paginaClickable: true,
+          effect : 'fade',
+          autoResize: true,
+          autoplayDisableOnInteraction : false, //手动切换之后 是否禁止自动滚动  默认为true
+          paginationBulletRender: function (swiper, index, className) {
+            return '<svg viewBox="0 0 100 100" id="pagination' + index + '"style="width: 14px;"><path d="M 50,50 m 0,-45 a 45,45 0 1 1 0,90 a 45,45 0 1 1 0,-90" stroke="rgba(255,255,255,0.2)" stroke-width="10" fill-opacity="0"></path><path d="M 50,50 m 0,-45 a 45,45 0 1 1 0,90 a 45,45 0 1 1 0,-90" stroke="#fff" stroke-width="10" fill-opacity="0" style="stroke-dasharray: 282.783, 282.783; stroke-dashoffset: 282.783;"></path></svg>';
+          },
+          onSlideChangeStart: function(swiper){
+            if (swiper.activeIndex == 0) {
+              activePaginationIndex = 1
+              $('#pagination0').removeClass('active')
+              $('#pagination1').addClass('active')               
+            } else {
+              activePaginationIndex = 0
+              $('#pagination1').removeClass('active')
+              $('#pagination0').addClass('active')                          
+            }
+          },
+          onSlideChangeEnd: function(swiper){
+            if (swiper.activeIndex == 0) {
+              activePaginationIndex = 0
+              $('#pagination0').addClass('active')
+              $('#pagination1').removeClass('active')                            
+            } else {
+              activePaginationIndex = 1
+              $('#pagination1').addClass('active') 
+              $('#pagination0').removeClass('active')                           
+            }
+          }
+        })
+
+        $('#pagination0').addClass('active')
+
+        $(window).resize(function() {
+          if (activePaginationIndex === 0) {
+            $('#pagination0').addClass('active')
+            $('#pagination1').removeClass('active')
+          } else {
+            $('#pagination1').addClass('active') 
+            $('#pagination0').removeClass('active') 
+          }
+
+          $('#pagination0').on('click', function() {
+            mySwiper.slideTo(0)
+          })
+          $('#pagination1').on('click', function() {
+            mySwiper.slideTo(1)
+          })
+        })
+
+        $('#pagination0').on('click', function() {
+          mySwiper.slideTo(0)
+        })
+        $('#pagination1').on('click', function() {
+          mySwiper.slideTo(1)
+        })
+
         function initNavbar() {
           if ($(window).scrollTop() > 666) {
             $('.qk-navbar').css('background', '#0A2335')
           }else  {
-            $('.qk-navbar').css('background', 'rgba(0, 0, 0, 0.25)');
+            $('.qk-navbar').css('background', 'none');
           }
         }
 
