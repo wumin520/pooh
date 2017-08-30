@@ -374,12 +374,13 @@ const actions = {
       if (payload.code === 20004) {
         isNew = true
       }
+      if (payload.code === 20001 || payload === 20002) {
+        Message({
+          message: payload.msg,
+          iconClass: 'qk-warning'
+        })
+      }
       commit(types.IS_NEW_APPID, {isNew, isHasBindMobile: payload.mobile})
-
-      Message({
-        message: payload.msg,
-        iconClass: 'qk-warning'
-      })
       return {isNew}
     })
   }
