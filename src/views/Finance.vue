@@ -234,11 +234,17 @@
         .qk-title {
           position: relative;
           top: 7px;
+          font-size: 16px;
         }
       }
 
       .el-dialog__footer {
-        padding-top: 26px;      
+        padding-top: 26px;
+        .dialog-footer {
+          button:last-child {
+            margin-left: 8px;
+          }
+        }
       }
     }
   }

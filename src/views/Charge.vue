@@ -182,8 +182,8 @@
         <span class="title">正在支付...</span>
       </div>
       <div class="dialog-content">
-        <div class="charge-status">支付成功 <span class="link" @click="toFinance()">查看充值记录</span></div>
-        <div class="charge-status">支付失败 <span class="link" @click="alipayDialogVisible = false">重新付款</span></div>
+        <div class="charge-status">支付成功<span class="link" @click="toFinance()">查看充值记录</span></div>
+        <div class="charge-status">支付失败<span class="link" @click="alipayDialogVisible = false">重新付款</span></div>
       </div>
     </el-dialog>
   </div>
@@ -339,6 +339,7 @@
       font-size: 18px;
       color: #4A90E2;
       margin: 0 5px;
+      font-family: PingFangSC-Semibold;
     }
 
     .fs16-c88 {
@@ -453,6 +454,10 @@
               .link {
                 color: #4a90e2;
                 cursor: pointer;
+                display: inline-block;
+                margin-left: 15px;
+                position: relative;                
+                left: -1px;
               }
             }
             .charge-status:last-child {
