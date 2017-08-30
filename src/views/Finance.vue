@@ -11,15 +11,18 @@
     <el-table :class="{'nodata': payments.length === 0 }"  :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column prop="date" label="日期" min-width="152">
       </el-table-column>
-       <el-table-column prop="types" label="广告主类型" min-width="110">
+       <el-table-column prop="pay_type" label="付款方式" min-width="110">
       </el-table-column>
        <el-table-column prop="drawee" label="付款人" min-width="206">
+          <template scope="scope">
+            <div>{{ decodeURI(scope.row.drawee) }}</div>
+          </template>
       </el-table-column>
        <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
       </el-table-column>
-       <el-table-column prop="operation_number" label="操作编号" min-width="110">
+       <el-table-column prop="operation_number" label="操作编号" min-width="90">
       </el-table-column>
-       <el-table-column prop="new_finance_status" label="状态" min-width="98">
+       <el-table-column prop="new_finance_status" label="状态" min-width="90">
       </el-table-column>
        <el-table-column prop="settlement_amount" label="付款金额" min-width="140">
         <template scope="scope">
@@ -31,9 +34,15 @@
           <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="100">
+      <el-table-column prop="consume_amount" label="消耗金额" min-width="140">
+         <template scope="scope">
+          <div>￥ {{ scope.row.consume_amount | addCommas_money }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" min-width="65">
         <template scope="scope">
-          <a style="margin-right: 13px;" v-if="scope.row.status === 0" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
+          <!-- status: 0 待审核（可删除） 1 入账 2 广告主取消 -->
+          <a v-if="scope.row.status === 0 && scope.row.pay_type !== '支付宝'" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
           <!--<a class="link-go" type="text" @click="charge()">充值</a>-->
         </template>
       </el-table-column>
@@ -46,6 +55,14 @@
       <span slot="footer" class="dialog-footer">
         <el-button class="cancle-button" size="small" @click="dialogVisible = false">取消</el-button>
         <el-button class="goon-button" type="primary" size="small"@click="handleDelete()">继续</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog v-model="chargeSuccessDialogVisible" :show-close="showClose" custom-class="charge-success-dialog" style="top: 30%;">
+      <img class="logo" src="//qianka.b0.upaiyun.com/images/425ec42718c6ef5cbe6e6fe998b66d12.png" alt="">
+      <span class="qk-title">支付成功！</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" style="width:109px;" @click="backtoHome()">返回首页</el-button>
+        <el-button type="primary" style="width:109px;" size="small" @click="checkRecord()">查看记录</el-button>
       </span>
     </el-dialog>
     <!--<el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
@@ -207,6 +224,29 @@
         }
       }
     }
+
+    .charge-success-dialog {
+      .el-dialog__body {
+        padding-top: 0px;
+        .logo {
+          top: 0px;
+        }
+        .qk-title {
+          position: relative;
+          top: 7px;
+          font-size: 16px;
+        }
+      }
+
+      .el-dialog__footer {
+        padding-top: 26px;
+        .dialog-footer {
+          button:last-child {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
   }
 </style>
 <script>
@@ -217,7 +257,8 @@
         operation_number: 0,
         curRowIndex: -1,
         dialogVisible: false,
-        showClose: false
+        showClose: false,
+        chargeSuccessDialogVisible: false
       }
     },
 
@@ -251,11 +292,11 @@
 
     fetchAction: 'finance/getInfo',
 
-    created () {
-      // 监听屏幕大于1440时 表格的‘操作’展开
-      // var screenWidth = document.body.clientWidth
-      // screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
-      // window.addEventListener('resize', this.tableResize)
+    mounted () {
+      let alipaySuccess = this.$route.query.alipay_success
+      if (parseInt(alipaySuccess) === 1) {
+        this.chargeSuccessDialogVisible = true
+      }
     },
 
     destroyed () {
@@ -263,12 +304,16 @@
     },
 
     methods: {
-      // 监听屏幕大于1440时 表格的‘操作’展开
-      // tableResize () {
-      //   let screenWidth = document.body.clientWidth
-      //   screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
-      //   console.log(document.body.clientWidth, this.columnExpand)
-      // },
+      backtoHome () {
+        this.chargeSuccessDialogVisible = false
+        this.$router.push('/d/home')
+      },
+
+      checkRecord () {
+        this.chargeSuccessDialogVisible = false
+        location.href = 'http://' + location.host + '/v2/d/finance'
+        // this.getInfo()
+      },
 
       currentChange (page) {
         this.getInfo({page})

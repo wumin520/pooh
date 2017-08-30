@@ -11,6 +11,7 @@ import Finance from '@/views/Finance'
 import Account from '@/views/Account'
 import Charge from '@/views/Charge'
 import Price from '@/views/Price'
+import Error from '@/views/Error'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register
+    },
+    {
+      path: '/error',
+      name: 'error',
+      component: Error
     },
     {
       path: '/d',
@@ -70,11 +76,12 @@ export default new Router({
           path: 'finance/price',
           component: Price
         },
-        {
-          name: 'dash_finance_edit',
-          path: 'finance/edit/:id',
-          component: Charge
-        },
+        // 该路由已废弃
+        // {
+        //   name: 'dash_finance_edit',
+        //   path: 'finance/edit/:id',
+        //   component: Charge
+        // },
         {
           name: 'dash_account',
           path: 'account',

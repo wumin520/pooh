@@ -165,6 +165,7 @@
           .fs18-c42 {
             font-size: 18px;
             color: #4A90E2;
+            font-family: PingFangSC-Semibold;
             margin: 0 5px;
           }
         }
