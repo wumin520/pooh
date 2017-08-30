@@ -374,7 +374,7 @@ const actions = {
       if (payload.code === 20004) {
         isNew = true
       }
-      if (payload.code === 20001 || payload === 20002) {
+      if (payload.code === 20001 || payload.code === 20002) {
         Message({
           message: payload.msg,
           iconClass: 'qk-warning'
