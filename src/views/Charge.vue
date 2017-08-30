@@ -99,9 +99,14 @@
     </el-form>
 
     <el-form v-show="activeTabName !== 'chinabank'" class="alipay-form" ref="alipayform" :model="aliInfo" :rules="alirules">
+      <!-- 神奇的bug临时解决， bug: 在充值金额的输入框里触发enter键 页面会刷新 -->
+      <el-form-item style="display:none;" label="">
+        <el-input></el-input>
+      </el-form-item>
       <el-form-item prop="ali_amount" class="w214" label="充值金额">
         <el-input v-model="aliInfo.ali_amount" placeholder="请输入充值金额"></el-input>元
       </el-form-item>
+
       <!--<el-form-item prop="ali_drawee" class="w214" label="付款账号">
         <el-input v-model="aliInfo.ali_drawee" placeholder="请输入付款的支付宝账号"></el-input>
       </el-form-item>-->
