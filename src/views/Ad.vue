@@ -367,6 +367,7 @@
     line-height: 18px;
     font-size: 13px;
     color: #de4948;
+    margin: 10px 0 5px 0;
 
     .c42 {
       font-weight: 600;
