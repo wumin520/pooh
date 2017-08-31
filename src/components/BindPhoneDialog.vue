@@ -66,8 +66,10 @@
         bottom: -1px;
         width: 88px;
         height: 42px;
+        text-align: center;
         font-size: 12.5px;
         transform: scale(.8);
+        padding: 0;
       }
 
       .count-down {

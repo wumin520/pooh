@@ -204,6 +204,10 @@
     .el-dialog {
       width: 390px;
       height: 200px;
+
+      .el-dialog__header {
+        height: 16px;
+      }
     }
 
     .el-dialog__body {

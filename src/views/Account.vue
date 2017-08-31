@@ -42,27 +42,13 @@
   </div>
 </template>
 <style lang="scss">
-  .el-form-item {
-    width: 350px;
-
-    .el-form-item__label {
-      font-size: 13px;
-      color: #3A3A3A;
-      letter-spacing: 0;
-    }
-
-    .w130 {
-      width: 130px;
-    }
-  }
-
   .account-container {
     padding: 50px 0 150px 35px;
 
     .phone-wrap {
       display: inline-block;
       width: 100%;
-      line-height: 18px;
+      vertical-align: bottom;
 
       .mrg-l31 {
         margin-left: 31px;
@@ -87,7 +73,24 @@
 
     .account-form {
       .el-form-item {
-        margin-bottom: 29px;
+        width: 350px;
+        margin-bottom: 19px;
+
+        .el-form-item__label {
+          font-size: 13px;
+          color: #3A3A3A;
+          letter-spacing: 0;
+          padding-bottom: 9px;
+          line-height: 18px;
+        }
+
+        .w130 {
+          width: 130px;
+        }
+      }
+
+      .el-form-item__content {
+        line-height: 40px;
       }
     }
 
@@ -108,6 +111,7 @@
       font-family: PingFangSC-Regular;
       position: relative;
       width: 100%;
+      line-height: 40px;
       display: inline-block;
     }
   }
