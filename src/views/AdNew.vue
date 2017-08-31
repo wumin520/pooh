@@ -109,7 +109,7 @@
                 <el-radio-button class="el-icon-check" label="付费"></el-radio-button>
               </el-radio-group>
               <span class="mrg-l30 unit-desc" v-text="'单价 ￥' + (adForm.appstore_type === '付费' ? ad_price.unit_price_level2 : ad_price.unit_price)"></span>
-              <span class="new-app-hint mrg-l30" v-if="adForm.appstore_type !== '付费' && adForm.isNew">（新品应用前5000次投放，单价优惠至2元/份，先抢先得！）</span>
+              <span class="new-app-hint mrg-l30" v-if="adForm.appstore_type !== '付费' && adForm.isNew">（每个新品应用前5000份投放，单价优惠至2元）</span>
             </div>
         </div>
         <div v-if="adForm.appstore_type == '付费'" class="right-wrap">
@@ -190,7 +190,7 @@
       :show-close="false"
       class="promotion-dialog"
       top="38%">
-      <span>您的应用可参与新品体验活动，应用的前5000次投放实际单价=2元，先抢先得。绑定手机即可参与活动</span>
+      <span>您的应用可参与新品体验活动，应用的前5000份投放实际单价=2元，先抢先得。绑定手机即可参与活动</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="continueSubmit">继续提交</el-button>
         <el-button type="primary" @click="bindTel">绑定手机</el-button>
@@ -299,7 +299,7 @@
       width: 385px;
       height: 20px;
       font-size: 14px;
-      color: #3a3a3a;
+      color: #de4948;
       vertical-align: middle;
     }
 

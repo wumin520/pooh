@@ -8,7 +8,7 @@
       <el-form-item prop="title" label="姓名/公司">
         <el-input v-model="info.title" placeholder="请输入姓名/公司"></el-input>
       </el-form-item>
-      <el-form-item prop="phone" label="联系电话（选填）">
+      <el-form-item prop="phone" label="联系电话">
         <!--<el-input v-model="info.phone" placeholder="请输入联系电话"></el-input>-->
         <div class="phone-wrap">
             <span>{{info.mobile ? info.mobile : '未绑定手机'}}</span>
