@@ -15,9 +15,9 @@ const initState = () => ({
   advertiser_id: 0, // 广告主id for 限制添加关键词
   zs_free: 0, // 标识专属任务是否免费 1免费 0付费
   adForm: {
-    title: 'a',
-    download_url: 'aa',
-    click_notify_url: 'aaa',
+    title: '',
+    download_url: '',
+    click_notify_url: '',
     search_keyword: '', // 为兼容老版 单关键词 for 续单、编辑
     begin_time: '',  // 日期
     begin_time_time: new Date(2017, 1, 1, 0, 0), // 时间
