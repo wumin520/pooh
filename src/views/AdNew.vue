@@ -15,7 +15,7 @@
     <el-form :model="adForm" ref="adFormRef" label-position="top" class="addAd-form" id="addAd-form-id">
       <!-- 应用标题 -->
       <el-form-item class="qk-form-item" label="应用标题" prop="title">
-        <el-input v-model="adForm.title"  placeholder="请输入应用标题"></el-input>
+        <el-input :readonly="renewLockInput" v-model="adForm.title"  placeholder="请输入应用标题"></el-input>
       </el-form-item>
       <!-- iTunes地址 -->
       <!--<el-form-item class="qk-form-item" label="iTunes地址" prop="download_url">-->
@@ -23,7 +23,7 @@
       <!--</el-form-item>-->
       <!--AppId-->
       <el-form-item class="qk-form-item" label="App ID" prop="appId">
-        <el-input @blur="appIdCheck" v-model="adForm.appid" placeholder="请输入App ID"></el-input>
+        <el-input :readonly="renewLockInput" @blur="appIdCheck" v-model="adForm.appid" placeholder="请输入App ID"></el-input>
       </el-form-item>
       <!-- 跳转地址（选填） -->
       <el-form-item class="qk-form-item mgb-80" label="跳转地址（选填）" prop="click_notify_url">
@@ -523,6 +523,7 @@
 
     data () {
       return {
+        renewLockInput: false,
         promotionDialogVisible: false,
         page_sub_title: '添加新广告',  // ？todo 检查是否冗余？
         submitButtonDisable: false,  // 提交按钮是否禁用
@@ -547,6 +548,7 @@
         let params = this.$route.params.taskId
         this.page_sub_title = '续单'
         this.fetchPreRenew(params)
+        this.renewLockInput = true
       } else if (path === 'dash_ad_new') {
         // 添加
         this.$store.dispatch('updateIndex', 'dash_ad', { root: true })
