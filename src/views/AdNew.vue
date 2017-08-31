@@ -543,11 +543,18 @@
 
     mounted () {
       let path = this.$route.name
+      let backOnAppNotFound = (res) => {
+        if (res && res.notFound) {
+          this.$router.push('/d/ad/ios/ok')
+        }
+      }
       if (path === 'dash_ad_renew') {
         // 续单
         let params = this.$route.params.taskId
         this.page_sub_title = '续单'
-        this.fetchPreRenew(params)
+        this.fetchPreRenew(params).then(res => {
+          backOnAppNotFound(res)
+        })
         this.renewLockInput = true
       } else if (path === 'dash_ad_new') {
         // 添加
@@ -558,7 +565,9 @@
         // 编辑
         let params = this.$route.params.taskId
         this.page_sub_title = '编辑'
-        this.fetchPreEdit(params)
+        this.fetchPreEdit(params).then(res => {
+          backOnAppNotFound(res)
+        })
       }
     },
 
