@@ -150,13 +150,13 @@
         }
       }
 
-      let checkPhone = (rule, value, callback) => {
-        if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
-          callback(new Error('手机号格式不正确'))
-        } else {
-          callback()
-        }
-      }
+      // let checkPhone = (rule, value, callback) => {
+      //   if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
+      //     callback(new Error('手机号格式不正确'))
+      //   } else {
+      //     callback()
+      //   }
+      // }
 
       return {
         rules: {
@@ -165,8 +165,7 @@
           ],
           password: [{ required: true, message: '请输入当前密码', trigger: 'blur' }],
           new_password: [{ required: true, validator: checkNewPassword, trigger: 'blur' }],
-          confirm: [{ required: true, validator: checkConfirm, trigger: 'blur' }],
-          phone: [{required: true, validator: checkPhone, trigger: 'blur'}]
+          confirm: [{ required: true, validator: checkConfirm, trigger: 'blur' }]
         }
       }
     },
