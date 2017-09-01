@@ -172,6 +172,9 @@ const actions = {
       })
       .catch(err => {
         console.log('adnew err', err)
+        if (err.payload && err.payload.code === 404) {
+          return {notFound: true}
+        }
       })
   },
 
@@ -182,6 +185,10 @@ const actions = {
       .then(payload => {
         if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
         dispatch('formatPreInfoForEditAndRenew', payload)
+      }).catch(err => {
+        if (err.payload && err.payload.code === 404) {
+          return {notFound: true}
+        }
       })
   },
 
