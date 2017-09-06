@@ -7,11 +7,13 @@ import adNew from './adNew'
 import finance from './finance'
 import ad from './ad'
 import priceSys from './priceSys'
+import cookie from '../cookie'
 
 Vue.use(Vuex)
 
 const state = {
-  activeIndex: ''
+  activeIndex: '',
+  atype: ''
 }
 
 const getters = {
@@ -19,7 +21,8 @@ const getters = {
 }
 
 const types = {
-  UPDATE_ACTIVE_INDEX: 'update_active_index'
+  UPDATE_ACTIVE_INDEX: 'update_active_index',
+  UPDATE_ATYPE: 'update_atype'
 }
 
 const mutations = {
@@ -44,15 +47,21 @@ const mutations = {
         state.activeIndex = '4'
         break
     }
-    // console.log('commit activeIndex', state.activeIndex)
+  },
+  [types.UPDATE_ATYPE] (state, atype) {
+    state.atype = atype
   }
 }
 
 const actions = {
   updateIndex ({commit, state}, paramsName) {
     commit(types.UPDATE_ACTIVE_INDEX, paramsName)
-  }
+  },
 
+  updateAtype ({commit}) {
+    let atype = cookie.get('atype')
+    commit(types.UPDATE_ATYPE, atype)
+  }
 }
 
 export default new Vuex.Store({

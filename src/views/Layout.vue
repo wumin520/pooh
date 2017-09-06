@@ -22,7 +22,7 @@
           <el-menu-item index="2-1">退出</el-menu-item>
         </el-submenu>
 
-        <el-menu-item index="6" class="pull-right layout-charge">价格体系</el-menu-item>        
+        <el-menu-item index="6" class="pull-right layout-charge">价格体系</el-menu-item>
 
         <el-menu-item index="3" class="pull-right layout-charge">充值</el-menu-item>
 
@@ -34,7 +34,7 @@
 
     <div class="content">
       <!-- 侧栏 -->
-      <div class="sidebar">
+      <div class="sidebar" v-if="atype == 2">
         <el-menu mode="vertical" :default-active="activeIndex" @open="handleOpen" @close="handleClose" @select="handleSelect"
           style="width: 180px; padding-top: 32px; height: 100%;">
           <el-menu-item index="1"><i class="el-icon-square"></i>账户首页<div class="el-icon-triangle"></div></el-menu-item>
@@ -53,6 +53,17 @@
           <el-menu-item index="3"><i class="el-icon-square"></i>财务管理<div class="el-icon-triangle"></div></el-menu-item>
 
           <el-menu-item index="4"><i class="el-icon-square"></i>账户信息<div class="el-icon-triangle"></div></el-menu-item>
+        </el-menu>
+      </div>
+      <!--借钱广告主-->
+      <div class="sidebar" v-if="atype == 6">
+        <el-menu mode="vertical" :default-active="activeIndex" @open="handleOpen" @close="handleClose" :router="true"
+          style="width: 180px; padding-top: 32px; height: 100%;">
+          <el-menu-item index="1" :route="{path: '/d/loan/home'}"><i class="el-icon-square"></i>账户首页<div class="el-icon-triangle"></div></el-menu-item>
+
+          <el-menu-item index="3" :route="{path: '/d/loan/finance'}"><i class="el-icon-square"></i>财务管理<div class="el-icon-triangle"></div></el-menu-item>
+
+          <el-menu-item index="4" :route="{path: '/d/account'}"><i class="el-icon-square"></i>账户信息<div class="el-icon-triangle"></div></el-menu-item>
         </el-menu>
       </div>
 
@@ -130,11 +141,13 @@
         'balanceThreshold'
       ]),
       ...mapState([
-        'activeIndex'
+        'activeIndex',
+        'atype'
       ])
     },
 
     mounted () {
+      this.$store.dispatch('updateAtype')
       this.updateActiveIndex()
     },
 

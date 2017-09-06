@@ -13,6 +13,11 @@ import Charge from '@/views/Charge'
 import Price from '@/views/Price'
 import Error from '@/views/Error'
 
+// 借钱模块
+import LoanHome from '@/views/loan/Home'
+import LoanFinance from '@/views/loan/Finance'
+import LoanCharge from '@/views/loan/Charge'
+
 Vue.use(Router)
 
 export default new Router({
@@ -86,6 +91,21 @@ export default new Router({
           name: 'dash_account',
           path: 'account',
           component: Account
+        },
+        {
+          name: 'loan_dash_home',
+          path: 'loan/home',
+          component: LoanHome
+        },
+        {
+          name: 'loan_dash_finance',
+          path: 'loan/finance',
+          component: LoanFinance
+        },
+        {
+          name: 'loan_dash_finance_charge',
+          path: 'loan/finance/charge',
+          component: LoanCharge
         }
       ]
     },
