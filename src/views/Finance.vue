@@ -34,11 +34,11 @@
           <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
         </template>
       </el-table-column>
-      <!-- <el-table-column prop="consume_amount" label="消耗金额" min-width="140">
+      <el-table-column prop="consume_amount" label="消耗金额" min-width="140">
          <template scope="scope">
           <div>￥ {{ scope.row.consume_amount | addCommas_money }}</div>
         </template>
-      </el-table-column>-->
+      </el-table-column>
       <el-table-column label="操作" min-width="65">
         <template scope="scope">
           <!-- status: 0 待审核（可删除） 1 入账 2 广告主取消 -->
