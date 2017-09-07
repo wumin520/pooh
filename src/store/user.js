@@ -146,7 +146,8 @@ const actions = {
     })
     .then(res => res.json())
     .then(res => {
-      $router.push('/login')
+      // $router.push('/login')
+      location.href = 'http://' + location.host  // 退出 回到门户页
     })
     .catch(err => {
       Message({
