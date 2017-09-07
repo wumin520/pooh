@@ -4,7 +4,7 @@ import {
   URI_SEND_CHECKCODE,
   URI_VALIDATE_MOBILE
 } from '@/constants'
-import api from '../../fetch'
+import api from '../fetch'
 import { Message } from 'element-ui'
 
 const types = {
