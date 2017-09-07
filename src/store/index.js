@@ -9,6 +9,9 @@ import ad from './ad'
 import priceSys from './priceSys'
 import cookie from '../cookie'
 
+import loanFinance from './loan/finance'
+import loanCharge from './loan/charge'
+
 Vue.use(Vuex)
 
 const state = {
@@ -73,7 +76,9 @@ export default new Vuex.Store({
     adNew,
     finance,
     ad,
-    priceSys
+    priceSys,
+    loanFinance,
+    loanCharge
   },
   state,
   mutations,

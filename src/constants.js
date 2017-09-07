@@ -17,6 +17,10 @@ export const URI_VALIDATE_MOBILE = '/v2/api/mobile/check_code'
 export const URI_SEND_CHECKCODE = '/v2/api/mobile/send_code'
 export const URI_CHECK_APPID = '/v2/api/task/check_appid'
 
+export const URI_LOAN_FINANCE = '/v2/api/loan/settlement/list'
+export const URI_LOAN_FINANCE_CHARGE_CANCEL = '/v2/api/loan/settlement/delete'
+export const URI_LOAN_CHARGE = '/v2/api/loan/settlement/create'
+
 // Report Types
 export const LW = 'LW' // 最近7天
 export const L30D = 'L30D' // 最近30天
