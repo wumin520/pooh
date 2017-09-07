@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: off */
 import { Message } from 'element-ui'
-import api from '../fetch'
+import api from '../../fetch'
 import {URI_PRICE_SYS} from '@/constants'
 
 const initState = () => ({

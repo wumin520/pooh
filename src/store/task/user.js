@@ -140,23 +140,6 @@ const mutations = {
 }
 
 const actions = {
-  logout () {
-    fetch(URI_LOGOUT, {
-      credentials: 'same-origin'
-    })
-    .then(res => res.json())
-    .then(res => {
-      // $router.push('/login')
-      location.href = 'http://' + location.host  // 退出 回到门户页
-    })
-    .catch(err => {
-      Message({
-        message: err.err_msg,
-        iconClass: 'qk-warning'
-      })
-    })
-  },
-
   getDashboardData ({ commit }) {
     return fetch(URI_DASHBOARD, {
       credentials: 'same-origin'

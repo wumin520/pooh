@@ -52,19 +52,10 @@
     <!-- 报表头 Tabs -->
     <el-tabs v-model="reportContent" class="qk-tabs-text" type="card" @tab-click="onTabClick">
       <el-tab-pane name="cost">
-        <span class="qk-tabs__item-text" slot="label"><span class="tag">消费</span><span class="sub-tag">{{ reportSummary.cost > 0 ? ('¥ ' + reportSummary.cost.toFixed(2)) : '-' }}</span></span>
+        <span class="qk-tabs__item-text" slot="label"><span class="tag">消耗</span><span class="sub-tag">{{ reportSummary.cost > 0 ? ('¥ ' + reportSummary.cost.toFixed(2)) : '-' }}</span></span>
       </el-tab-pane>
       <el-tab-pane name="clicks">
-        <span class="qk-tabs__item-text" slot="label"><span>点击</span><span>{{ reportSummary.clicks | index }}</span></span>
-      </el-tab-pane>
-      <el-tab-pane name="effect_actions">
-        <span class="qk-tabs__item-text" slot="label"><span>完成</span><span>{{ reportSummary.effect_actions | index }}</span></span>
-      </el-tab-pane>
-      <el-tab-pane name="effect_rate">
-        <span class="qk-tabs__item-text" slot="label"><span>完成率</span><span>{{ reportSummary.effect_rate | rate }}</span></span>
-      </el-tab-pane>
-      <el-tab-pane name="zs_finish_total_count">
-        <span class="qk-tabs__item-text" slot="label"><span>完成专属</span><span>{{ reportSummary.zs_finish_total_count | index }}</span></span>
+        <span class="qk-tabs__item-text" slot="label"><span>比对成功</span><span>{{ reportSummary.clicks | index }}</span></span>
       </el-tab-pane>
     </el-tabs>
 
@@ -83,39 +74,24 @@
       >
         <el-table-column
           prop="date"
-          label="日期" width="122">
+          label="日期">
           <template scope="scope">
             <div>{{ scope.row.date.replace(/\//g, '.') }}</div>
           </template>
         </el-table-column>
         <el-table-column
           prop="cost"
-          label="消费">
+          label="消耗">
           <template scope="scope">
             <div>{{ '￥' + scope.row.cost | addCommas_money }}</div>
           </template>
         </el-table-column>
         <el-table-column
-          prop="clicks"
-          label="点击">
-          <template scope="scope">
-            <div>{{ scope.row.clicks | addCommas }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
           prop="effect_actions"
-          label="完成份数">
+          label="比对成功">
           <template scope="scope">
             <div>{{ scope.row.effect_actions | addCommas }}</div>
           </template>
-        </el-table-column>
-        <el-table-column
-          prop="effect_rate"
-          label="完成率">
-        </el-table-column>
-        <el-table-column
-          prop="zs_done_count"
-          label="完成专属">
         </el-table-column>
       </el-table>
     </el-row>
@@ -203,7 +179,7 @@
 
 <script>
   import _ from 'lodash'
-  import {mapGetters, mapActions} from 'vuex'
+  import {mapState, mapGetters, mapActions} from 'vuex'
   import DashboardCard from '@/components/DashboardCard.vue'
   import { LW, L30D, L90D } from '@/constants'
 
@@ -262,12 +238,17 @@
       }
     },
 
-    fetchAction: 'user/getDashboardData',
+    fetchAction: 'loanUser/getDashboardData',
 
     computed: {
-      ...mapGetters('user', [
-        'indicesLastday',
-        'indicesDBY',
+      ...mapState('loanUser', [
+        'yesterday_amount',
+        'sevendays_amount',
+        'month_amount',
+        'unliquidated'
+      ]),
+
+      ...mapGetters('loanUser', [
         'reportTypes',
         'reportSummary',
         'tableData',
@@ -431,7 +412,7 @@
       },
 
       download () {
-        this.$store.dispatch('user/downloadReport', { dayCnt: this.dayCnt })
+        this.$store.dispatch('loanUser/downloadReport', { dayCnt: this.dayCnt })
       },
 
       ...mapActions('user', [

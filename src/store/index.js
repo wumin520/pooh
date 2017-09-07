@@ -1,12 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import user from './user'
-import accountSetting from './accountSetting'
-import charge from './charge'
-import adNew from './adNew'
-import finance from './finance'
-import ad from './ad'
-import priceSys from './priceSys'
+import user from './task/user'
+import accountSetting from './task/accountSetting'
+import charge from './task/charge'
+import adNew from './task/adNew'
+import finance from './task/finance'
+import ad from './task/ad'
+import priceSys from './task/priceSys'
+// 借钱
+import loanUser from './loan/user'
+
+import { URI_LOGOUT } from '@/constants'
+import { Message } from 'element-ui'
 import cookie from '../cookie'
 
 import loanFinance from './loan/finance'
@@ -57,6 +62,22 @@ const mutations = {
 }
 
 const actions = {
+  logout () {
+    fetch(URI_LOGOUT, {
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(res => {
+      $router.push('/login')
+    })
+    .catch(err => {
+      Message({
+        message: err.err_msg,
+        iconClass: 'qk-warning'
+      })
+    })
+  },
+
   updateIndex ({commit, state}, paramsName) {
     commit(types.UPDATE_ACTIVE_INDEX, paramsName)
   },
@@ -78,7 +99,8 @@ export default new Vuex.Store({
     ad,
     priceSys,
     loanFinance,
-    loanCharge
+    loanCharge,
+    loanUser
   },
   state,
   mutations,

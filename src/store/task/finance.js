@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: off */
 import { Message } from 'element-ui'
-import api from '../fetch'
+import api from '../../fetch'
 import {URI_FINANCE, URI_FINANCE_CHARGE_CANCEL} from '@/constants'
 
 const types = {

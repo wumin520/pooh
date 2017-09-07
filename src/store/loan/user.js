@@ -7,7 +7,7 @@ import {
   L30D,
   L90D,
   URI_LOGOUT,
-  URI_DASHBOARD,
+  URI_LOAN_DASHBOARD,
   URI_LOAN_REPORT,
   URI_LOAN_REPORT_DOWNLOAD
 } from '@/constants'
@@ -22,8 +22,7 @@ const types = {
 const initState = () => ({
   navbar: {
     username: '',
-    balance: '0.00',
-    balance_threshold: '0.00'
+    unsettled_amount: '0.00'
   },
 
   unliquidated: '',
@@ -60,20 +59,8 @@ const getters = {
     return state.navbar.username
   },
 
-  balance: state => {
-    return state.navbar.balance
-  },
-
-  balanceThreshold: state => {
-    return state.navbar.balance_threshold
-  },
-
-  indicesLastday: state => {
-    return state.indices.last_day
-  },
-
-  indicesDBY: state => {
-    return state.indices.dby
+  unsettledAmount: state => {
+    return state.navbar.unsettled_amount
   },
 
   reportTypes: state => ([
@@ -155,7 +142,7 @@ const actions = {
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
     let endTime = now - 86400
-    let url = `${URI_LOAN_REPORT}?action=chart&content=${content}&day_cnt=${dayCnt}&ts_start=${startTime}&ts_end=${endTime}`
+    let url = `${URI_LOAN_REPORT}?action=chart&content=${content}&start_time=${startTime}&end_time=${endTime}`
 
     return fetch(url, {
       credentials: 'same-origin'
@@ -173,7 +160,7 @@ const actions = {
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
     let endTime = now - 86400
-    let url = `${URI_LOAN_REPORT}?action=table&content=${content}&ts_start=${startTime}&ts_end=${endTime}`
+    let url = `${URI_LOAN_REPORT}?action=table&content=${content}&start_time=${startTime}&end_time=${endTime}`
 
     return fetch(url, {
       credentials: 'same-origin'

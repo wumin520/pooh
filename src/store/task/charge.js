@@ -2,7 +2,7 @@ import {
   URI_CHARGE,
   URI_CHARGE_INVOICE
 } from '@/constants'
-import api from '../fetch'
+import api from '../../fetch'
 
 const types = {
   SYNC_INVOICE: 'syncInvocie'
