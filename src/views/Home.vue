@@ -88,6 +88,7 @@
         :data="tableData"
         border
         stripe
+        :default-sort="sort"
         style="width: 100%;"
       >
         <el-table-column
@@ -278,7 +279,8 @@
       return {
         reportType: LW,
         reportContent: 'cost',
-        chart: undefined
+        chart: undefined,
+        sort: {prop: 'date', order: 'descending'} // talble 按时间属性倒序
       }
     },
 

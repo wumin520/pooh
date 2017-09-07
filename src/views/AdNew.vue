@@ -65,7 +65,7 @@
         </el-time-picker>
       </el-form-item>
       <!-- 计划分数 -->
-      <el-form-item class="qk-form-item mgb-80" label="计划份数" prop="plan_count">
+      <el-form-item class="qk-form-item mgb-30" label="计划份数" prop="plan_count">
         <el-input  @change="planAnalysis" v-model="adForm.plan_count" placeholder="300份起" class="w190"></el-input>
       </el-form-item>
 
@@ -274,6 +274,10 @@
 
       .mgb-80 {
         margin-bottom: 80px;
+      }
+
+      .mgb-30 {
+        margin-bottom: 30px;
       }
 
       .w190 {
