@@ -26,7 +26,6 @@ const mutations = {
 
 const actions = {
   getInfo ({commit, dispatch, state}, params = {page: 1}) {
-    dispatch('updateIndex', 'dash_finance', { root: true })
     let offset = (params.page - 1) * state.limit
     let apiUri = `${URI_FINANCE}?offset=${offset}&limit=${state.limit}`
     return api(apiUri).then(({payload}) => {

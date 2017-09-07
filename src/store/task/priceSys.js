@@ -15,7 +15,6 @@ const mutations = {
 
 const actions = {
   getInfo ({dispatch}) {
-    dispatch('updateIndex', 'dash_finance', { root: true })
     return api(URI_PRICE_SYS).then(({payload}) => {
       if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
     })

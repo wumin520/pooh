@@ -215,8 +215,8 @@
   .select-dropdown-home {
     .el-select-dropdown__item {
       span {
-        font-size: 14px !important; 
-        color: #3a3a3a;     
+        font-size: 14px !important;
+        color: #3a3a3a;
       }
     }
   }
@@ -310,7 +310,6 @@
     },
 
     created () {
-      this.$store.dispatch('updateIndex', 'dash_home', { root: true })
       // 表格数据
       this.getTableData({
         content: this.reportContent,

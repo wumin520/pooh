@@ -35,26 +35,23 @@ const types = {
 
 const mutations = {
   [types.UPDATE_ACTIVE_INDEX] (state, paramsName) {
-    switch (paramsName) {
-      case 'dash_home':
-        state.activeIndex = '1'
+    let routeName = paramsName
+    switch (routeName) {
+      case 'loan_dash_finance_charge':
+        routeName = 'loan_dash_finance'
         break
-      case 'dash_ad':
-        state.activeIndex = '2'
-        break
-      case 'dash_ad_new':
-        state.activeIndex = '2-1'
-        break
-      case 'dash_finance':
-        state.activeIndex = '3'
+      case 'dash_finance_price':
+        routeName = 'dash_finance'
         break
       case 'dash_finance_charge':
-        state.activeIndex = '3'
+        routeName = 'dash_finance'
         break
-      case 'dash_account':
-        state.activeIndex = '4'
+
+      case 'dash_ad_new':
+        routeName = 'dash_ad'
         break
     }
+    state.activeIndex = routeName
   },
   [types.UPDATE_ATYPE] (state, atype) {
     state.atype = atype

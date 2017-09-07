@@ -58,9 +58,9 @@ const api = (url, options) => {
         resolve(data)
       })
       .catch(err => {
-        if (err.response.status === 400) {
+        if (err.response && err.response.status === 400) {
           return err.response
-        } if (err.response.status === 401) {
+        } if (err.response && err.response.status === 401) {
           Message({
             message: '请先登录！',
             iconClass: 'qk-warning'

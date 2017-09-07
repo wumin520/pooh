@@ -269,7 +269,6 @@
     },
 
     created () {
-      this.$store.dispatch('updateIndex', 'dash_home', { root: true })
       // 表格数据
       this.getTableData({
         content: this.reportContent,

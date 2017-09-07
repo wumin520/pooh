@@ -2,9 +2,9 @@
   <div class="sidebar">
     <el-menu mode="vertical" :default-active="activeIndex" @select="handleSelect"
       style="width: 180px; padding-top: 32px; height: 100%;">
-      <el-menu-item index="1"><i class="el-icon-square"></i>账户首页<div class="el-icon-triangle"></div></el-menu-item>
+      <el-menu-item index="dash_home"><i class="el-icon-square"></i>账户首页<div class="el-icon-triangle"></div></el-menu-item>
 
-      <el-menu-item index="2"><i class="el-icon-square"></i>iOS广告<div class="el-icon-triangle"></div></el-menu-item>
+      <el-menu-item index="dash_ad"><i class="el-icon-square"></i>iOS广告<div class="el-icon-triangle"></div></el-menu-item>
 
       <!--<el-menu-item index="2-1" style="padding-left:44px;">添加新广告<div class="el-icon-triangle"></div></el-menu-item>-->
 
@@ -15,9 +15,9 @@
         </el-menu-item-group>
       </el-submenu> -->
 
-      <el-menu-item index="3"><i class="el-icon-square"></i>财务管理<div class="el-icon-triangle"></div></el-menu-item>
+      <el-menu-item index="dash_finance"><i class="el-icon-square"></i>财务管理<div class="el-icon-triangle"></div></el-menu-item>
 
-      <el-menu-item index="4"><i class="el-icon-square"></i>账户信息<div class="el-icon-triangle"></div></el-menu-item>
+      <el-menu-item index="dash_account"><i class="el-icon-square"></i>账户信息<div class="el-icon-triangle"></div></el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -36,10 +36,10 @@
         let activeIndex = keyPath[keyPath.length - 1]
 
         switch (activeIndex) {
-          case '1':
+          case 'dash_home':
             this.$router.push('/d/home')
             break
-          case '2':
+          case 'dash_ad':
             if (this.$router.currentRoute.name === 'dash_ad') {
               location.reload()
             } else {
@@ -49,10 +49,10 @@
           case '2-1':
             this.$router.push('/d/ad/new')
             break
-          case '3':
+          case 'dash_finance':
             this.$router.push('/d/finance')
             break
-          case '4':
+          case 'dash_account':
             this.$router.push('/d/account')
             break
         }

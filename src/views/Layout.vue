@@ -95,16 +95,17 @@
       ])
     },
 
+    updated () {
+      let params = this.$route.name
+      this.$store.dispatch('updateIndex', params, { root: true })
+      console.log('layout.updated.updateIndex', params)
+    },
+
     mounted () {
       this.$store.dispatch('updateAtype')
-      this.updateActiveIndex()
     },
 
     methods: {
-      updateActiveIndex () {
-        let params = this.$route.name
-        this.$store.dispatch('updateIndex', params, { root: true })
-      }
     }
   }
 </script>
