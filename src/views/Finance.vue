@@ -320,7 +320,7 @@
       },
 
       invoiceFormatter (row, column, cellValue) {
-        return cellValue === '需要' ? '需要' : '-'
+        return row.invoice === '需要' ? '需要' : '-'
       },
 
       cancel (index, row) {
