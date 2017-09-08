@@ -47,7 +47,7 @@
         </el-option>
       </el-select>
 
-      <el-button type="primary" class="btn-download" @click="download()">
+      <el-button type="primary" v-show="tableData.length > 0" class="btn-download" @click="download()">
         下载报表
       </el-button>
     </el-row>
