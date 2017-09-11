@@ -12,10 +12,10 @@ const initState = () => ({
   info: {
     amount: '',
     amount_check: '',
-    drawee: '',
-    remark: '',
+    refer_drawee: '',
+    remarks: '',
     invoice_status: 0,
-    invoice_title: 'we',
+    invoice_title: '',
     invoice_contact_name: '',
     invoice_contact_phone: '',
     invoice_contact_address: '',
@@ -47,7 +47,7 @@ const mutations = {
     info.invoice_contact_name = name
     info.invoice_contact_phone = phone
     info.invoice_contact_address = address
-    info.remark = remark
+    info.remarks = remark
     aliInfo.invoice_title = title
     aliInfo.invoice_contact_name = name
     aliInfo.invoice_contact_phone = phone

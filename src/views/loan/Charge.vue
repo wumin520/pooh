@@ -20,7 +20,7 @@
         <el-input v-model="info.amount_check" placeholder="请再次输入充值金额"></el-input>元
       </el-form-item>
       <el-form-item prop="drawee" class="w214" label="付款人">
-        <el-input v-model="info.drawee" placeholder="请输入付款人/公司名称"></el-input>
+        <el-input v-model="info.refer_drawee" placeholder="请输入付款人/公司名称"></el-input>
       </el-form-item>
       <el-form-item class="w190" label="是否开票">
         <el-radio-group v-model="info.invoice_status">
@@ -45,7 +45,7 @@
       </div>
       <!--</template>-->
       <el-form-item class="qk-form-item" label="备注信息（选填）">
-        <el-input v-model="info.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
+        <el-input v-model="info.remarks" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
       </el-form-item>
     </el-form>
 
@@ -555,7 +555,7 @@
           amount_check: [
             { required: true, validator: checkCoastConfirm, trigger: 'blur' }
           ],
-          drawee: [
+          refer_drawee: [
             { required: true, message: '请输入付款人名称', trigger: 'change' }
           ]
         }
@@ -657,7 +657,7 @@
 
       backTo () {
         setTimeout(() => {
-          this.$router.push('/d/finance')
+          this.$router.push('/d/loan/finance')
         })
       },
 

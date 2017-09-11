@@ -6,16 +6,16 @@
       <div class="money">¥ {{navbar.balance}}</div>
       <el-button size="small" class="w76-h30" type="primary" @click="charge()">充值</el-button>
     </div>
-    <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
+    <el-pagination v-if="total_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="total_count"></el-pagination>
 
-    <el-table :class="{'nodata': payments.length === 0 }"  :data="payments" stripe border class="table-wrapper" style="width: 100%;">
+    <el-table :class="{'nodata': loan_list.length === 0 }"  :data="loan_list" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column prop="create_time" label="日期" min-width="152">
       </el-table-column>
       <!--<el-table-column prop="pay_type" label="付款方式" min-width="110">-->
       <!--</el-table-column>-->
       <el-table-column prop="refer_drawee" label="付款人" min-width="206">
         <template scope="scope">
-          <div>{{ decodeURI(scope.row.drawee) }}</div>
+          <div>{{ decodeURI(scope.row.refer_drawee) }}</div>
         </template>
       </el-table-column>
       <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
@@ -29,11 +29,6 @@
           <div>￥ {{ scope.row.amount | addCommas_money }}</div>
         </template>
       </el-table-column>
-      <el-table-column  prop="actual_arrival_amount" label="实际到账" min-width="140">
-        <template scope="scope">
-          <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
-        </template>
-      </el-table-column>
       <!-- <el-table-column prop="consume_amount" label="消耗金额" min-width="140">
          <template scope="scope">
           <div>￥ {{ scope.row.consume_amount | addCommas_money }}</div>
@@ -42,12 +37,12 @@
       <el-table-column label="操作" min-width="65">
         <template scope="scope">
           <!-- status: 0 待审核（可删除） 1 入账 2 广告主取消 -->
-          <a v-if="scope.row.status === 0 && scope.row.pay_type !== '支付宝'" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
+          <a v-if="scope.row.settle_status === 0 && scope.row.pay_type !== '支付宝'" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
           <!--<a class="link-go" type="text" @click="charge()">充值</a>-->
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
+    <el-pagination v-if="total_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="total_count"></el-pagination>
 
     <el-dialog title="撤销" v-model="dialogVisible" :show-close="showClose" custom-class="revoke-dialog" style="top: 30%;">
       <img class="logo" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
@@ -254,7 +249,7 @@
   export default {
     data () {
       return {
-        operation_number: 0,
+        id: 0,
         curRowIndex: -1,
         dialogVisible: false,
         showClose: false,
@@ -283,9 +278,9 @@
 
     computed: {
       ...mapState('loanFinance', [
-        'payments',
+        'loan_list',
         'navbar',
-        'payments_count',
+        'total_count',
         'limit'
       ])
     },
@@ -325,14 +320,14 @@
 
       cancel (index, row) {
         this.dialogVisible = true
-        this.operation_number = row.operation_number
+        this.id = row.id
         this.curRowIndex = index
       },
 
       handleDelete () {
-        this.cancelCharge(this.operation_number).then(() => {
+        this.cancelCharge(this.id).then(() => {
           this.dialogVisible = false
-          this.payments.splice(this.curRowIndex, 1)
+          this.loan_list.splice(this.curRowIndex, 1)
         })
       },
 

@@ -8,9 +8,9 @@ const types = {
 }
 
 const initState = () => ({
-  payments: [],
+  loan_list: [],
   navbar: {},
-  payments_count: 0,
+  total_count: 0,
   limit: 30
 })
 
@@ -36,7 +36,10 @@ const actions = {
   },
 
   cancelCharge ({commit}, id) {
-    return api(URI_LOAN_FINANCE_CHARGE_CANCEL + id).then((res) => {
+    return api(URI_LOAN_FINANCE_CHARGE_CANCEL, {
+      method: 'POST',
+      body: {id}
+    }).then((res) => {
       console.log('cancelCharge: ', res)
     })
   }
