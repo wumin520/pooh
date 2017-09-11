@@ -28,7 +28,7 @@
       <el-col :span="6">
         <card>
           <div slot="title">未结算消耗</div>
-          <div slot="highlight">{{ unliquidated | index }}</div>
+          <div slot="highlight">{{ unsettled_amount | index }}</div>
         </card>
       </el-col>
     </el-row>
@@ -52,10 +52,13 @@
     <!-- 报表头 Tabs -->
     <el-tabs v-model="reportContent" class="qk-tabs-text" type="card" @tab-click="onTabClick">
       <el-tab-pane name="cost">
-        <span class="qk-tabs__item-text" slot="label"><span class="tag">消耗</span><span class="sub-tag">{{ reportSummary.cost > 0 ? ('¥ ' + reportSummary.cost.toFixed(2)) : '-' }}</span></span>
+        <span class="qk-tabs__item-text" slot="label"><span class="tag">消耗</span><span class="sub-tag">{{ reportTotal.cost > 0 ? ('¥ ' + reportTotal.cost.toFixed(2)) : '-' }}</span></span>
       </el-tab-pane>
-      <el-tab-pane name="clicks">
-        <span class="qk-tabs__item-text" slot="label"><span>比对成功</span><span>{{ reportSummary.clicks | index }}</span></span>
+      <el-tab-pane name="compare-success">
+        <span class="qk-tabs__item-text" slot="label"><span>比对成功</span><span>{{ reportTotal.register_num | index }}</span></span>
+      </el-tab-pane>
+      <el-tab-pane name="borrow-success">
+        <span class="qk-tabs__item-text" slot="label"><span>成功借钱</span><span>{{ reportTotal.loan_succ_num | index }}</span></span>
       </el-tab-pane>
     </el-tabs>
 
@@ -83,14 +86,21 @@
           prop="cost"
           label="消耗">
           <template scope="scope">
-            <div>{{ '￥' + scope.row.cost | addCommas_money }}</div>
+            <div>{{ '￥' + scope.row.consume | addCommas_money }}</div>
           </template>
         </el-table-column>
         <el-table-column
           prop="effect_actions"
-          label="比对成功">
+          label="成功注册">
           <template scope="scope">
-            <div>{{ scope.row.effect_actions | addCommas }}</div>
+            <div>{{ scope.row.register_num | addCommas }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="effect_actions"
+          label="成功借钱">
+          <template scope="scope">
+            <div>{{ scope.row.loan_success_num | addCommas }}</div>
           </template>
         </el-table-column>
       </el-table>
@@ -245,12 +255,12 @@
         'yesterday_amount',
         'sevendays_amount',
         'month_amount',
-        'unliquidated'
+        'unsettled_amount'
       ]),
 
       ...mapGetters('loanUser', [
         'reportTypes',
-        'reportSummary',
+        'reportTotal',
         'tableData',
         'chartLabels',
         'chartData'
@@ -414,7 +424,7 @@
         this.$store.dispatch('loanUser/downloadReport', { dayCnt: this.dayCnt })
       },
 
-      ...mapActions('user', [
+      ...mapActions('loanUser', [
         'getTableData',
         'getChartData'
       ])

@@ -33,15 +33,10 @@ const initState = () => ({
 
   table: {
     data: [],
-    summary: {
+    total: {
       cost: 0,
-      impression: 0,
-      clicks: 0,
-      click_rate: '0.00%',
-      effect_actions: 0,
-      effect_rate: '0.00%',
-      zs_done_count: 0,
-      zs_finish_total_count: 0
+      loan_succ_num: 0,
+      register_num: 0
     }
   }
 })
@@ -55,12 +50,12 @@ const getters = {
     { label: '90天', value: L90D }
   ]),
 
-  reportSummary: state => {
-    return state.table.summary
+  reportTotal: state => {
+    return state.table.total
   },
 
   tableData: state => {
-    return state.table.data
+    return state.table.list
   },
 
   chartLabels: state => {
@@ -81,10 +76,11 @@ const getters = {
 const mutations = {
   [types.SYNC_DASHBOARD] (state, payload) {
     // 用户名、余额、最大可透支金额
-    state.navbar = payload.navbar
-
-    // 首页汇总信息
-    state.indices = payload.portlet
+    // state.navbar = payload.navbar
+    state.unsettled_amount = payload.unsettled_amount
+    state.yesterday_amount = payload.yesterday_amount
+    state.sevendays_amount = payload.sevendays_amount
+    state.month_amount = payload.month_amount
   },
 
   [types.SYNC_CHART] (state, payload) {
