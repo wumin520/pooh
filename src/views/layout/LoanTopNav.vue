@@ -8,7 +8,7 @@
 
     <el-submenu index="2" class="pull-right layout-account">
       <template slot="title"><span v-text="username"></span></template>
-      <el-menu-item index="2-1">退出</el-menu-item>
+      <el-menu-item index="2-1" @click="logout()">退出</el-menu-item>
     </el-submenu>
 
     <el-menu-item index="3" class="pull-right" style="cursor: default;">未结算消耗：¥ <span v-text="unsettledAmount"></span></el-menu-item>
@@ -27,6 +27,12 @@
         'username',
         'unsettledAmount'
       ])
+    },
+
+    methods: {
+      logout () {
+        this.$store.dispatch('logout')
+      }
     }
   }
 </script>

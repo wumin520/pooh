@@ -5,7 +5,7 @@
       <!--iOS试玩-->
       <task-top-nav v-if="atype == 2"></task-top-nav>
       <!--借钱-->
-      <loan-top-nav v-if="atype == 6"></loan-top-nav>
+      <loan-top-nav v-if="atype == 7"></loan-top-nav>
     </div>
 
     <div class="content">
@@ -13,7 +13,7 @@
       <!--iOS试玩-->
       <task-sidebar v-if="atype == 2"></task-sidebar>
       <!--借钱-->
-      <loan-sidebar v-if="atype == 6"></loan-sidebar>
+      <loan-sidebar v-if="atype == 7"></loan-sidebar>
 
       <router-view></router-view>
     </div>

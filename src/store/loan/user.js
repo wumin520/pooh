@@ -6,7 +6,6 @@ import {
   LW,
   L30D,
   L90D,
-  URI_LOGOUT,
   URI_LOAN_DASHBOARD,
   URI_LOAN_REPORT,
   URI_LOAN_REPORT_DOWNLOAD
@@ -178,11 +177,7 @@ const actions = {
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
     let endTime = now - 86400
-    location.href = `${URI_LOAN_REPORT_DOWNLOAD}?ts_start=${startTime}&ts_end=${endTime}`
-  },
-
-  updateNavbar ({ commit }, payload) {
-    commit(types.SYNC_NAVBAR, payload)
+    location.href = `${URI_LOAN_REPORT_DOWNLOAD}?start_time=${startTime}&end_time=${endTime}`
   }
 }
 

@@ -201,7 +201,7 @@
               case '2':
                 this.$router.push('/d/home')
                 break
-              case '6':
+              case '7':
                 this.$router.push('/d/loan/home')
                 break
               default:
