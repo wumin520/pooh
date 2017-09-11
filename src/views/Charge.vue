@@ -93,9 +93,10 @@
         </el-form-item>
         </div>
       <!--</template>-->
-      <el-form-item class="qk-form-item" label="备注信息（选填）">
+      <!-- 拿掉”备注“字段-->
+      <!--<el-form-item class="qk-form-item" label="备注信息（选填）">
         <el-input v-model="info.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
-      </el-form-item>
+      </el-form-item>-->
     </el-form>
 
     <el-form v-show="activeTabName !== 'chinabank'" class="alipay-form" ref="alipayform" :model="aliInfo" :rules="alirules">
@@ -132,9 +133,10 @@
         </el-form-item>
         </div>
       <!--</template>-->
-      <el-form-item class="qk-form-item mrg-b40" label="备注信息（选填）">
+      <!-- 拿掉“备注“字段 -->
+      <!--<el-form-item class="qk-form-item mrg-b40" label="备注信息（选填）">
         <el-input v-model="aliInfo.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
-      </el-form-item>
+      </el-form-item>-->
     </el-form>
 
     <div v-show="activeTabName === 'chinabank'" class="step fs16-c88 mrg-b30 mrg-t60">第二步：请将付款款项转入以下官方账户</div>

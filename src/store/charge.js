@@ -13,7 +13,7 @@ const initState = () => ({
     amount: '',
     amount_check: '',
     drawee: '',
-    remark: '',
+    // remark: '', 拿掉”备注“字段
     invoice_status: 0,
     invoice_title: 'we',
     invoice_contact_name: '',
@@ -24,7 +24,7 @@ const initState = () => ({
   aliInfo: {
     ali_amount: '',
     // ali_drawee: '',
-    remark: '',
+    // remark: '',  拿掉”备注“字段
     invoice_status: 0,
     invoice_title: '',
     invoice_contact_name: '',
@@ -41,18 +41,18 @@ const getters = {
 }
 
 const mutations = {
-  [types.SYNC_INVOICE] ({info, aliInfo}, {title, name, phone, address, remark}) {
+  [types.SYNC_INVOICE] ({info, aliInfo}, {title, name, phone, address}) {
     // console.log('mutation title: ' + types.SYNC_INVOICE, title)
     info.invoice_title = title
     info.invoice_contact_name = name
     info.invoice_contact_phone = phone
     info.invoice_contact_address = address
-    info.remark = remark
+    // info.remark = remark
     aliInfo.invoice_title = title
     aliInfo.invoice_contact_name = name
     aliInfo.invoice_contact_phone = phone
     aliInfo.invoice_contact_address = address
-    aliInfo.remark = remark
+    // aliInfo.remark = remark
     // Object.assign(state.info, {...payload.invoice})
   }
 }

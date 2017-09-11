@@ -68,9 +68,7 @@
       <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-show="columnExpand" v-loading="loading" element-loading-text="加载中...">
         <el-table-column label="广告" min-width="150">
           <template scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
-              <div class="aui-ellipsis" v-text="scope.row.task" @click="filter(scope.row.appid)"></div>
-            </el-tooltip>
+            <div class="aui-ellipsis" v-text="scope.row.task"></div>
           </template>
         </el-table-column>
         <el-table-column label="开始时间" min-width="140">
@@ -153,9 +151,7 @@
       <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-show="!columnExpand" v-loading="loading" element-loading-text="加载中...">
         <el-table-column label="广告" min-width="170">
           <template scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.task" placement="top">
-              <div class="aui-ellipsis" v-text="scope.row.task" @click="filter(scope.row.appid)"></div>
-            </el-tooltip>
+            <div class="aui-ellipsis" v-text="scope.row.task"></div>
           </template>
         </el-table-column>
         <el-table-column label="开始时间" min-width="140">
@@ -260,9 +256,9 @@
           <div class="right"  v-text="previewForm.title"></div>
         </div>
         <div class="content-line">
-          <div class="left" >iTunes地址</div>
+          <div class="left" >AppID</div>
           <div class="right" style="white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow:hidden;"
-            v-text="previewForm.download_url"></div>
+            v-text="previewForm.appid"></div>
         </div>
         <div class="content-line">
           <div class="left" >跳转链接</div>
@@ -281,13 +277,15 @@
           <div class="left" >结束时间</div>
           <div class="right">{{ previewForm.end_time.replace(/-/g, '/') }}</div>
         </div>
-        <div class="content-line">
+        <div class="content-line plan-count">
           <div class="left" >计划份数</div>
           <div class="right">{{ previewForm.plan_count | addCommas }}</div>
         </div>
-        <div class="content-line" v-if="previewForm.planlist.length == 0 && previewForm.search_keyword == ''">
-          <div class="left" >关键词</div>
-          <div class="right"  v-if="previewForm.planlist.length == 0 && previewForm.search_keyword == ''">-</div>
+        <div>
+          <div class="content-line keyword-line" v-if="previewForm.planlist.length == 0 && previewForm.search_keyword == ''">
+            <div class="left" >关键词</div>
+            <div class="right">-</div>
+          </div>
         </div>
 
         <div>
@@ -655,9 +653,6 @@
           box-shadow: inset 0 0px 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
         }
       }
-      .content-line.keyword-line:first-child {
-        border-top: 1px solid #E8E8E8;
-      }
 
       .content-line.zs_line:first-child {
         border-top: 1px solid #E8E8E8;
@@ -675,6 +670,10 @@
       }
 
       .content-line.keyword-line:nth-child(3) {
+        margin-bottom: 0px;
+      }
+
+      .content-line.plan-count {
         margin-bottom: 0px;
       }
     }
