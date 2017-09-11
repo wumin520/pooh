@@ -19,15 +19,12 @@ body {
       }
 
       .nav-btn-wrapper {
-        // width: 146px;
         position: absolute;
         right: 80px;
         top: 28px;
 
         a.qk-btn {
           height: 22px;
-          // width: 64px;
-          // line-height: 28px;
           padding: 0px;
           text-decoration: none;
           font-family: Source-Han-Sanscb2ea2c2819aac;
@@ -35,9 +32,6 @@ body {
           float: left;
           opacity: 0.75;
           text-align: center;
-          // background: rgba(255,255,255,0.25);
-          // border: 1px solid #FFFFFF;
-          // border-radius: 100px;
           color: #fff;
           transition: all 0.48s ease-out;
 
@@ -61,6 +55,63 @@ body {
           background-repeat: no-repeat;
           background-position: center;
           background-size: cover;
+
+          // .register {
+          //   display: block;
+          //   margin: 42px auto 0px auto;
+          //   border: solid 1px #ffffff;            
+          //   font-family: Source-Han-Normbe51b067e19aac;
+          //   color: transparent;
+          //   background-image: url('http://assets.qkcdn.com/images/f1034a2c5791e5aae240c142bb2ad5ac.png');
+          //   background-repeat: no-repeat;
+          //   background-position: center;
+          //   background-size: 200px 60px;
+          //   width: 200px;
+          //   height: 60px;
+          //   border-radius: 100px;
+          //   line-height: 50px;
+          //   font-size: 18px;            
+          //   transition: all 0.48s ease-out;
+          // }
+          // .register:hover {
+          //   border-radius: 100px;            
+          //   background-color: #fff;
+          //   color: #0B2738;
+          //   height: 60px;
+          // }
+  
+          .register {
+            text-align: center;
+            line-height: 38px;
+            border-radius: 80px;
+            font-family: Source-Han-Normbe51b067e19aac;
+            font-size: 16px;
+            color: #FFFFFF;
+            width: 160px;
+            height: 50px;
+            display: block;
+            text-decoration: none;
+            border: 1px solid #fff;
+            transition: all 0.48s ease-out;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 160px 50px;
+          }
+  
+          .register:hover {
+            background: #fff;
+            color: #0B2738;          
+          }
+          .banner-footer {
+            width: 100%;
+            height: 110px;
+            position: relative;
+            background-color: rgba(0, 0, 0, 0.08);
+            .desc {
+              position: relative;
+              top: 25px;
+            }
+          }
         }
         .pic1 {
           background-image: url('http://assets.qkcdn.com/images/8ee3e4a7009a5de1959bd3a6fae9cbcf.png');
@@ -71,38 +122,10 @@ body {
           }
 
           .register {
-            display: block;
             margin: 62px auto 0px auto;
-            font-family: Source-Han-Normbe51b067e19aac;
-            color: transparent;
-            width: 200px;
-            height: 60px;
-            font-size: 18px;                        
-            background-image: url('http://assets.qkcdn.com/images/4e4e41d7ad72e308042c88b60b426470.png');
-            background-repeat: no-repeat;
-            background-size: 199px 59px;
-            line-height: 50px;
-            transform: translateY(0px);            
-            transition: all 0.48s ease-out;
-          }
-          .register:hover {
-            border-radius: 100px;            
-            background-color: #fff;
-            color: #0B2738;
-            font-size: 18px;            
-            height: 60px;
-            font-size: 16px;
           }
           .banner-footer {
-            width: 100%;
-            height: 110px;
-            position: relative;
-            top: 54px;
-            background-color: rgba(0, 0, 0, 0.08);
-            .desc {
-              position: relative;
-              top: 25px;
-            }
+            top: 64px;
           }
         }
         .pic2 {
@@ -112,32 +135,10 @@ body {
             transition: all 0.48s ease-out;            
           }
           .register {
-            display: block;
             margin: 42px auto 0px auto;
-            border: solid 1px #ffffff;            
-            font-family: Source-Han-Normbe51b067e19aac;
-            font-size: 16px;
-            color: #FFFFFF;
-            width: 200px;
-            height: 60px;
-            border-radius: 100px;
-            line-height: 50px;
-            transition: all 0.48s ease-out;
-          }
-          .register:hover {
-            background-color: #fff;
-            color: #0B2738;
           }
           .banner-footer {
-            width: 100%;
-            height: 110px;
-            position: relative;
-            top: 44px;
-            background-color: rgba(0, 0, 0, 0.08);
-            .desc {
-              position: relative;
-              top: 25px;
-            }
+            top: 54px;
           }
         }  
         .swiper-slide-active {
@@ -273,15 +274,15 @@ body {
         .register {
           text-align: center;
           display: block;
-          line-height: 50px;
-          width: 200px;
-          height: 60px;
-          margin: 65px auto 0;
+          line-height: 38px;
+          width: 160px;
+          height: 50px;
+          margin: 75px auto 0;
           font-family: Source-Han-Normbe51b067e19aac;
           font-size: 16px;
           color: #FFFFFF;
           background: #1B80C3;
-          border-radius: 100px;
+          border-radius: 80px;
           transition: all 0.48s ease-out;
         }
 
@@ -514,10 +515,9 @@ body {
       .copyright {
         text-align: center;
         opacity: 0.25;
-        font-family: Source-Han-Lighbe5261a7e19aac;
+        font-family: Source-Han-Normbe51b067e19aac;
         font-size: 14px;
         line-height: 20px;
-        font-weight: 600;
         color: #FFFFFF;
       }
     }
