@@ -952,7 +952,7 @@
       },
       // 前往 添加广告
       toAddAd () {
-        this.$router.push('/d/ad/gaoe/new')
+        this.$router.push('/d/gaoe/ad/task/new')
       },
       handleClick (key) {
         if (this.$route.params.status === key) {

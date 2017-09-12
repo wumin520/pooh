@@ -33,7 +33,7 @@
       onClick (key, keyPath) {
         switch (key) {
           case '1':
-            this.$router.push('/d/home')
+            this.$router.push('/d/gaoe/home')
             break
           case '2-1':
             this.$store.dispatch('logout')
