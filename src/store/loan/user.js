@@ -19,11 +19,6 @@ const types = {
 }
 
 const initState = () => ({
-  navbar: {
-    username: '',
-    unsettled_amount: '0.00'
-  },
-
   unliquidated: '',
   yesterday_amount: '',
   sevendays_amount: '',
@@ -54,14 +49,6 @@ const initState = () => ({
 const state = initState()
 
 const getters = {
-  username: state => {
-    return state.navbar.username
-  },
-
-  unsettledAmount: state => {
-    return state.navbar.unsettled_amount
-  },
-
   reportTypes: state => ([
     { label: '最近7天', value: LW },
     { label: '30天', value: L30D },
@@ -106,10 +93,6 @@ const mutations = {
 
   [types.SYNC_TABLE] (state, payload) {
     state.table = payload
-  },
-
-  [types.SYNC_NAVBAR] (state, payload) {
-    state.navbar = payload.navbar
   }
 }
 

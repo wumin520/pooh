@@ -16,7 +16,7 @@ const mutations = {
 const actions = {
   getInfo ({dispatch}) {
     return api(URI_PRICE_SYS).then(({payload}) => {
-      if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+      if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
     })
   }
 }

@@ -30,7 +30,7 @@ const actions = {
     let apiUri = `${URI_LOAN_FINANCE}?offset=${offset}&limit=${state.limit}`
     return api(apiUri).then(({payload}) => {
       // console.log('actions: ' + URI_FINANCE, payload)
-      if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+      if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
       commit(types.SYNC, payload)
     })
   },

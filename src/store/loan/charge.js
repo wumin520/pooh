@@ -60,7 +60,7 @@ const mutations = {
 const actions = {
   getInvoiceInfo ({dispatch, commit}) {
     return api(URI_CHARGE_INVOICE).then((res) => {
-      if (res.payload.navbar) dispatch('user/updateNavbar', res.payload, { root: true })
+      if (res.payload.navbar) dispatch('updateNavbar', res.payload, { root: true })
       commit(types.SYNC_INVOICE, res.payload.invoice)
       return res
     })

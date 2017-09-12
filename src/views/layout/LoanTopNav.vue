@@ -1,5 +1,5 @@
 <template>
-  <el-menu class="top-nav" theme="dark" mode="horizontal">
+  <el-menu class="top-nav" @select="onClick" theme="dark" mode="horizontal">
     <el-menu-item index="1" class="logo">
       <template scoped>
         <QkLogo></QkLogo>
@@ -8,7 +8,7 @@
 
     <el-submenu index="2" class="pull-right layout-account">
       <template slot="title"><span v-text="username"></span></template>
-      <el-menu-item index="2-1" @click="logout()">退出</el-menu-item>
+      <el-menu-item index="2-1">退出</el-menu-item>
     </el-submenu>
 
     <el-menu-item index="3" class="pull-right" style="cursor: default;">未结算消耗：¥ <span v-text="unsettledAmount"></span></el-menu-item>
@@ -23,15 +23,22 @@
     },
 
     computed: {
-      ...mapGetters('loanUser', [
+      ...mapGetters([
         'username',
         'unsettledAmount'
       ])
     },
 
     methods: {
-      logout () {
-        this.$store.dispatch('logout')
+      onClick (key, keyPath) {
+        switch (key) {
+          case '1':
+            this.$router.push('/d/home')
+            break
+          case '2-1':
+            this.$store.dispatch('logout')
+            break
+        }
       }
     }
   }

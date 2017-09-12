@@ -9,7 +9,7 @@
         <el-input v-model="info.title" placeholder="请输入姓名/公司"></el-input>
       </el-form-item>
       <el-form-item prop="phone" label="联系电话">
-        <el-input v-if="atype !== 2" v-model="info.phone" placeholder="请输入联系电话"></el-input>
+        <el-input v-if="atype !== '2'" v-model="info.phone" placeholder="请输入联系电话"></el-input>
         <div v-if="atype == 2" class="phone-wrap">
             <span>{{info.mobile ? info.mobile : '未绑定手机'}}</span>
           <a @click="showBindPhoneDialog" href="javascript:;" class="c42 mrg-l31">

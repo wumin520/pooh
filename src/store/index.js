@@ -21,16 +21,38 @@ Vue.use(Vuex)
 
 const state = {
   activeIndex: '',
-  atype: ''
+  atype: '',
+  navbar: {
+    username: '',
+    balance: '0.00',
+    balance_threshold: '0.00',
+    unsettled_amount: '0.00'
+  }
 }
 
 const getters = {
+  // navbar field
+  username: state => {
+    return state.navbar.username
+  },
 
+  unsettledAmount: state => {
+    return state.navbar.unsettled_amount
+  },
+
+  balance: state => {
+    return state.navbar.balance
+  },
+
+  balanceThreshold: state => {
+    return state.navbar.balance_threshold
+  }
 }
 
 const types = {
   UPDATE_ACTIVE_INDEX: 'update_active_index',
-  UPDATE_ATYPE: 'update_atype'
+  UPDATE_ATYPE: 'update_atype',
+  SYNC_NAVBAR: 'sync_navbar'
 }
 
 const mutations = {
@@ -55,6 +77,10 @@ const mutations = {
   },
   [types.UPDATE_ATYPE] (state, atype) {
     state.atype = atype
+  },
+  [types.SYNC_NAVBAR] (state, payload) {
+    console.log(types.SYNC_NAVBAR, payload.navbar)
+    state.navbar = payload.navbar
   }
 }
 
@@ -82,6 +108,10 @@ const actions = {
   updateAtype ({commit}) {
     let atype = cookie.get('atype')
     commit(types.UPDATE_ATYPE, atype)
+  },
+
+  updateNavbar ({ commit }, payload) {
+    commit(types.SYNC_NAVBAR, payload)
   }
 }
 

@@ -20,12 +20,6 @@ const types = {
 }
 
 const initState = () => ({
-  navbar: {
-    username: '',
-    balance: '0.00',
-    balance_threshold: '0.00'
-  },
-
   indices: { // 依次为消费、展示、点击、完成
     last_day: [ // 昨天
       '0.00',
@@ -68,18 +62,6 @@ const initState = () => ({
 const state = initState()
 
 const getters = {
-  username: state => {
-    return state.navbar.username
-  },
-
-  balance: state => {
-    return state.navbar.balance
-  },
-
-  balanceThreshold: state => {
-    return state.navbar.balance_threshold
-  },
-
   indicesLastday: state => {
     return state.indices.last_day
   },
@@ -132,10 +114,6 @@ const mutations = {
 
   [types.SYNC_TABLE] (state, payload) {
     state.table = payload
-  },
-
-  [types.SYNC_NAVBAR] (state, payload) {
-    state.navbar = payload.navbar
   }
 }
 
@@ -204,10 +182,6 @@ const actions = {
     let startTime = now - dayCnt * 86400
     let endTime = now - 86400
     location.href = `${URI_REPORT_DOWNLOAD}?ts_start=${startTime}&ts_end=${endTime}`
-  },
-
-  updateNavbar ({ commit }, payload) {
-    commit(types.SYNC_NAVBAR, payload)
   }
 }
 
