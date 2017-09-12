@@ -17,6 +17,11 @@ import cookie from '../cookie'
 import loanFinance from './loan/finance'
 import loanCharge from './loan/charge'
 
+// 高额
+import gaoeAd from './gaoe/ad.js'
+import gaoeAdNew from './gaoe/adNew'
+import gaoeUser from './gaoe/user'
+
 Vue.use(Vuex)
 
 const state = {
@@ -124,9 +129,15 @@ export default new Vuex.Store({
     finance,
     ad,
     priceSys,
+    // 借钱
     loanFinance,
     loanCharge,
-    loanUser
+    loanUser,
+    // 高额
+    gaoeAdNew,
+    gaoeUser,
+    gaoeAd
+    // 信用卡
   },
   state,
   mutations,

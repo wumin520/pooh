@@ -1,9 +1,9 @@
 import {
-  URI_GAOE_PREVIEW_TASK,
-  URI_GAOE_TASK_TO_END,
-  URI_GAOE_ADD_TASK_NUMBER,
-  URI_GAOE_DELE_TASK,
-  URI_GAOE_RESUME_TASK
+  URI_HI_PREVIEW_TASK,
+  URI_HI_TASK_TO_END,
+  URI_HI_ADD_TASK_NUMBER,
+  URI_HI_DELE_TASK,
+  URI_HI_RESUME_TASK
  } from '@/constants'
 
 import { Message } from 'element-ui'
@@ -97,7 +97,7 @@ const actions = {
       })
   },
   taskToEnd ({commit}, id) {
-    let path = URI_GAOE_TASK_TO_END + id
+    let path = URI_HI_TASK_TO_END + id
     return api(path, {method: 'GET'})
       .then(res => res)
       .catch(e => {
@@ -108,7 +108,7 @@ const actions = {
       })
   },
   addTaskNumber ({commit}, config) {
-    let url = URI_GAOE_ADD_TASK_NUMBER + config.currentTaskId + '/add_number/' + config.addNumber
+    let url = URI_HI_ADD_TASK_NUMBER + config.currentTaskId + '/add_number/' + config.addNumber
     return api(url, {method: 'GET'})
       .then(res => res.payload)
       .then((data) => {
@@ -117,7 +117,7 @@ const actions = {
   },
 
   previewTask ({commit}, id) {
-    api(URI_GAOE_PREVIEW_TASK + id, {method: 'GET'})
+    api(URI_HI_PREVIEW_TASK + id, {method: 'GET'})
       .then(res => res && res.payload)
       .then((payload) => {
         payload.task.begin_time = payload.start_date.replace('.', '/') + ' ' + payload.start_time
@@ -127,7 +127,7 @@ const actions = {
   },
 
   deleTask ({commit}, deleting) {
-    return api(URI_GAOE_DELE_TASK + deleting.id, {method: 'GET'})
+    return api(URI_HI_DELE_TASK + deleting.id, {method: 'GET'})
       .then((data) => {
         Message({
           message: data.message,
@@ -146,7 +146,7 @@ const actions = {
   // },
 
   resume ({commit}, id) {
-    return api(URI_GAOE_RESUME_TASK + id, {method: 'GET'})
+    return api(URI_HI_RESUME_TASK + id, {method: 'GET'})
       .then(res => res)
       .catch(e => {
         Message({
