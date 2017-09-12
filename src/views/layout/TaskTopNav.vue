@@ -29,7 +29,7 @@
     },
 
     computed: {
-      ...mapGetters('user', [
+      ...mapGetters([
         'username',
         'balance',
         'balanceThreshold'
