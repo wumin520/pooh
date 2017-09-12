@@ -6,6 +6,10 @@
       <task-top-nav v-if="atype == 2"></task-top-nav>
       <!--借钱-->
       <loan-top-nav v-if="atype == 7"></loan-top-nav>
+      <!--高额-->
+      <gaoe-top-nav v-if="atype == 4"></gaoe-top-nav>
+      <!--信用卡-->
+      <credit-top-nav v-if="atype == 5"></credit-top-nav>
     </div>
 
     <div class="content">
@@ -14,6 +18,10 @@
       <task-sidebar v-if="atype == 2"></task-sidebar>
       <!--借钱-->
       <loan-sidebar v-if="atype == 7"></loan-sidebar>
+      <!--高额-->
+      <gaoe-sidebar v-if="atype == 4"></gaoe-sidebar>
+      <!--信用卡-->
+      <credit-sidebar v-if="atype == 5"></credit-sidebar>
 
       <router-view></router-view>
     </div>
@@ -79,13 +87,21 @@
   import TaskSidebar from './layout/TaskSidebar'
   import LoanTopNav from './layout/LoanTopNav'
   import LoanSidebar from './layout/LoanSidebar'
+  import GaoeSidebar from './layout/GaoeSidebar'
+  import GaoeTopNav from './layout/GaoeTopNav'
+  import CrediSidebar from './layout/CreditSidebar'
+  import CreditTopNav from './layout/CreditTopNav'
 
   export default {
     components: {
       TaskTopNav,
       TaskSidebar,
       LoanTopNav,
-      LoanSidebar
+      LoanSidebar,
+      GaoeSidebar,
+      GaoeTopNav,
+      CrediSidebar,
+      CreditTopNav
     },
 
     computed: {
