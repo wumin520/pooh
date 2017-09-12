@@ -54,10 +54,10 @@
       <el-tab-pane name="cost">
         <span class="qk-tabs__item-text" slot="label"><span class="tag">消耗</span><span class="sub-tag">{{ reportTotal.cost > 0 ? ('¥ ' + reportTotal.cost.toFixed(2)) : '-' }}</span></span>
       </el-tab-pane>
-      <el-tab-pane name="compare-success">
-        <span class="qk-tabs__item-text" slot="label"><span>比对成功</span><span>{{ reportTotal.register_num | index }}</span></span>
+      <el-tab-pane name="reg">
+        <span class="qk-tabs__item-text" slot="label"><span>成功注册</span><span>{{ reportTotal.register_num | index }}</span></span>
       </el-tab-pane>
-      <el-tab-pane name="borrow-success">
+      <el-tab-pane name="loan_suc">
         <span class="qk-tabs__item-text" slot="label"><span>成功借钱</span><span>{{ reportTotal.loan_succ_num | index }}</span></span>
       </el-tab-pane>
     </el-tabs>

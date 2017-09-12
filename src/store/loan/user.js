@@ -93,7 +93,7 @@ const mutations = {
 }
 
 const actions = {
-  getDashboardData ({ commit }) {
+  getDashboardData ({ commit, dispatch }) {
     return fetch(URI_LOAN_DASHBOARD, {
       credentials: 'same-origin'
     })
@@ -108,6 +108,7 @@ const actions = {
     .then(data => {
       let payload = data && data.payload
       if (payload) commit(types.SYNC_DASHBOARD, payload)
+      if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
       return data
     })
     .catch(err => {
@@ -119,7 +120,7 @@ const actions = {
     let { content, dayCnt } = payload
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
-    let endTime = now - 86400
+    let endTime = now
     let url = `${URI_LOAN_REPORT}?action=chart&content=${content}&start_time=${startTime}&end_time=${endTime}`
 
     return fetch(url, {
@@ -137,7 +138,7 @@ const actions = {
     let { content, dayCnt } = payload
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
-    let endTime = now - 86400
+    let endTime = now
     let url = `${URI_LOAN_REPORT}?action=table&content=${content}&start_time=${startTime}&end_time=${endTime}`
 
     return fetch(url, {
@@ -155,7 +156,7 @@ const actions = {
     let { dayCnt } = payload
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
-    let endTime = now - 86400
+    let endTime = now
     location.href = `${URI_LOAN_REPORT_DOWNLOAD}?start_time=${startTime}&end_time=${endTime}`
   }
 }
