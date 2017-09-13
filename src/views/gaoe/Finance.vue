@@ -4,7 +4,7 @@
     <div class="balance-wrap">
       <div class="fs14-c3a">当前余额</div>
       <div class="money">¥ {{navbar.balance}}</div>
-      <el-button size="small" class="w76-h30" type="primary" @click="charge()">充值</el-button>
+      <el-button size="small" class="w76-h30" type="primary" @click="charge()">结算</el-button>
     </div>
     <el-pagination v-if="total_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="total_count"></el-pagination>
 
@@ -13,9 +13,9 @@
       </el-table-column>
       <!--<el-table-column prop="pay_type" label="付款方式" min-width="110">-->
       <!--</el-table-column>-->
-      <el-table-column prop="refer_drawee" label="付款人" min-width="206">
+      <el-table-column prop="drawee" label="付款人" min-width="206">
         <template scope="scope">
-          <div>{{ decodeURI(scope.row.refer_drawee) }}</div>
+          <div>{{ decodeURI(scope.row.drawee) }}</div>
         </template>
       </el-table-column>
       <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
@@ -49,7 +49,7 @@
       <span class="qk-title">此操作将撤销这条记录，是否继续？</span><br>
       <span slot="footer" class="dialog-footer">
         <el-button class="cancle-button" size="small" @click="dialogVisible = false">取消</el-button>
-        <el-button class="goon-button" type="primary" size="small"@click="handleDelete()">继续</el-button>
+        <el-button class="goon-button" type="primary" size="small"@click="handleDelete()">撤销</el-button>
       </span>
     </el-dialog>
     <el-dialog v-model="chargeSuccessDialogVisible" :show-close="showClose" custom-class="charge-success-dialog" style="top: 30%;">
@@ -315,7 +315,7 @@
       },
 
       invoiceFormatter (row, column, cellValue) {
-        return cellValue === '需要' ? '需要' : '-'
+        return cellValue !== '需要' ? '-' : '需要'
       },
 
       cancel (index, row) {

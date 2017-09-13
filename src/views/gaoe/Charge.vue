@@ -19,7 +19,7 @@
       <el-form-item prop="amount_check" class="w214" label="确认金额">
         <el-input v-model="info.amount_check" placeholder="请再次输入充值金额"></el-input>元
       </el-form-item>
-      <el-form-item prop="drawee" class="w214" label="付款人">
+      <el-form-item prop="refer_drawee" class="w214" label="付款人">
         <el-input v-model="info.refer_drawee" placeholder="请输入付款人/公司名称"></el-input>
       </el-form-item>
       <el-form-item class="w190" label="是否开票">
@@ -510,7 +510,7 @@
 
     computed: {
       currentPageTitle () {
-        return this.$router.currentRoute.name === 'gaoe_dash_finance_charge' ? '充值' : '编辑'
+        return this.$router.currentRoute.name === 'gaoe_dash_finance_charge' ? '结算' : '编辑'
       },
 
       rules () {
@@ -622,7 +622,7 @@
 
     methods: {
       toFinance () {
-        this.$router.push('/d/finance')
+        this.$router.push('/d/gaoe/finance')
       },
       submitForm () {
         if (this.activeTabName === 'chinabank') {
