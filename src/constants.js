@@ -38,6 +38,7 @@ export const URI_FETCH_RENEW_PRE = '/v2/api/task/copy/'  // 续单的任务信�
 export const URI_LOAN_DASHBOARD = '/v2/api/loan/user/summary'
 export const URI_LOAN_REPORT = '/v2/api/loan/report/query'
 export const URI_LOAN_REPORT_DOWNLOAD = '/v2/api/loan/report/download' // 下载报表
+
 export const URI_LOAN_FINANCE = '/v2/api/loan/settlement/list'
 export const URI_LOAN_FINANCE_CHARGE_CANCEL = '/v2/api/loan/settlement/delete'
 export const URI_LOAN_CHARGE = '/v2/api/loan/settlement/create'
@@ -49,11 +50,14 @@ export const URI_HI_TASK_UPDATE = '/v2/api/hi/task/update'
 export const URI_HI_DASHBOARD = '/v2/api/hi/dashboard'
 export const URI_HI_REPORT = '/v2/api/hi/report'
 export const URI_HI_REPORT_DOWNLOAD = '/v2/api/hi/report/download'
-export const URI_HI_PREVIEW_TASK = '/api/hi/task' // 高额任务预览
-export const URI_HI_TASK_TO_END = '' // 高额完成任务
-export const URI_HI_ADD_TASK_NUMBER = '' // 高额续总数
-export const URI_HI_DELE_TASK = '' // 高额删除任务
-export const URI_HI_RESUME_TASK = '' // 高额开启任务
+export const URI_HI_PREVIEW_TASK = '/v2/api/hi/task' // 高额任务预览
+export const URI_HI_TASK_TO_END = '/v2/api/hi/task/ended' // 高额完成任务
+export const URI_HI_ADD_TASK_NUMBER = '/v2/api/hi/tast/inc_cnt' // 高额续总数
+export const URI_HI_DELE_TASK = '/v2/api/hi/task/delete' // 高额删除任务
+export const URI_HI_RESUME_TASK = '/v2/api/hi/task/resume' // 高额开启任务
+export const URI_HI_FINANCE = '/v2/api/hi/settlement_list' // 高额结算列表
+export const URI_HI_FINANCE_CHARGE_CANCEL = '/v2/api/hi/settlement/delete' // 删除高额结算
+export const URI_HI_CHARGE = '/v2/api/hi/settlement'
 
 // 信用卡
 export const URI_CREDIT_DASHBOARD = '/v2/api/credit/dashboard'

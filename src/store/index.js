@@ -26,6 +26,8 @@ import creditCharge from './credit/charge'
 import gaoeAd from './gaoe/ad.js'
 import gaoeAdNew from './gaoe/adNew'
 import gaoeUser from './gaoe/user'
+import gaoeCharge from './gaoe/charge'
+import gaoeFinance from './gaoe/finance'
 
 Vue.use(Vuex)
 
@@ -148,6 +150,8 @@ export default new Vuex.Store({
     gaoeAdNew,
     gaoeUser,
     gaoeAd,
+    gaoeFinance,
+    gaoeCharge,
     // 信用卡
     creditUser,
     creditCharge,

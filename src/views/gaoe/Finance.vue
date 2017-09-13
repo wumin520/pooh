@@ -6,42 +6,43 @@
       <div class="money">¥ {{navbar.balance}}</div>
       <el-button size="small" class="w76-h30" type="primary" @click="charge()">充值</el-button>
     </div>
-    <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
+    <el-pagination v-if="total_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="total_count"></el-pagination>
 
-    <el-table :class="{'nodata': payments.length === 0 }"  :data="payments" stripe border class="table-wrapper" style="width: 100%;">
-      <el-table-column prop="date" label="日期" min-width="152">
+    <el-table :class="{'nodata': settlement_list.length === 0 }"  :data="settlement_list" stripe border class="table-wrapper" style="width: 100%;">
+      <el-table-column prop="create_time" label="日期" min-width="152">
       </el-table-column>
-       <el-table-column prop="pay_type" label="付款方式" min-width="110">
-      </el-table-column>
-       <el-table-column prop="drawee" label="付款人" min-width="206">
-          <template scope="scope">
-            <div>{{ decodeURI(scope.row.drawee) }}</div>
-          </template>
-      </el-table-column>
-       <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
-      </el-table-column>
-       <el-table-column prop="operation_number" label="操作编号" min-width="90">
-      </el-table-column>
-       <el-table-column prop="new_finance_status" label="状态" min-width="90">
-      </el-table-column>
-       <el-table-column prop="settlement_amount" label="付款金额" min-width="140">
+      <!--<el-table-column prop="pay_type" label="付款方式" min-width="110">-->
+      <!--</el-table-column>-->
+      <el-table-column prop="refer_drawee" label="付款人" min-width="206">
         <template scope="scope">
-          <div>￥ {{ scope.row.settlement_amount | addCommas_money }}</div>
+          <div>{{ decodeURI(scope.row.refer_drawee) }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="actual_arrival_amount" label="入账金额" min-width="140">
+      <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
+      </el-table-column>
+      <el-table-column prop="id" label="操作编号" min-width="90">
+      </el-table-column>
+      <el-table-column prop="settle_status_text" label="状态" min-width="90">
+      </el-table-column>
+      <el-table-column prop="amount" label="结算金额" min-width="140">
+        <template scope="scope">
+          <div>￥ {{ scope.row.amount | addCommas_money }}</div>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column prop="consume_amount" label="消耗金额" min-width="140">
          <template scope="scope">
-          <div>￥ {{ scope.row.actual_arrival_amount | addCommas_money }}</div>
+          <div>￥ {{ scope.row.consume_amount | addCommas_money }}</div>
         </template>
-      </el-table-column>
-
+      </el-table-column>-->
       <el-table-column label="操作" min-width="65">
         <template scope="scope">
-          <a v-if="scope.row.status === 0 && scope.row.pay_type !== '支付宝'" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">撤销</a>
+          <!-- status: 0 待审核（可删除） 1 入账 2 广告主取消 -->
+          <a v-if="scope.row.settle_status === 0 && scope.row.pay_type !== '支付宝'" class="link-go" type="text" @click="cancel(scope.$index, scope.row)">删除</a>
+          <!--<a class="link-go" type="text" @click="charge()">充值</a>-->
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
+    <el-pagination v-if="total_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="total_count"></el-pagination>
 
     <el-dialog title="撤销" v-model="dialogVisible" :show-close="showClose" custom-class="revoke-dialog" style="top: 30%;">
       <img class="logo" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
@@ -59,6 +60,14 @@
         <el-button type="primary" style="width:109px;" size="small" @click="checkRecord()">查看记录</el-button>
       </span>
     </el-dialog>
+    <!--<el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
+      <img src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="" class="logo">
+      <span>此操作将撤销这条记录，是否继续？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleDelete()">撤销</el-button>
+      </span>
+    </el-dialog>-->
   </div>
 </template>
 <style lang="scss">
@@ -240,7 +249,7 @@
   export default {
     data () {
       return {
-        operation_number: 0,
+        id: 0,
         curRowIndex: -1,
         dialogVisible: false,
         showClose: false,
@@ -268,15 +277,15 @@
     },
 
     computed: {
-      ...mapState('finance', [
-        'payments',
+      ...mapState('gaoeFinance', [
+        'settlement_list',
         'navbar',
-        'payments_count',
+        'total_count',
         'limit'
       ])
     },
 
-    fetchAction: 'finance/getInfo',
+    fetchAction: 'gaoeFinance/getInfo',
 
     mounted () {
       let alipaySuccess = this.$route.query.alipay_success
@@ -292,12 +301,12 @@
     methods: {
       backtoHome () {
         this.chargeSuccessDialogVisible = false
-        this.$router.push('/d/gaoe/home')
+        this.$router.push('/d/home')
       },
 
       checkRecord () {
         this.chargeSuccessDialogVisible = false
-        location.href = 'http://' + location.host + '/v2/d/gaoe/finance'
+        location.href = 'http://' + location.host + '/v2/d/finance'
         // this.getInfo()
       },
 
@@ -311,14 +320,14 @@
 
       cancel (index, row) {
         this.dialogVisible = true
-        this.operation_number = row.operation_number
+        this.id = row.id
         this.curRowIndex = index
       },
 
       handleDelete () {
-        this.cancelCharge(this.operation_number).then(() => {
+        this.cancelCharge(this.id).then(() => {
           this.dialogVisible = false
-          this.payments.splice(this.curRowIndex, 1)
+          this.settlement_list.splice(this.curRowIndex, 1)
         })
       },
 
@@ -326,7 +335,7 @@
         this.$router.push('/d/gaoe/finance/charge')
       },
 
-      ...mapActions('finance', [
+      ...mapActions('gaoeFinance', [
         'getInfo',
         'cancelCharge'
       ])

@@ -19,25 +19,25 @@ const initState = () => ({
   },
   previewForm: {  // 预览表单的字段
     app_id: '',  // 商户名称
-    title: '小花钱包',  // 应用名称
-    app_name: '测试商户', // 商户名称
-    device: 'iOS', // 平台
-    web_download_url: 'www.baidu.com', // 下载链接
-    redirect_url: 'www.baidu.com', // 跳转链接
-    category: '1', // 任务类型
-    plan_count: '300', // 计划份数
+    title: '',  // 应用名称
+    app_name: '', // 商户名称
+    device: '', // 平台
+    web_download_url: '', // 下载链接
+    redirect_url: '', // 跳转链接
+    category: '', // 任务类型
+    plan_count: '', // 计划份数
     univalent: '0.00', // 单价
-    begin_time: '2017/07/08 21:00', // 开始时间
-    end_time: '2017/07/08 21:00',  // 结束时间
-    category_name: '用户注册'
+    begin_time: '', // 开始时间
+    end_time: '',  // 结束时间
+    category_name: ''
   },
   task_statcnt: { // 每个tab 的任务数
-    ok: '10',
-    pending: '20',
-    rejected: '30',
-    paused: '40',
-    tocompare: '45',
-    ended: '50'
+    ok: '',
+    pending: '',
+    rejected: '',
+    paused: '',
+    tocompare: '',
+    ended: ''
   },
   tableData: []
 })
