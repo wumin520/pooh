@@ -622,7 +622,7 @@
 
     methods: {
       toFinance () {
-        this.$router.push('/d/finance')
+        this.$router.push('/d/loan/finance')
       },
       submitForm () {
         if (this.activeTabName === 'chinabank') {
