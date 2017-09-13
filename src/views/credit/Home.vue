@@ -248,17 +248,17 @@
       }
     },
 
-    fetchAction: 'loanUser/getDashboardData',
+    fetchAction: 'creditUser/getDashboardData',
 
     computed: {
-      ...mapState('loanUser', [
+      ...mapState('creditUser', [
         'yesterday_amount',
         'sevendays_amount',
         'month_amount',
         'unsettled_amount'
       ]),
 
-      ...mapGetters('loanUser', [
+      ...mapGetters('creditUser', [
         'reportTypes',
         'reportTotal',
         'tableData',
@@ -421,10 +421,10 @@
       },
 
       download () {
-        this.$store.dispatch('loanUser/downloadReport', { dayCnt: this.dayCnt })
+        this.$store.dispatch('creditUser/downloadReport', { dayCnt: this.dayCnt })
       },
 
-      ...mapActions('loanUser', [
+      ...mapActions('creditUser', [
         'getTableData',
         'getChartData'
       ])

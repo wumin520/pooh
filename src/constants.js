@@ -17,10 +17,6 @@ export const URI_VALIDATE_MOBILE = '/v2/api/mobile/check_code'
 export const URI_SEND_CHECKCODE = '/v2/api/mobile/send_code'
 export const URI_CHECK_APPID = '/v2/api/task/check_appid'
 
-export const URI_LOAN_FINANCE = '/v2/api/loan/settlement/list'
-export const URI_LOAN_FINANCE_CHARGE_CANCEL = '/v2/api/loan/settlement/delete'
-export const URI_LOAN_CHARGE = '/v2/api/loan/settlement/create'
-
 // Report Types
 export const LW = 'LW' // 最近7天
 export const L30D = 'L30D' // 最近30天
@@ -42,6 +38,9 @@ export const URI_FETCH_RENEW_PRE = '/v2/api/task/copy/'  // 续单的任务信�
 export const URI_LOAN_DASHBOARD = '/v2/api/loan/user/summary'
 export const URI_LOAN_REPORT = '/v2/api/loan/report/query'
 export const URI_LOAN_REPORT_DOWNLOAD = '/v2/api/loan/report/download' // 下载报表
+export const URI_LOAN_FINANCE = '/v2/api/loan/settlement/list'
+export const URI_LOAN_FINANCE_CHARGE_CANCEL = '/v2/api/loan/settlement/delete'
+export const URI_LOAN_CHARGE = '/v2/api/loan/settlement/create'
 
 // 高额 任务模块 uri
 export const URI_HI_TASK_SELECT_DATA = '/v2/api/hi/task_data'
@@ -55,3 +54,11 @@ export const URI_HI_TASK_TO_END = '' // 高额完成任务
 export const URI_HI_ADD_TASK_NUMBER = '' // 高额续总数
 export const URI_HI_DELE_TASK = '' // 高额删除任务
 export const URI_HI_RESUME_TASK = '' // 高额开启任务
+
+// 信用卡
+export const URI_CREDIT_DASHBOARD = '/v2/api/credit/dashboard'
+export const URI_CREDIT_REPORT = '/v2/api/credit/report'
+export const URI_CREDIT_REPORT_DOWNLOAD = '/v2/api/credit/download' // 下载报表
+export const URI_CREIT_FINANCE = '/v2/api/credit/settlement/list'
+export const URI_CREDIT_FINANCE_CHARGE_CANCEL = '/v2/api/credit/settlement/delete'
+export const URI_CREDIT_CHARGE = '/v2/api/credit/settlement/create'

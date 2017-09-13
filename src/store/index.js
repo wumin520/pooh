@@ -7,15 +7,20 @@ import adNew from './task/adNew'
 import finance from './task/finance'
 import ad from './task/ad'
 import priceSys from './task/priceSys'
-// 借钱
-import loanUser from './loan/user'
 
 import { URI_LOGOUT } from '@/constants'
 import { Message } from 'element-ui'
 import cookie from '../cookie'
 
+// 借钱
+import loanUser from './loan/user'
 import loanFinance from './loan/finance'
 import loanCharge from './loan/charge'
+
+// 信用卡
+import creditUser from './credit/user'
+import creditFinance from './credit/finance'
+import creditCharge from './credit/charge'
 
 // 高额
 import gaoeAd from './gaoe/ad.js'
@@ -142,8 +147,11 @@ export default new Vuex.Store({
     // 高额
     gaoeAdNew,
     gaoeUser,
-    gaoeAd
+    gaoeAd,
     // 信用卡
+    creditUser,
+    creditCharge,
+    creditFinance
   },
   state,
   mutations,
