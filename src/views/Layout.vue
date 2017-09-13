@@ -89,7 +89,7 @@
   import LoanSidebar from './layout/LoanSidebar'
   import GaoeSidebar from './layout/GaoeSidebar'
   import GaoeTopNav from './layout/GaoeTopNav'
-  import CrediSidebar from './layout/CreditSidebar'
+  import CreditSidebar from './layout/CreditSidebar'
   import CreditTopNav from './layout/CreditTopNav'
 
   export default {
@@ -100,7 +100,7 @@
       LoanSidebar,
       GaoeSidebar,
       GaoeTopNav,
-      CrediSidebar,
+      CreditSidebar,
       CreditTopNav
     },
 

@@ -80,6 +80,9 @@ const mutations = {
       case 'gaoe_dash_ad_new':
         routeName = 'gaoe_dash_ad'
         break
+      case 'credit_dash_finance_charge':
+        routeName = 'credit_dash_finance'
+        break
     }
     state.activeIndex = routeName
   },
