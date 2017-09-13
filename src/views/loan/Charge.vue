@@ -510,7 +510,7 @@
 
     computed: {
       currentPageTitle () {
-        return this.$router.currentRoute.name === 'loan_dash_finance_charge' ? '充值' : '编辑'
+        return this.$router.currentRoute.name === 'loan_dash_finance_charge' ? '结算' : '编辑'
       },
 
       rules () {

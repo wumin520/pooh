@@ -49,7 +49,7 @@
       <span class="qk-title">此操作将撤销这条记录，是否继续？</span><br>
       <span slot="footer" class="dialog-footer">
         <el-button class="cancle-button" size="small" @click="dialogVisible = false">取消</el-button>
-        <el-button class="goon-button" type="primary" size="small"@click="handleDelete()">继续</el-button>
+        <el-button class="goon-button" type="primary" size="small"@click="handleDelete()">撤销</el-button>
       </span>
     </el-dialog>
     <el-dialog v-model="chargeSuccessDialogVisible" :show-close="showClose" custom-class="charge-success-dialog" style="top: 30%;">
@@ -315,7 +315,7 @@
       },
 
       invoiceFormatter (row, column, cellValue) {
-        return cellValue === '需要' ? '需要' : '-'
+        return cellValue !== '需要' ? '-' : '需要'
       },
 
       cancel (index, row) {
