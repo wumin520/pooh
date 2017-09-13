@@ -120,7 +120,7 @@ const actions = {
     let { content, dayCnt } = payload
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
-    let endTime = now
+    let endTime = now - 86400
     let url = `${URI_LOAN_REPORT}?action=chart&content=${content}&start_time=${startTime}&end_time=${endTime}`
 
     return fetch(url, {
@@ -138,7 +138,7 @@ const actions = {
     let { content, dayCnt } = payload
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
-    let endTime = now
+    let endTime = now - 86400
     let url = `${URI_LOAN_REPORT}?action=table&content=${content}&start_time=${startTime}&end_time=${endTime}`
 
     return fetch(url, {
@@ -156,7 +156,7 @@ const actions = {
     let { dayCnt } = payload
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
-    let endTime = now
+    let endTime = now - 86400
     location.href = `${URI_LOAN_REPORT_DOWNLOAD}?start_time=${startTime}&end_time=${endTime}`
   }
 }
