@@ -55,10 +55,10 @@
         <span class="qk-tabs__item-text" slot="label"><span class="tag">消耗</span><span class="sub-tag">{{ reportTotal.cost > 0 ? ('¥ ' + reportTotal.cost.toFixed(2)) : '-' }}</span></span>
       </el-tab-pane>
       <el-tab-pane name="reg">
-        <span class="qk-tabs__item-text" slot="label"><span>成功注册</span><span>{{ reportTotal.register_num | index }}</span></span>
+        <span class="qk-tabs__item-text" slot="label"><span>成功注册</span><span>{{ reportTotal.register_num | index('') }}</span></span>
       </el-tab-pane>
       <el-tab-pane name="loan_suc">
-        <span class="qk-tabs__item-text" slot="label"><span>成功借钱</span><span>{{ reportTotal.loan_succ_num | index }}</span></span>
+        <span class="qk-tabs__item-text" slot="label"><span>成功借钱</span><span>{{ reportTotal.loan_succ_num | index('') }}</span></span>
       </el-tab-pane>
     </el-tabs>
 
@@ -199,9 +199,9 @@
     },
 
     filters: {
-      index (val) {
+      index (val, isAddRMBPrefix = true) {
         return parseFloat(val) > 0
-          ? (typeof val === 'number' ? '¥ ' + val : val)
+          ? ((typeof val === 'number' && isAddRMBPrefix) ? '¥ ' + val : val)
           : '-'
       },
 
@@ -411,6 +411,7 @@
                 lineColor: '#4A90E2',
                 fillColor: '#4A90E2',
                 fillOpacity: 1,
+                position: 'nw',
                 trackFormatter: ({x, y}) => {
                   return labels[parseInt(x)] + ': ' + y
                 }
