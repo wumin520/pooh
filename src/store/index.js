@@ -79,7 +79,6 @@ const mutations = {
     state.atype = atype
   },
   [types.SYNC_NAVBAR] (state, payload) {
-    console.log(types.SYNC_NAVBAR, payload.navbar)
     state.navbar = payload.navbar
   }
 }

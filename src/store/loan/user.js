@@ -19,7 +19,7 @@ const types = {
 }
 
 const initState = () => ({
-  unliquidated: '',
+  unsettled_amount: '',
   yesterday_amount: '',
   sevendays_amount: '',
   month_amount: '',
