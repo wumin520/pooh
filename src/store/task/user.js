@@ -118,7 +118,7 @@ const mutations = {
 }
 
 const actions = {
-  getDashboardData ({ commit }) {
+  getDashboardData ({ commit, dispatch }) {
     return fetch(URI_DASHBOARD, {
       credentials: 'same-origin'
     })
@@ -132,6 +132,7 @@ const actions = {
     .then(res => res.json())
     .then(data => {
       let payload = data && data.payload
+      if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
       if (payload) commit(types.SYNC_DASHBOARD, payload)
       return data
     })
