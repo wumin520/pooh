@@ -8,7 +8,7 @@ const types = {
 }
 
 const initState = () => ({
-  loan_list: [],
+  settlement_list: [],
   navbar: {},
   total_count: 0,
   limit: 30

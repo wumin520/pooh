@@ -8,7 +8,7 @@
     </div>
     <el-pagination v-if="total_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="total_count"></el-pagination>
 
-    <el-table :class="{'nodata': loan_list.length === 0 }"  :data="loan_list" stripe border class="table-wrapper" style="width: 100%;">
+    <el-table :class="{'nodata': settlement_list.length === 0 }"  :data="settlement_list" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column prop="create_time" label="日期" min-width="152">
       </el-table-column>
       <!--<el-table-column prop="pay_type" label="付款方式" min-width="110">-->
@@ -277,8 +277,8 @@
     },
 
     computed: {
-      ...mapState('loanFinance', [
-        'loan_list',
+      ...mapState('creditFinance', [
+        'settlement_list',
         'navbar',
         'total_count',
         'limit'
@@ -327,7 +327,7 @@
       handleDelete () {
         this.cancelCharge(this.id).then(() => {
           this.dialogVisible = false
-          this.loan_list.splice(this.curRowIndex, 1)
+          this.settlement_list.splice(this.curRowIndex, 1)
         })
       },
 
@@ -335,7 +335,7 @@
         this.$router.push('./finance/charge')
       },
 
-      ...mapActions('loanFinance', [
+      ...mapActions('creditFinance', [
         'getInfo',
         'cancelCharge'
       ])
