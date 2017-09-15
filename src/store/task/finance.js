@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: off */
 import { Message } from 'element-ui'
-import api from '../fetch'
+import api from '../../fetch'
 import {URI_FINANCE, URI_FINANCE_CHARGE_CANCEL} from '@/constants'
 
 const types = {
@@ -26,12 +26,11 @@ const mutations = {
 
 const actions = {
   getInfo ({commit, dispatch, state}, params = {page: 1}) {
-    dispatch('updateIndex', 'dash_finance', { root: true })
     let offset = (params.page - 1) * state.limit
     let apiUri = `${URI_FINANCE}?offset=${offset}&limit=${state.limit}`
     return api(apiUri).then(({payload}) => {
       // console.log('actions: ' + URI_FINANCE, payload)
-      if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+      if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
       commit(types.SYNC, payload)
     })
   },

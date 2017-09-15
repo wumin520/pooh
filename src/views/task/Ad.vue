@@ -922,7 +922,6 @@
       window.addEventListener('resize', this.tableResize)
 
       var type = this.task_status = this.$route.params.status.split('&')[0]
-      this.$store.dispatch('updateIndex', 'dash_ad', { root: true })
 
       var activeName = 'tab1'
       switch (type) {

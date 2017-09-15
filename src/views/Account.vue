@@ -9,8 +9,8 @@
         <el-input v-model="info.title" placeholder="请输入姓名/公司"></el-input>
       </el-form-item>
       <el-form-item prop="phone" label="联系电话">
-        <!--<el-input v-model="info.phone" placeholder="请输入联系电话"></el-input>-->
-        <div class="phone-wrap">
+        <el-input v-if="atype !== '2'" v-model="info.phone" placeholder="请输入联系电话"></el-input>
+        <div v-if="atype == 2" class="phone-wrap">
             <span>{{info.mobile ? info.mobile : '未绑定手机'}}</span>
           <a @click="showBindPhoneDialog" href="javascript:;" class="c42 mrg-l31">
             {{info.mobile ? '修改手机' : '绑定手机'}}</a>
@@ -126,58 +126,62 @@
       BindPhoneDialog
     },
 
-    data () {
-      let checkNewPassword = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入新的密码'))
-        } else if (value === this.info.password) {
-          callback(new Error('新密码不能与旧密码相同'))
-        } else if (value.replace(/\s+/g, '').length < value.length) {
-          callback(new Error('密码不能包含空格'))
-        } else {
-          if (this.info.confirm !== '') {
-            this.$refs.infoForm.validateField('confirm')
-          }
-          callback()
-        }
-      }
-
-      let checkConfirm = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再输入一次新的密码'))
-        } else if (value.replace(/\s+/g, '').length < value.length) {
-          callback(new Error('密码不能包含空格'))
-        } else if (value !== this.info.new_password) {
-          callback(new Error('请确保新密码两次输入一致'))
-        } else {
-          callback()
-        }
-      }
-
-      // let checkPhone = (rule, value, callback) => {
-      //   if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
-      //     callback(new Error('手机号格式不正确'))
-      //   } else {
-      //     callback()
-      //   }
-      // }
-
-      return {
-        rules: {
-          title: [
-            { required: true, message: '请输入姓名/公司', trigger: 'change' }
-          ],
-          password: [{ required: true, message: '请输入当前密码', trigger: 'blur' }],
-          new_password: [{ required: true, validator: checkNewPassword, trigger: 'blur' }],
-          confirm: [{ required: true, validator: checkConfirm, trigger: 'blur' }]
-        }
-      }
-    },
-
     computed: {
+      ...mapState(['atype']),
       ...mapState('accountSetting', [
         'info'
-      ])
+      ]),
+      rules () {
+        let checkNewPassword = (rule, value, callback) => {
+          if (value === '') {
+            callback(new Error('请输入新的密码'))
+          } else if (value === this.info.password) {
+            callback(new Error('新密码不能与旧密码相同'))
+          } else if (value.replace(/\s+/g, '').length < value.length) {
+            callback(new Error('密码不能包含空格'))
+          } else {
+            if (this.info.confirm !== '') {
+              this.$refs.infoForm.validateField('confirm')
+            }
+            callback()
+          }
+        }
+
+        let checkConfirm = (rule, value, callback) => {
+          if (value === '') {
+            callback(new Error('请再输入一次新的密码'))
+          } else if (value.replace(/\s+/g, '').length < value.length) {
+            callback(new Error('密码不能包含空格'))
+          } else if (value !== this.info.new_password) {
+            callback(new Error('请确保新密码两次输入一致'))
+          } else {
+            callback()
+          }
+        }
+
+        let checkPhone = (rule, value, callback) => {
+          if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
+            callback(new Error('手机号格式不正确'))
+          } else {
+            callback()
+          }
+        }
+        let rules = {
+          title: [
+            { required: true, message: '请输入姓名/公司', trigger: 'change' }
+          ]
+        }
+        if (this.atype !== 2 && this.info.phone) {
+          rules = {...rules, phone: [{required: true, validator: checkPhone, trigger: 'blur'}]}
+        }
+        if (this.info.password) {
+          rules = {...rules,
+            password: [{ required: true, message: '请输入当前密码', trigger: 'blur' }],
+            new_password: [{ required: true, validator: checkNewPassword, trigger: 'blur' }],
+            confirm: [{ required: true, validator: checkConfirm, trigger: 'blur' }]}
+        }
+        return rules
+      }
     },
     // 在vue created的时候自动请求该action
     fetchAction: 'accountSetting/getInfo',
@@ -189,43 +193,21 @@
       ]),
 
       submitForm (formName) {
-        let isValid = true
-        // 填了手机号就验证手机号格式
-        if (this.info.phone !== '') {
-          this.$refs[formName].validateField('phone', (err) => {
-            if (err) {
-              isValid = false
-            }
-          })
-        }
-        // 没设置密码就只验证必填的用户名
-        if (this.info.password === '') {
-          this.$refs[formName].validateField('title', (err) => {
-            if (err) {
-              isValid = false
-            }
-          })
-        } else {
-          this.$refs[formName].validate((valid) => {
-            isValid = valid
-            if (valid) {
-            } else {
-              // console.log('error submit!!')
-              return false
-            }
-          })
-        }
-        if (isValid) {
-          this.submitInfo(this.info).then((res) => {
-            if (res.status === 'fail') {
-              return
-            } else {
-              setTimeout(function () {
-                this.$router.push('/d/home')
-              }, 500)
-            }
-          })
-        }
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.submitInfo(this.info).then((res) => {
+              if (res.status === 'fail') {
+                return
+              } else {
+                setTimeout(() => {
+                  // 不同的广告主类型做不同的跳转
+                  let path = this.$router.currentRoute.query.backRoute || '/d/home'
+                  this.$router.push(path)
+                }, 500)
+              }
+            })
+          }
+        })
       },
 
       refreshPhoneAfterBindSuccess (mobile) {

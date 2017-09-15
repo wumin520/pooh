@@ -156,7 +156,7 @@ const actions = {
     return api(URI_FETCH_NEW_PRE, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
-        if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+        if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
         commit(types.SET_NEW_TASK_PRE, payload)
         commit(types.RESET_FORM)
       })
@@ -167,7 +167,7 @@ const actions = {
     return api(path, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
-        if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+        if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
         dispatch('formatPreInfoForEditAndRenew', payload)
       })
       .catch(err => {
@@ -183,7 +183,7 @@ const actions = {
     return api(path, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
-        if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+        if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
         dispatch('formatPreInfoForEditAndRenew', payload)
       }).catch(err => {
         if (err.payload && err.payload.code === 404) {

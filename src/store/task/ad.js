@@ -112,7 +112,7 @@ const actions = {
       .then(res => res && res.payload)
       .then(payload => {
         commit(types.CHANGE_AFTERSEARCH_STATUS, true)
-        if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+        if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
 
         if (config.currentStatus === payload.status) {
           commit(types.SET_TABLE_DATA, payload.tasks)

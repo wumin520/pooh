@@ -2,16 +2,21 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
-
 import Layout from '@/views/Layout'
-import Home from '@/views/Home'
-import Ad from '@/views/Ad'
-import AdNew from '@/views/AdNew'
-import Finance from '@/views/Finance'
 import Account from '@/views/Account'
-import Charge from '@/views/Charge'
-import Price from '@/views/Price'
 import Error from '@/views/Error'
+
+import Home from '@/views/task/Home'
+import Ad from '@/views/task/Ad'
+import AdNew from '@/views/task/AdNew'
+import Finance from '@/views/task/Finance'
+import Charge from '@/views/task/Charge'
+import Price from '@/views/task/Price'
+
+// 借钱模块
+import LoanHome from '@/views/loan/Home'
+import LoanFinance from '@/views/loan/Finance'
+import LoanCharge from '@/views/loan/Charge'
 
 Vue.use(Router)
 
@@ -86,6 +91,21 @@ export default new Router({
           name: 'dash_account',
           path: 'account',
           component: Account
+        },
+        {
+          name: 'loan_dash_home',
+          path: 'loan/home',
+          component: LoanHome
+        },
+        {
+          name: 'loan_dash_finance',
+          path: 'loan/finance',
+          component: LoanFinance
+        },
+        {
+          name: 'loan_dash_finance_charge',
+          path: 'loan/finance/charge',
+          component: LoanCharge
         }
       ]
     },

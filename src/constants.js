@@ -17,6 +17,10 @@ export const URI_VALIDATE_MOBILE = '/v2/api/mobile/check_code'
 export const URI_SEND_CHECKCODE = '/v2/api/mobile/send_code'
 export const URI_CHECK_APPID = '/v2/api/task/check_appid'
 
+export const URI_LOAN_FINANCE = '/v2/api/loan/settlement/list'
+export const URI_LOAN_FINANCE_CHARGE_CANCEL = '/v2/api/loan/settlement/delete'
+export const URI_LOAN_CHARGE = '/v2/api/loan/settlement/create'
+
 // Report Types
 export const LW = 'LW' // 最近7天
 export const L30D = 'L30D' // 最近30天
@@ -33,3 +37,8 @@ export const URI_POST_TASK = '/v2/api/task'  // 提交广告
 
 export const URI_FETCH_EDIT_PRE = '/v2/api/task/edit/'  // 编辑的任务信息
 export const URI_FETCH_RENEW_PRE = '/v2/api/task/copy/'  // 续单的任务信息
+
+// 借钱
+export const URI_LOAN_DASHBOARD = '/v2/api/loan/user/summary'
+export const URI_LOAN_REPORT = '/v2/api/loan/report/query'
+export const URI_LOAN_REPORT_DOWNLOAD = '/v2/api/loan/report/download' // 下载报表

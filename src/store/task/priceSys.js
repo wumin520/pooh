@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: off */
 import { Message } from 'element-ui'
-import api from '../fetch'
+import api from '../../fetch'
 import {URI_PRICE_SYS} from '@/constants'
 
 const initState = () => ({
@@ -15,9 +15,8 @@ const mutations = {
 
 const actions = {
   getInfo ({dispatch}) {
-    dispatch('updateIndex', 'dash_finance', { root: true })
     return api(URI_PRICE_SYS).then(({payload}) => {
-      if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+      if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
     })
   }
 }

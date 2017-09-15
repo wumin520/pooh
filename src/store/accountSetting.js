@@ -38,13 +38,12 @@ const mutations = {
 
 const actions = {
   getInfo ({commit, dispatch}) {
-    dispatch('updateIndex', 'dash_account', { root: true })
     return api(URI_ACCOUNTSETTING)
       .then(res => {
         let payload = res.payload
         if (payload) {
           commit(types.SYNC, payload)
-          if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
+          if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
         }
         return res
       })

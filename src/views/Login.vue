@@ -201,6 +201,9 @@
               case '2':
                 this.$router.push('/d/home')
                 break
+              case '7':
+                this.$router.push('/d/loan/home')
+                break
               default:
                 location.href = '/dashboard/'
             }

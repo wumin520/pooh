@@ -25,6 +25,9 @@
             case '2':
               location.href = '/v2/d/home'
               break
+            case '7':
+              location.href = '/v2/d/loan/home'
+              break
             default:
               location.href = '/dashboard/' // 老的 tigger
           }
@@ -67,14 +70,14 @@
           <img src="http://assets.qkcdn.com/images/fb4da215626a89134edf66db8689cab6.png" alt="" class="title">
           <a href="/v2/register" class="btn register" style="cursor: pointer;">立即体验</a>
           <div class="banner-footer">
-            <img src="http://assets.qkcdn.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">            
+            <img src="http://assets.qkcdn.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">
           </div>
         </div>
         <div class="swiper-slide pics pic2">
-          <img src="http://assets.qkcdn.com/images/4306633db42050e9f8a6c8cc340277a9.png" alt="" class="title">           
+          <img src="http://assets.qkcdn.com/images/4306633db42050e9f8a6c8cc340277a9.png" alt="" class="title">
           <a href="/v2/register" class="btn register" style="cursor: pointer;">立即体验</a>
           <div class="banner-footer">
-            <img src="http://assets.qkcdn.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">            
+            <img src="http://assets.qkcdn.com/images/3ce30bc82310fa928fb015967b768603.png" alt="" class="desc">
           </div>
         </div>
       </div>
@@ -142,7 +145,7 @@
           <img src="http://assets.qkcdn.com/images/0471db88438ee45e4ad044818708dae2.png" alt="" style="margin-right: 0px;" class="big-pic-2">
         </div>
       </div>
-      <div style="clear:both;"></div>      
+      <div style="clear:both;"></div>
     </div>
 
     <div class="qk-list center back-grey">
@@ -242,22 +245,22 @@
             if (swiper.activeIndex == 0) {
               activePaginationIndex = 1
               $('#pagination0').removeClass('active')
-              $('#pagination1').addClass('active')               
+              $('#pagination1').addClass('active')
             } else {
               activePaginationIndex = 0
               $('#pagination1').removeClass('active')
-              $('#pagination0').addClass('active')                          
+              $('#pagination0').addClass('active')
             }
           },
           onSlideChangeEnd: function(swiper){
             if (swiper.activeIndex == 0) {
               activePaginationIndex = 0
               $('#pagination0').addClass('active')
-              $('#pagination1').removeClass('active')                            
+              $('#pagination1').removeClass('active')
             } else {
               activePaginationIndex = 1
-              $('#pagination1').addClass('active') 
-              $('#pagination0').removeClass('active')                           
+              $('#pagination1').addClass('active')
+              $('#pagination0').removeClass('active')
             }
           }
         })
@@ -269,8 +272,8 @@
             $('#pagination0').addClass('active')
             $('#pagination1').removeClass('active')
           } else {
-            $('#pagination1').addClass('active') 
-            $('#pagination0').removeClass('active') 
+            $('#pagination1').addClass('active')
+            $('#pagination0').removeClass('active')
           }
 
           $('#pagination0').on('click', function() {
