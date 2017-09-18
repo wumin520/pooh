@@ -77,7 +77,7 @@ const mutations = {
   [types.SYNC_DASHBOARD] (state, payload) {
     // 用户名、余额、最大可透支金额
     // state.navbar = payload.navbar
-    state.unsettled_amount = payload.unsettled_amount
+    state.unliquidated = payload.unliquidated
     state.yesterday_amount = payload.yesterday_amount
     state.sevendays_amount = payload.sevendays_amount
     state.month_amount = payload.month_amount
