@@ -494,7 +494,7 @@
       line-height: 14px;
       font-size: 12px;
       span {
-        font-family: PingFangSC-Regular !important;
+        font-family: PingFangSC-Semibold !important;
       }
     }
     .addAd-btn {
@@ -515,7 +515,7 @@
       }
 
       span {
-        font-family: PingFangSC-Regular !important;
+        font-family: PingFangSC-Semibold !important;
       }
       .add-logo {
         position: relative;
