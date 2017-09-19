@@ -9,7 +9,6 @@ import {
 import { Message } from 'element-ui'
 import api from '@/fetch'
 import _ from 'lodash'
-import util from '@/utils'
 
 const initState = () => ({
   totalTasks: 0, // 任务总数 for pagination
@@ -65,13 +64,10 @@ const mutations = {
   },
   [types.SET_TABLE_DATA] (state, table) {
     state.tableData = table
-    _.forEach(state.tableData, function (n) {
-      n.begin_time = util.formatTime(n.begin_time, 'yyyy-MM-dd hh:mm')
-      n.end_time = util.formatTime(n.end_time, 'yyyy-MM-dd hh:mm')
-    })
   },
   [types.UPDATE_PREVIEW_FORM] (state, previewForm) {
-    state.previewForm = previewForm
+    // state.previewForm = previewForm
+    _.extend(state.previewForm, _.pick(previewForm, _.keys(state.previewForm)))
   },
   [types.SPLICE_TABLE_DATA] (statet, index) {
     state.tableData.splice(index, 1)
@@ -84,10 +80,8 @@ const actions = {
     return api(config.url, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
-        if (payload.navbar) dispatch('user/updateNavbar', payload, { root: true })
-
         if (config.currentStatus === payload.status) {
-          commit(types.SET_TABLE_DATA, payload.tasks)
+          commit(types.SET_TABLE_DATA, payload.task_list)
           let statcnt = {
             taskStatcnt: payload.task_statcnt,
             status: config.status
@@ -97,7 +91,7 @@ const actions = {
       })
   },
   taskToEnd ({commit}, id) {
-    let path = URI_HI_TASK_TO_END + id
+    let path = URI_HI_TASK_TO_END + '?id=' + id
     return api(path, {method: 'GET'})
       .then(res => res)
       .catch(e => {
@@ -107,30 +101,36 @@ const actions = {
         })
       })
   },
-  addTaskNumber ({commit}, config) {
-    let url = URI_HI_ADD_TASK_NUMBER + config.currentTaskId + '/add_number/' + config.addNumber
-    return api(url, {method: 'GET'})
-      .then(res => res.payload)
-      .then((data) => {
-        window.location.reload()
-      })
-  },
 
+  addTaskNumber ({ commit }, config) {
+    return api(URI_HI_ADD_TASK_NUMBER, {
+      method: 'POST',
+      body: config
+    }).then((res) => {
+      window.location.reload()
+    }).catch(e => {
+      Message({
+        message: e.err_msg,
+        iconClass: 'qk-warning'
+      })
+    })
+  },
   previewTask ({commit}, id) {
-    api(URI_HI_PREVIEW_TASK + id, {method: 'GET'})
-      .then(res => res && res.payload)
-      .then((payload) => {
-        payload.task.begin_time = payload.start_date.replace('.', '/') + ' ' + payload.start_time
-        payload.task.end_time = payload.end_date.replace('.', '/') + ' ' + payload.end_time
-        commit(types.UPDATE_PREVIEW_FORM, payload.task)
+    api(URI_HI_PREVIEW_TASK + '?id=' + id, {method: 'GET'})
+      .then(res => res && res.payload.task[0])
+      .then((task) => {
+        task.begin_time = task.start_date.replace(/-/g, '/') + ' ' + task.start_time
+        task.end_time = task.end_date.replace(/-/g, '/') + ' ' + task.end_time
+        task.device === 3 ? task.device = 'iOS' : task.device = 'Android'
+        commit(types.UPDATE_PREVIEW_FORM, task)
       })
   },
 
   deleTask ({commit}, deleting) {
-    return api(URI_HI_DELE_TASK + deleting.id, {method: 'GET'})
+    return api(URI_HI_DELE_TASK + '?id=' + deleting.id, {method: 'GET'})
       .then((data) => {
         Message({
-          message: data.message,
+          message: data.payload.message,
           iconClass: 'qk-warning'
         })
         commit(types.SPLICE_TABLE_DATA, deleting.index)
@@ -146,7 +146,7 @@ const actions = {
   // },
 
   resume ({commit}, id) {
-    return api(URI_HI_RESUME_TASK + id, {method: 'GET'})
+    return api(URI_HI_RESUME_TASK + '?id=' + id, {method: 'GET'})
       .then(res => res)
       .catch(e => {
         Message({

@@ -52,12 +52,12 @@ export const URI_HI_REPORT = '/v2/api/hi/report'
 export const URI_HI_REPORT_DOWNLOAD = '/v2/api/hi/report/download'
 export const URI_HI_PREVIEW_TASK = '/v2/api/hi/task' // 高额任务预览
 export const URI_HI_TASK_TO_END = '/v2/api/hi/task/ended' // 高额完成任务
-export const URI_HI_ADD_TASK_NUMBER = '/v2/api/hi/tast/inc_cnt' // 高额续总数
+export const URI_HI_ADD_TASK_NUMBER = '/v2/api/hi/task/inc_cnt' // 高额续总数
 export const URI_HI_DELE_TASK = '/v2/api/hi/task/delete' // 高额删除任务
 export const URI_HI_RESUME_TASK = '/v2/api/hi/task/resume' // 高额开启任务
-export const URI_HI_FINANCE = '/v2/api/hi/settlement_list' // 高额结算列表
+export const URI_HI_FINANCE = '/v2/api/hi/settlement/list' // 高额结算列表
 export const URI_HI_FINANCE_CHARGE_CANCEL = '/v2/api/hi/settlement/delete' // 删除高额结算
-export const URI_HI_CHARGE = '/v2/api/hi/settlement'
+export const URI_HI_CHARGE = '/v2/api/hi/settlement/create'
 
 // 信用卡
 export const URI_CREDIT_DASHBOARD = '/v2/api/credit/dashboard'

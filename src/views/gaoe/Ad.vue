@@ -100,15 +100,15 @@
         </el-table-column>
         <el-table-column label="单价" min-width="81">
           <template scope="scope">
-            <div class="aui-ellipsis">￥ {{ scope.row.unit_price | addCommas_money }}</div>
+            <div class="aui-ellipsis">￥ {{ scope.row.univalent | addCommas_money }}</div>
           </template>
         </el-table-column>
         <el-table-column label="消耗" min-width="111">
           <template scope="scope">
-            <div class="aui-ellipsis">￥ {{ scope.row.total_cost | addCommas_money }}</div>
+            <div class="aui-ellipsis">￥ {{ scope.row.currency | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="320" label-class-name="expand-cloumn" v-show="columnExpand">
+        <el-table-column label="操作" width="320" label-class-name="expand-cloumn" v-if="columnExpand">
           <template scope="scope">
             <!-- 投放中 ok -->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:13px" @click="goToEnded(scope.row)">完成</a>
@@ -121,21 +121,26 @@
             <!-- </router-link> -->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-right:13px" @click="removeTask(scope.$index,scope.row)">删除</a>
             <!-- 暂停 paused-->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" :disabled="banlance < 100" size="small" type="info"
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && balance > 100" size="small" type="info"
             style="margin-right:13px" @click="resumeTask(scope.row)">开启</a>
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-right:13px" @click="goToEnded(scope.row)">完成</a>
+            <!-- 待比对 -->
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'tocompare'" size="small" type="info"
+            style="margin-right:13px" @click="readd(scope.row)">续单</a>
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'tocompare'" size="small" type="info"
+            style="margin-right:13px" @click="download(scope.row)">导出</a>
             <!-- 完成 ended-->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[0] == 1" size="small" type="info"
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended'" size="small" type="info"
             style="margin-right:13px" @click="readd(scope.row)">续单</a>
             <!-- </router-link> -->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[0] == 1" size="small" type="info"
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended'" size="small" type="info"
             style="margin-right:13px" @click="download(scope.row)">导出</a>
 
             <!-- common -->
             <a class="link-go" href="javascript:void(0);" size="small" type="info" style="margin-right:13px" @click="previewTaskInfo(scope.row)">预览</a>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="63" label-class-name="not-expand-cloumn" v-show="!columnExpand">
+        <el-table-column label="操作" width="63" label-class-name="not-expand-cloumn" v-if="!columnExpand">
           <template scope="scope">
             <div class="opera hover-event">
               <div class="three-dot">...</div>
@@ -151,14 +156,19 @@
                 <!-- </router-link> -->
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-right:13px" @click="removeTask(scope.$index,scope.row)">删除</a>
                 <!-- 暂停 paused-->
-                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" :disabled="banlance < 100" size="small" type="info"
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && balance > 100" size="small" type="info"
                 style="margin-right:13px" @click="resumeTask(scope.row)">开启</a>
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-right:13px" @click="goToEnded(scope.row)">完成</a>
+                <!-- 待比对 -->
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'tocompare'" size="small" type="info"
+                style="margin-right:13px" @click="readd(scope.row)">续单</a>
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'tocompare'" size="small" type="info"
+                style="margin-right:13px" @click="download(scope.row)">导出</a>
                 <!-- 完成 ended-->
-                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[0] == 1" size="small" type="info"
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended'" size="small" type="info"
                 style="margin-right:13px" @click="readd(scope.row)">续单</a>
                 <!-- </router-link> -->
-                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended' && scope.row.button[0] == 1" size="small" type="info"
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ended'" size="small" type="info"
                 style="margin-right:13px" @click="download(scope.row)">导出</a>
 
                 <!-- common -->
@@ -825,7 +835,7 @@
     },
 
     computed: {
-      ...mapGetters('user', [
+      ...mapGetters([
         'balance'
       ]),
       ...mapState('gaoeAd', [
@@ -844,7 +854,6 @@
       window.addEventListener('resize', this.tableResize)
 
       var type = this.task_status = this.$route.params.status.split('&')[0]
-      this.$store.dispatch('updateIndex', 'dash_ad', { root: true })
 
       var activeName = 'tab1'
       switch (type) {
@@ -868,8 +877,7 @@
           break
       }
       this.activeName = activeName
-
-      // this.getAdvertisement()
+      this.getAdvertisement()
     },
 
     destroyed () {
@@ -877,7 +885,7 @@
     },
 
     methods: {
-      ...mapActions('ad', [
+      ...mapActions('gaoeAd', [
         'searchAdTask',
         'taskToEnd',
         'addTaskNumber',
@@ -903,6 +911,7 @@
       tableResize () {
         let screenWidth = document.body.clientWidth
         screenWidth > 1440 ? this.columnExpand = true : this.columnExpand = false
+        console.log(this.columnExpand)
       },
       // 搜索功能 切换时置空
       searchChange (select) {
@@ -921,14 +930,14 @@
       searchTask () {
         this.loading = true
         let currentStatus = this.currentStatus = this.$route.params.status.split('&')[0]
-        let url = '/v2/api/hi/task_list?status=' + this.$route.params.status.split('&')[0] + '&page=' + this.currentPage
+        let url = '/v2/api/hi/task/list?status=' + this.$route.params.status.split('&')[0] + '&page=' + this.currentPage
         // 按时间搜索
         if (this.searchSelect === 'time' && this.dateWeekTime !== '' && this.dateWeekTime.length >= 2 && this.dateWeekTime[0] !== null) {
           this.currentPage === 1 ? this.currentPage = 1 : this.currentPage = this.currentPage
           // 结束时间取值到 23:59:59
           let end = util.formatTime(this.dateWeekTime[1].getTime() / 1000)
           end = end.split(' ')[0] + ' 23:59:59'
-          url += '&kw_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + end
+          url += '&time_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + end
         }
 
         if (this.searchSelect === 'title') {
@@ -942,6 +951,7 @@
         }
         this.searchAdTask(config).then(_ => {
           var self = this
+          console.log
           setTimeout(function () {
             self.loading = false
           }, 0)
@@ -1022,8 +1032,8 @@
        // 续总数
       addTotalNumber () {
         let config = {
-          currentTaskId: this.currentTaskId,
-          addNumber: this.continueTotalForm.add_number
+          id: this.currentTaskId,
+          inc_count: this.continueTotalForm.add_number
         }
         this.addTaskNumber(config)
         .catch(e => {
@@ -1060,11 +1070,11 @@
       },
       // 完成状态时 续单
       readd (row) {
-        this.$router.push({ name: 'dash_ad_renew', params: { taskId: row.id } })
+        this.$router.push({ name: 'gaoe_dash_ad_new', params: { taskId: row.id } })
       },
       // 下载idfa
-      download (type, row) {
-        window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/v2/api/task/' + row.id + '/' + type + '/statistics/download'
+      download (row) {
+        window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/v2/api/hi/task/csv_export?id=' + row.id
       },
       // 开启
       resumeTask (row) {
