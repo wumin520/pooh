@@ -2,7 +2,7 @@
   <div class="finance-container">
     <p class="title">财务管理</p>
     <div class="balance-wrap">
-      <div class="fs14-c3a">当前余额</div>
+      <div class="fs14-c3a">未结算消耗</div>
       <div class="money">¥ {{navbar.balance}}</div>
       <el-button size="small" class="w76-h30" type="primary" @click="charge()">结算</el-button>
     </div>
