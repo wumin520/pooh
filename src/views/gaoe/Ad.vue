@@ -951,7 +951,6 @@
         }
         this.searchAdTask(config).then(_ => {
           var self = this
-          console.log
           setTimeout(function () {
             self.loading = false
           }, 0)
