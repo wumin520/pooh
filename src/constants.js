@@ -44,8 +44,9 @@ export const URI_LOAN_FINANCE_CHARGE_CANCEL = '/v2/api/loan/settlement/delete'
 export const URI_LOAN_CHARGE = '/v2/api/loan/settlement/create'
 
 // 高额 任务模块 uri
-export const URI_HI_TASK_SELECT_DATA = '/v2/api/hi/task_data'
+export const URI_HI_TASK_SELECT_DATA = '/v2/api/hi/task/data'
 export const URI_HI_TASK = '/v2/api/hi/task'
+export const URI_HI_TASK_CREATE = '/v2/api/hi/task/create'
 export const URI_HI_TASK_UPDATE = '/v2/api/hi/task/update'
 export const URI_HI_DASHBOARD = '/v2/api/hi/dashboard'
 export const URI_HI_REPORT = '/v2/api/hi/report'

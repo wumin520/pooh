@@ -2,7 +2,7 @@
   <div class="ad-new-container">
     <!-- 面包屑 -->
     <div class="breadcrumb">
-      <span class="breadcrumb-item" @click="toIOS()">
+      <span class="breadcrumb-item" @click="toAd()">
         <span class="breadcrumb-item-inner">高额广告</span>
         <span class="breadcrumb-separator"></span>
       </span>
@@ -15,26 +15,26 @@
     <el-form :model="adForm" :rules="rules" ref="adFormRef" label-position="top" class="addAd-form" id="addAd-form-id">
       <el-form-item class="qk-form-item" label="商户名称" prop="app_id">
         <el-select v-model="adForm.app_id">
-          <el-option v-for="item in merchantNameList" :key="item.id" :label="item.title" :value="item.id"></el-option>
+          <el-option v-for="item in merchantNameList" :key="item.app_id" :label="item.app_name" :value="item.app_id"></el-option>
         </el-select>
       </el-form-item>
       <!-- 应用标题 -->
       <el-form-item class="qk-form-item" label="应用标题" prop="title">
-        <el-input  class="w600" v-model="adForm.title"  placeholder="请输入应用标题"></el-input>
+        <el-input :maxlength="50"  class="w600" v-model="adForm.title"  placeholder="请输入应用标题"></el-input>
       </el-form-item>
       <!-- 投放平台 -->
-      <el-form-item class="qk-form-item" label="投放平台" prop="platform">
-        <el-radio-group v-model="adForm.platform">
-          <el-radio-button class="el-icon-check" label="0">iOS</el-radio-button>
-          <el-radio-button class="el-icon-check" label="1">Android</el-radio-button>
+      <el-form-item class="qk-form-item" label="投放平台" prop="device">
+        <el-radio-group v-model="adForm.device">
+          <el-radio-button v-for="item in platformList" :key="item.value" class="el-icon-check" :label="item.value">{{item.name}}</el-radio-button>
+          <!--<el-radio-button class="el-icon-check" label="1">Android</el-radio-button>-->
         </el-radio-group>
       </el-form-item>
       <el-form-item class="qk-form-item" label="下载地址" prop="web_download_url">
-        <el-input class="w600"  v-model="adForm.web_download_url" placeholder="请输入下载地址"></el-input>
+        <el-input :maxlength="100" class="w600"  v-model="adForm.web_download_url" placeholder="请输入下载地址"></el-input>
       </el-form-item>
       <!-- 跳转地址（选填） -->
       <el-form-item class="qk-form-item mgb-80" label="跳转地址（选填）" prop="click_notify_url">
-        <el-input class="w600" v-model="adForm.click_notify_url" placeholder="请输入跳转链接"></el-input>
+        <el-input :maxlength="100" class="w600" v-model="adForm.click_notify_url" placeholder="请输入跳转链接"></el-input>
       </el-form-item>
 
       <!-- 开始 日期+时间 -->
@@ -96,7 +96,7 @@
 
       <el-form-item label="任务类型" prop="category">
         <el-select v-model="adForm.category">
-          <el-option v-for="item in taskList" :key="item.id" :label="item.title" :value="item.id"></el-option>
+          <el-option v-for="item in taskList" :key="item.value" :label="item.name" :value="item.value.toString()"></el-option>
         </el-select>
       </el-form-item>
       <!-- 计划份数 -->
@@ -448,12 +448,39 @@ export default {
       fullscreenLoading: false,
       submitButtonDisable: false,
       cancelDialogVisible: false,
-      isUpdate: true
+      isCreate: false
     }
   },
 
   computed: {
     rules () {
+      let planCountValidator = (rule, value, callback) => {
+        if (/[^\d]/.test(value)) {
+          callback(new Error('计划份数只能输入数字'))
+        } else if (value < 300) {
+          callback(new Error('计划份数不能少于300份'))
+        } else if (value === '') {
+          callback(new Error('请输入计划份数'))
+        } else {
+          callback()
+        }
+      }
+      let univalentValidator = (rule, value, callback) => {
+        if (/[^\d]/.test(value)) {
+          callback(new Error('任务单价只能输入数字'))
+        } else if (value === '') {
+          callback(new Error('请输入任务单价'))
+        } else {
+          callback()
+        }
+      }
+      let endtimeValidator = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请选择时间'))
+        } else {
+          callback()
+        }
+      }
       return {
         title: [{required: true, message: '请输入应用标题', trigger: 'blur'}],
         app_id: [{required: true, message: '请选择商户名称', trigger: 'blur'}],
@@ -461,29 +488,32 @@ export default {
         start_date: [{type: 'date', required: true, message: '请选择日期', trigger: 'blur'}],
         start_time: [{type: 'date', required: true, message: '请选择时间', trigger: 'blur'}],
         end_date: [{type: 'date', required: true, message: '请选择日期', trigger: 'blur'}],
-        end_time: [{type: 'date', required: true, message: '请选择时间', trigger: 'blur'}],
+        end_time: [{type: 'date', validator: endtimeValidator, trigger: 'blur'}],
         category: [{required: true, message: '请选择任务类型', trigger: 'blur'}],
-        plan_count: [{required: true, message: '请输入任务份数', trigger: 'blur'}],
-        univalent: [{required: true, message: '请输入任务单价', trigger: 'blur'}]
+        plan_count: [{required: true, validator: planCountValidator, trigger: 'blur'}],
+        univalent: [{required: true, validator: univalentValidator, trigger: 'blur'}]
       }
     },
 
     ...mapState('gaoeAdNew', [
       'adForm',
       'merchantNameList',
-      'taskList'
+      'taskList',
+      'platformList'
     ])
   },
 
   mounted () {
     let routeName = this.$router.currentRoute.name
-    let taskId = this.$router.query && this.$router.query.taskId || 122
+    let taskId = this.$route.params.taskId
+    console.log(this.$route)
+    console.log('taskId', taskId)
     let title = ''
     switch (routeName) {
       case 'gaoe_dash_ad_new':
         title = '添加新广告'
         this.getSelectData()
-        this.isUpdate = false
+        this.isCreate = true
         break
       case 'gaoe_dash_ad_edit':
         title = '编辑'
@@ -491,9 +521,14 @@ export default {
         break
       case 'gaoe_dash_ad_renew':
         title = '续单'
+        this.getTask(taskId)
         break
     }
     this.page_sub_title = title
+  },
+
+  beforeDestroy () {
+    this.initAdForm()
   },
 
   methods: {
@@ -501,10 +536,15 @@ export default {
       'getSelectData',
       'getTask',
       'createTask',
-      'updateTask'
+      'updateTask',
+      'initAdForm'
     ]),
 
     planAnalysis () {
+    },
+
+    toAd () {
+      this.$router.push('/d/gaoe/ad/ok')
     },
 
     submitForm (formName) {
@@ -512,9 +552,9 @@ export default {
         if (valid) {
           let form = this.adForm
           let startDate = utils.formatTime(form.start_date.getTime() / 1000).substr(0, 10)
-          let startTime = utils.formatTime(form.start_time.getTime() / 1000).substr(11)
-          let endDate = utils.formatTime(form.start_date.getTime() / 1000).substr(0, 10)
-          let endTime = utils.formatTime(form.start_time.getTime() / 1000).substr(11)
+          let startTime = utils.formatTime(form.start_time.getTime() / 1000).substr(11, 5)
+          let endDate = utils.formatTime(form.end_date.getTime() / 1000).substr(0, 10)
+          let endTime = utils.formatTime(form.end_time.getTime() / 1000).substr(11, 5)
           let transForm = Object.assign({}, {...form},
             {
               start_date: startDate,
@@ -522,10 +562,19 @@ export default {
               end_date: endDate,
               end_time: endTime
             })
-          if (this.isUpdate) {
-            this.updateTask(transForm)
+          if (!this.isCreate) {
+            this.updateTask(transForm).then(res => {
+              this.$router.push('/d/gaoe/ad/ok')
+              console.log('task create res:', res)
+            }).catch(err => {
+              this.$message.error(err.err_msg)
+            })
           } else {
-            this.createTask(transForm)
+            this.createTask(transForm).then(res => {
+              this.$router.push('/d/gaoe/ad/ok')
+            }).catch(err => {
+              this.$message.error(err.err_msg)
+            })
           }
           console.log('submit.form-data:', this.adForm)
         }
