@@ -560,16 +560,16 @@ export default {
               end_date: endDate,
               end_time: endTime
             })
-          if (!this.isCreate) {
-            this.updateTask(transForm).then(res => {
+          if (this.isCreate) {
+            this.createTask(transForm).then(res => {
               this.$router.push('/d/gaoe/ad/ok')
-              console.log('task create res:', res)
             }).catch(err => {
               this.$message.error(err.err_msg)
             })
           } else {
-            this.createTask(transForm).then(res => {
+            this.updateTask(transForm).then(res => {
               this.$router.push('/d/gaoe/ad/ok')
+              console.log('task create res:', res)
             }).catch(err => {
               this.$message.error(err.err_msg)
             })
