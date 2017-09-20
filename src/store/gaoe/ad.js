@@ -25,7 +25,7 @@ const initState = () => ({
     redirect_url: '', // 跳转链接
     category: '', // 任务类型
     plan_count: '', // 计划份数
-    univalent: '0.00', // 单价
+    unit_price: '0.00', // 单价
     begin_time: '', // 开始时间
     end_time: '',  // 结束时间
     category_name: ''
@@ -87,6 +87,7 @@ const actions = {
             status: config.status
           }
           commit(types.SET_TASK_STATCNT, statcnt)
+          if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
         }
       })
   },
