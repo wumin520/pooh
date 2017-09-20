@@ -28,7 +28,7 @@
       <el-col :span="6">
         <card>
           <div slot="title">未结算消耗</div>
-          <div slot="highlight">{{ unliquidated | index }}</div>
+          <div slot="highlight">{{ unsettled_amount | index }}</div>
         </card>
       </el-col>
     </el-row>
@@ -54,11 +54,8 @@
       <el-tab-pane name="cost">
         <span class="qk-tabs__item-text" slot="label"><span class="tag">消耗</span><span class="sub-tag">{{ reportTotal.cost > 0 ? ('¥ ' + reportTotal.cost.toFixed(2)) : '-' }}</span></span>
       </el-tab-pane>
-      <el-tab-pane name="reg">
-        <span class="qk-tabs__item-text" slot="label"><span>成功注册</span><span>{{ reportTotal.register_num | index }}</span></span>
-      </el-tab-pane>
-      <el-tab-pane name="loan_suc">
-        <span class="qk-tabs__item-text" slot="label"><span>成功借钱</span><span>{{ reportTotal.loan_succ_num | index }}</span></span>
+      <el-tab-pane name="compared_num">
+        <span class="qk-tabs__item-text" slot="label"><span>比对成功</span><span>{{ reportTotal.compared_num | index }}</span></span>
       </el-tab-pane>
     </el-tabs>
 
@@ -86,21 +83,14 @@
           prop="cost"
           label="消耗">
           <template scope="scope">
-            <div>{{ '￥' + scope.row.consume | addCommas_money }}</div>
+            <div>{{ '￥' + scope.row.cost | addCommas_money }}</div>
           </template>
         </el-table-column>
         <el-table-column
           prop="effect_actions"
-          label="成功注册">
+          label="比对成功">
           <template scope="scope">
-            <div>{{ scope.row.register_num | addCommas }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="effect_actions"
-          label="成功借钱">
-          <template scope="scope">
-            <div>{{ scope.row.loan_success_num | addCommas }}</div>
+            <div>{{ scope.row.compared_num | addCommas }}</div>
           </template>
         </el-table-column>
       </el-table>
