@@ -33,8 +33,8 @@
         <el-input :maxlength="100" class="w600"  v-model="adForm.web_download_url" placeholder="请输入下载地址"></el-input>
       </el-form-item>
       <!-- 跳转地址（选填） -->
-      <el-form-item class="qk-form-item mgb-80" label="跳转地址（选填）" prop="click_notify_url">
-        <el-input :maxlength="100" class="w600" v-model="adForm.click_notify_url" placeholder="请输入跳转链接"></el-input>
+      <el-form-item class="qk-form-item mgb-80" label="跳转地址（选填）" prop="redirect_url">
+        <el-input :maxlength="100" class="w600" v-model="adForm.redirect_url" placeholder="请输入跳转链接"></el-input>
       </el-form-item>
 
       <!-- 开始 日期+时间 -->
@@ -101,7 +101,7 @@
       </el-form-item>
       <!-- 计划份数 -->
       <el-form-item class="qk-form-item" label="计划份数" prop="plan_count">
-        <el-input  @change="planAnalysis" v-model="adForm.plan_count" placeholder="300份起" class="w190"></el-input>
+        <el-input  @change="planAnalysis" v-model="adForm.plan_count" placeholder="请输入计划份数" class="w190"></el-input>
       </el-form-item>
       <el-form-item label="任务单价" prop="unit_price">
         <el-input class="w190" v-model="adForm.unit_price" placeholder="请输入任务单价"></el-input>
@@ -457,8 +457,6 @@ export default {
       let planCountValidator = (rule, value, callback) => {
         if (/[^\d]/.test(value)) {
           callback(new Error('计划份数只能输入数字'))
-        } else if (value < 300) {
-          callback(new Error('计划份数不能少于300份'))
         } else if (value === '') {
           callback(new Error('请输入计划份数'))
         } else {
@@ -552,9 +550,9 @@ export default {
         if (valid) {
           let form = this.adForm
           let startDate = utils.formatTime(form.start_date.getTime() / 1000).substr(0, 10)
-          let startTime = utils.formatTime(form.start_time.getTime() / 1000).substr(11, 5)
+          let startTime = utils.formatTime(form.start_time.getTime() / 1000).substr(11)
           let endDate = utils.formatTime(form.end_date.getTime() / 1000).substr(0, 10)
-          let endTime = utils.formatTime(form.end_time.getTime() / 1000).substr(11, 5)
+          let endTime = utils.formatTime(form.end_time.getTime() / 1000).substr(11)
           let transForm = Object.assign({}, {...form},
             {
               start_date: startDate,
