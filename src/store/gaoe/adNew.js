@@ -69,13 +69,14 @@ const mutations = {
 }
 
 const actions = {
-  getSelectData ({commit}) {
+  getSelectData ({commit, dispatch}) {
     // 目前只在创建新任务时获取
     api(URI_HI_TASK_SELECT_DATA)
       .then(res => res.payload)
       .then((payload) => {
         console.log(payload)
         commit(types.SYNC_SELECT, payload)
+        if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
       })
   },
 

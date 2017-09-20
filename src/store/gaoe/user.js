@@ -147,7 +147,7 @@ const actions = {
       })
   },
 
-  getDashboardData ({ commit }) {
+  getDashboardData ({ commit, dispatch }) {
     return fetch(URI_HI_DASHBOARD, {
       credentials: 'same-origin'
     })
@@ -162,6 +162,7 @@ const actions = {
       .then(data => {
         let payload = data && data.payload
         if (payload) commit(types.SYNC_DASHBOARD, payload)
+        if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
         return data
       })
       .catch(err => {
