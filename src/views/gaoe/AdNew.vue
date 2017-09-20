@@ -103,8 +103,8 @@
       <el-form-item class="qk-form-item" label="计划份数" prop="plan_count">
         <el-input  @change="planAnalysis" v-model="adForm.plan_count" placeholder="300份起" class="w190"></el-input>
       </el-form-item>
-      <el-form-item label="任务单价" prop="univalent">
-        <el-input class="w190" v-model="adForm.univalent" placeholder="请输入任务单价"></el-input>
+      <el-form-item label="任务单价" prop="unit_price">
+        <el-input class="w190" v-model="adForm.unit_price" placeholder="请输入任务单价"></el-input>
       </el-form-item>
       <el-form-item class="submit-wrapper">
         <el-button @click="submitForm('adFormRef')" :disabled="submitButtonDisable" class="w130 mgr-10" type="primary" v-loading.fullscreen.lock="fullscreenLoading">提交</el-button>
@@ -465,7 +465,7 @@ export default {
           callback()
         }
       }
-      let univalentValidator = (rule, value, callback) => {
+      let unitpriceValidator = (rule, value, callback) => {
         if (/[^\d]/.test(value)) {
           callback(new Error('任务单价只能输入数字'))
         } else if (value === '') {
@@ -491,7 +491,7 @@ export default {
         end_time: [{type: 'date', validator: endtimeValidator, trigger: 'blur'}],
         category: [{required: true, message: '请选择任务类型', trigger: 'blur'}],
         plan_count: [{required: true, validator: planCountValidator, trigger: 'blur'}],
-        univalent: [{required: true, validator: univalentValidator, trigger: 'blur'}]
+        unit_price: [{required: true, validator: unitpriceValidator, trigger: 'blur'}]
       }
     },
 
