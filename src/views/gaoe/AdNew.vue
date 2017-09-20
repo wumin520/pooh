@@ -448,7 +448,7 @@ export default {
       fullscreenLoading: false,
       submitButtonDisable: false,
       cancelDialogVisible: false,
-      isCreate: false
+      isCreate: true
     }
   },
 
@@ -511,11 +511,11 @@ export default {
       case 'gaoe_dash_ad_new':
         title = '添加新广告'
         this.getSelectData()
-        this.isCreate = true
         break
       case 'gaoe_dash_ad_edit':
         title = '编辑'
         this.getTask(taskId)
+        this.isCreate = true
         break
       case 'gaoe_dash_ad_renew':
         title = '续单'
