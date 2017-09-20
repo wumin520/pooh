@@ -100,7 +100,7 @@
         </el-table-column>
         <el-table-column label="单价" min-width="81">
           <template scope="scope">
-            <div class="aui-ellipsis">￥ {{ scope.row.univalent | addCommas_money }}</div>
+            <div class="aui-ellipsis">￥ {{ scope.row.unit_price | addCommas_money }}</div>
           </template>
         </el-table-column>
         <el-table-column label="消耗" min-width="111">
@@ -108,7 +108,7 @@
             <div class="aui-ellipsis">￥ {{ scope.row.currency | addCommas_money }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="320" label-class-name="expand-cloumn" v-if="columnExpand">
+        <el-table-column label="操作" min-width="320" label-class-name="expand-cloumn" v-if="columnExpand">
           <template scope="scope">
             <!-- 投放中 ok -->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'ok'" size="small" type="info" style="margin-right:13px" @click="goToEnded(scope.row)">完成</a>
@@ -234,7 +234,7 @@
         </div>
         <div class="content-line">
           <div class="left" >任务单价</div>
-          <div class="right">{{ previewForm.univalent }}</div>
+          <div class="right">{{ previewForm.unit_price }}</div>
         </div>
       </div>
     </el-dialog>
@@ -467,8 +467,13 @@
         box-shadow: none !important;
       }
 
+      .el-table__header {
+        width: 100% !important;
+      }
+
       .el-table__body {
         overflow: hidden;
+        width: 100% !important;
       }
 
       .aui-ellipsis {
@@ -951,7 +956,6 @@
         }
         this.searchAdTask(config).then(_ => {
           var self = this
-          console.log
           setTimeout(function () {
             self.loading = false
           }, 0)
@@ -1074,7 +1078,7 @@
       },
       // 下载idfa
       download (row) {
-        window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/v2/api/hi/task/csv_export?id=' + row.id
+        window.location.href = 'http://' + window.location.hostname + ':' + window.location.port + '/v2/api/hi/task/csv_export?task_id=' + row.id
       },
       // 开启
       resumeTask (row) {

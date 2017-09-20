@@ -510,7 +510,7 @@
 
     computed: {
       currentPageTitle () {
-        return this.$router.currentRoute.name === 'loan_dash_finance_charge' ? '充值' : '编辑'
+        return this.$router.currentRoute.name === 'credit_dash_finance_charge' ? '结算' : '编辑'
       },
 
       rules () {
@@ -657,11 +657,11 @@
 
       backTo () {
         setTimeout(() => {
-          this.$router.push('./finance')
+          this.$router.push('/d/credit/finance')
         })
       },
 
-      ...mapActions('loanCharge', [
+      ...mapActions('creditCharge', [
         'getInvoiceInfo',
         'submitInfo'
       ])
