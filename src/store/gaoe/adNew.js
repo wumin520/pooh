@@ -22,7 +22,7 @@ const state = {
     end_time: '',
     category: '',
     plan_count: '',
-    univalent: ''
+    unit_price: ''
   },
   merchantNameList: [], // 商户列表
   taskList: [], // 任务类型列表
@@ -63,7 +63,7 @@ const mutations = {
       end_time: '',
       category: '',
       plan_count: '',
-      univalent: ''
+      unit_price: ''
     }
   }
 }
