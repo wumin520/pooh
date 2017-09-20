@@ -1,5 +1,5 @@
 import {
-  URI_LOAN_CHARGE,
+  URI_CREDIT_CHARGE,
   URI_CHARGE_INVOICE
 } from '@/constants'
 import api from '../../fetch'
@@ -67,7 +67,7 @@ const actions = {
   },
 
   submitInfo ({ commit }, payload) {
-    return api(URI_LOAN_CHARGE, {
+    return api(URI_CREDIT_CHARGE, {
       method: 'POST',
       body: payload
     }).then((res) => {

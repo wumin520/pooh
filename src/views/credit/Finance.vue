@@ -2,8 +2,8 @@
   <div class="finance-container">
     <p class="title">财务管理</p>
     <div class="balance-wrap">
-      <div class="fs14-c3a">当前余额</div>
-      <div class="money">¥ {{navbar.balance}}</div>
+      <div class="fs14-c3a">未结算余额</div>
+      <div class="money">¥ {{navbar.unsettled_amount}}</div>
       <el-button size="small" class="w76-h30" type="primary" @click="charge()">充值</el-button>
     </div>
     <el-pagination v-if="total_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="total_count"></el-pagination>
@@ -285,7 +285,7 @@
       ])
     },
 
-    fetchAction: 'loanFinance/getInfo',
+    fetchAction: 'creditFinance/getInfo',
 
     mounted () {
       let alipaySuccess = this.$route.query.alipay_success
@@ -332,7 +332,7 @@
       },
 
       charge () {
-        this.$router.push('./finance/charge')
+        this.$router.push('/d/credit/finance/charge')
       },
 
       ...mapActions('creditFinance', [
