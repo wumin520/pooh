@@ -942,7 +942,7 @@
           // 结束时间取值到 23:59:59
           let end = util.formatTime(this.dateWeekTime[1].getTime() / 1000)
           end = end.split(' ')[0] + ' 23:59:59'
-          url += '&time_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&kw_end=' + end
+          url += '&time_begin=' + util.formatTime(this.dateWeekTime[0].getTime() / 1000) + '&time_end=' + end
         }
 
         if (this.searchSelect === 'title') {
@@ -1074,7 +1074,7 @@
       },
       // 完成状态时 续单
       readd (row) {
-        this.$router.push({ name: 'gaoe_dash_ad_new', params: { taskId: row.id } })
+        this.$router.push({ name: 'gaoe_dash_ad_renew', params: { taskId: row.id } })
       },
       // 下载idfa
       download (row) {

@@ -33,8 +33,8 @@
         <el-input :maxlength="100" class="w600"  v-model="adForm.web_download_url" placeholder="请输入下载地址"></el-input>
       </el-form-item>
       <!-- 跳转地址（选填） -->
-      <el-form-item class="qk-form-item mgb-80" label="跳转地址（选填）" prop="click_notify_url">
-        <el-input :maxlength="100" class="w600" v-model="adForm.click_notify_url" placeholder="请输入跳转链接"></el-input>
+      <el-form-item class="qk-form-item mgb-80" label="跳转地址（选填）" prop="redirect_url">
+        <el-input :maxlength="100" class="w600" v-model="adForm.redirect_url" placeholder="请输入跳转链接"></el-input>
       </el-form-item>
 
       <!-- 开始 日期+时间 -->
