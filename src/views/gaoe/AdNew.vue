@@ -515,7 +515,7 @@ export default {
       case 'gaoe_dash_ad_edit':
         title = '编辑'
         this.getTask(taskId)
-        this.isCreate = true
+        this.isCreate = false
         break
       case 'gaoe_dash_ad_renew':
         title = '续单'
