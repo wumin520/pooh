@@ -229,7 +229,7 @@
           <div class="right">{{ previewForm.category_name }}</div>
         </div>
         <div class="content-line">
-          <div class="left" >任务分数</div>
+          <div class="left" >任务份数</div>
           <div class="right">{{ previewForm.plan_count }}</div>
         </div>
         <div class="content-line">
