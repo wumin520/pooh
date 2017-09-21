@@ -129,7 +129,7 @@
         </el-table-column>
         <el-table-column
           prop="compared_num"
-          label="比队成功">
+          label="比对成功">
         </el-table-column>
         <el-table-column
           prop="compared_rate"
@@ -448,7 +448,7 @@
       },
 
       download () {
-        this.$store.dispatch('user/downloadReport', { dayCnt: this.dayCnt })
+        this.$store.dispatch('gaoeUser/downloadReport', { dayCnt: this.dayCnt })
       },
 
       ...mapActions('gaoeUser', [
