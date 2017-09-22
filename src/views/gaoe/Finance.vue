@@ -13,6 +13,11 @@
       </el-table-column>
       <!--<el-table-column prop="pay_type" label="付款方式" min-width="110">-->
       <!--</el-table-column>-->
+      <el-table-column prop="" label="类型">
+        <template scope="scope">
+          <div>高额任务</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="drawee" label="付款人" min-width="206">
         <template scope="scope">
           <div>{{ decodeURI(scope.row.drawee) }}</div>
