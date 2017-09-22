@@ -716,6 +716,37 @@
           this.fullscreenLoading = false
           return false
         }
+
+        if (this.adForm.planlist.length > 0) {
+          let type = this.adForm.plan_type === '按投放比例' ? 1 : 0
+          // type: 1 投放比例 0 投放分数
+          let currentCount = 0
+          let currentPercent = 0
+
+          _.each(this.adForm.planlist, function (p) {
+            if (type) currentPercent += parseInt(p.num)
+            if (!type) currentCount += parseInt(p.num)
+          })
+
+          if (currentPercent > 100) {
+            this.$message({
+              message: '输入信息无效，投放比例之和需等于100%',
+              iconClass: 'qk-warning'
+            })
+            this.submitButtonDisable = false
+            this.fullscreenLoading = false
+            return false
+          }
+          if (currentCount > this.adForm.plan_count) {
+            this.$message({
+              message: '输入信息无效，分配份数之和需等于总计划份数',
+              iconClass: 'qk-warning'
+            })
+            this.submitButtonDisable = false
+            this.fullscreenLoading = false
+            return false
+          }
+        }
         return true
 
 //        if (this.adForm.download_url === this.adForm.click_notify_url) {
