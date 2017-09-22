@@ -4,7 +4,7 @@
     <div class="balance-wrap">
       <div class="fs14-c3a">未结算余额</div>
       <div class="money">¥ {{navbar.unsettled_amount}}</div>
-      <el-button size="small" class="w76-h30" type="primary" @click="charge()">充值</el-button>
+      <el-button size="small" class="w76-h30" type="primary" @click="charge()">结算</el-button>
     </div>
     <el-pagination v-if="total_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="total_count"></el-pagination>
 
@@ -13,6 +13,11 @@
       </el-table-column>
       <!--<el-table-column prop="pay_type" label="付款方式" min-width="110">-->
       <!--</el-table-column>-->
+      <el-table-column prop="" label="类型">
+        <template scope="scope">
+          <div>办卡任务</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="refer_drawee" label="付款人" min-width="206">
         <template scope="scope">
           <div>{{ decodeURI(scope.row.refer_drawee) }}</div>
@@ -315,7 +320,7 @@
       },
 
       invoiceFormatter (row, column, cellValue) {
-        return cellValue === '需要' ? '需要' : '-'
+        return row['invoice'] === '需要' ? '需要' : '-'
       },
 
       cancel (index, row) {
