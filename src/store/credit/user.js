@@ -156,7 +156,7 @@ const actions = {
     let { dayCnt } = payload
     let now = parseInt((new Date()).getTime() / 1000)
     let startTime = now - dayCnt * 86400
-    let endTime = now
+    let endTime = now - dayCnt * 86400
     location.href = `${URI_CREDIT_REPORT_DOWNLOAD}?start_time=${startTime}&end_time=${endTime}`
   }
 }
