@@ -68,11 +68,6 @@
             <div class="aui-ellipsis">{{ scope.row.device }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="比对状态" min-width="91">
-          <template scope="scope">
-            <div class="aui-ellipsis">{{ activeName | compareStatus }}</div>
-          </template>
-        </el-table-column>
         <el-table-column label="开始时间" min-width="140">
           <template scope="scope">
             <div class="aui-ellipsis" v-text="scope.row.start_time"></div>
@@ -518,6 +513,11 @@
           transform: translateX(300px);
           .el-button {
             height: 46px;
+          }
+
+          .link-go {
+            margin-left: 13px !important;
+            margin-right: 0 !important;
           }
         }
 
