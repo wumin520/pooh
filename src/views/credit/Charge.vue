@@ -13,8 +13,8 @@
 
     <div v-show="activeTabName === 'chinabank'" class="step fs16-c88 mrg-t40 mrg-b30">第一步：在线提交付款信息</div>
     <el-form v-show="activeTabName === 'chinabank'" ref="bankform" :model="info" :rules="rules">
-      <el-form-item prop="amount" class="w214" label="充值金额">
-        <el-input v-model="info.amount" placeholder="请输入充值金额"></el-input>元
+      <el-form-item prop="amount" class="w214" label="结算金额">
+        <el-input v-model="info.amount" placeholder="请输入结算金额"></el-input>元
       </el-form-item>
       <el-form-item prop="amount_check" class="w214" label="确认金额">
         <el-input v-model="info.amount_check" placeholder="请再次输入充值金额"></el-input>元
