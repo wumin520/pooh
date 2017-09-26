@@ -58,9 +58,9 @@
       <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-loading="loading" element-loading-text="加载中...">
         <el-table-column label="应用标题" min-width="110">
           <template scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.title" placement="top">
+            <!--<el-tooltip class="item" effect="dark" :content="scope.row.title" placement="top">-->
               <div class="aui-ellipsis" v-text="scope.row.title" @click="filter(scope.row.appid)"></div>
-            </el-tooltip>
+            <!--</el-tooltip>-->
           </template>
         </el-table-column>
         <el-table-column label="平台" min-width="91">
@@ -116,7 +116,7 @@
             <!-- </router-link> -->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-right:13px" @click="removeTask(scope.$index,scope.row)">删除</a>
             <!-- 暂停 paused-->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && balance > 100" size="small" type="info"
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info"
             style="margin-right:13px" @click="resumeTask(scope.row)">开启</a>
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-right:13px" @click="goToEnded(scope.row)">完成</a>
             <!-- 待比对 -->
@@ -151,7 +151,7 @@
                 <!-- </router-link> -->
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-right:13px" @click="removeTask(scope.$index,scope.row)">删除</a>
                 <!-- 暂停 paused-->
-                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && balance > 100" size="small" type="info"
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info"
                 style="margin-right:13px" @click="resumeTask(scope.row)">开启</a>
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-right:13px" @click="goToEnded(scope.row)">完成</a>
                 <!-- 待比对 -->
@@ -719,7 +719,7 @@
 </style>
 <script>
   import util from '@/utils'
-  import { mapState, mapGetters, mapActions } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import BindPhoneDialog from '@/components/BindPhoneDialog.vue'
 
   export default {
@@ -840,9 +840,6 @@
     },
 
     computed: {
-      ...mapGetters([
-        'balance'
-      ]),
       ...mapState('gaoeAd', [
         'task_statcnt',
         'totalTasks',
