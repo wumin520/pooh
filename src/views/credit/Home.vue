@@ -398,6 +398,8 @@
               mouse: {
                 track: true,
                 relative: true,
+                position: 'nw',
+                sensibility: 12,
                 lineColor: '#4A90E2',
                 fillColor: '#4A90E2',
                 fillOpacity: 1,
