@@ -155,7 +155,7 @@
               </div>
 
               <span class="mrg-l30 money" v-if="zs.free == true">免费</span>
-              <span class="mrg-l30 money" v-if="zs.free == false">1元</span>
+              <span class="mrg-l30 money" v-if="zs.free == false">{{ parseFloat(ad_price.zs_unit_price)  + '元' }}</span>
               <i v-if="zs.can_delete" class="icon-remove" @click="removeZS(zs.key)"></i>
             </el-col>
           </el-row>
