@@ -56,7 +56,7 @@
     <!-- table -->
     <div class="table-wrapper">
       <el-table :data="tableData" :class="{'nodata': tableData.length === 0 }" stripe border style="width: 100%" v-loading="loading" element-loading-text="加载中...">
-        <el-table-column label="应用标题" min-width="150">
+        <el-table-column label="应用标题" min-width="110">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.title" placement="top">
               <div class="aui-ellipsis" v-text="scope.row.title" @click="filter(scope.row.appid)"></div>
@@ -68,12 +68,12 @@
             <div class="aui-ellipsis">{{ scope.row.device }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="开始时间" min-width="140">
+        <el-table-column label="开始时间" min-width="150">
           <template scope="scope">
             <div class="aui-ellipsis" v-text="scope.row.start_time"></div>
           </template>
         </el-table-column>
-        <el-table-column label="结束时间" min-width="140">
+        <el-table-column label="结束时间" min-width="150">
           <template scope="scope">
             <div class="aui-ellipsis" v-text="scope.row.end_time"></div>
           </template>
