@@ -116,7 +116,7 @@
             <!-- </router-link> -->
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-right:13px" @click="removeTask(scope.$index,scope.row)">删除</a>
             <!-- 暂停 paused-->
-            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && balance > 100" size="small" type="info"
+            <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info"
             style="margin-right:13px" @click="resumeTask(scope.row)">开启</a>
             <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-right:13px" @click="goToEnded(scope.row)">完成</a>
             <!-- 待比对 -->
@@ -151,7 +151,7 @@
                 <!-- </router-link> -->
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'rejected'" size="small" type="info" style="margin-right:13px" @click="removeTask(scope.$index,scope.row)">删除</a>
                 <!-- 暂停 paused-->
-                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused' && balance > 100" size="small" type="info"
+                <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info"
                 style="margin-right:13px" @click="resumeTask(scope.row)">开启</a>
                 <a class="link-go" href="javascript:void(0);" v-if="currentStatus == 'paused'" size="small" type="info" style="margin-right:13px" @click="goToEnded(scope.row)">完成</a>
                 <!-- 待比对 -->
