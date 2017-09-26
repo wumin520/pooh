@@ -111,7 +111,7 @@
           <div class="h47 bg-grey list-cell" style="border-bottom: 1px solid #e8e8e8;">开户银行</div>
         </el-col>
         <el-col :span="12">
-          <div class="h47 list-cell">上海银行白玉兰支行</div>
+          <div class="h47 list-cell">上海银行白玉支行</div>
         </el-col>
       </el-row>
     </div>

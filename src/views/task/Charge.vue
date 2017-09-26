@@ -162,13 +162,13 @@
           <div class="h47 bg-grey list-cell" style="border-bottom: 1px solid #e8e8e8;">开户银行</div>
         </el-col>
         <el-col :span="12">
-          <div class="h47 list-cell">上海银行白玉兰支行</div>
+          <div class="h47 list-cell">上海银行白玉支行</div>
         </el-col>
       </el-row>
     </div>
 
     <div><el-button @click="submitForm()" type="primary">提交</el-button></div>
-    
+
     <el-dialog class="bank-charge-success-dialog" :visible.sync="dialogVisible">
       <div slot="title">
         <div class="l-wrap"><img src="//qianka.b0.upaiyun.com/images/425ec42718c6ef5cbe6e6fe998b66d12.png"/></div>
@@ -463,7 +463,7 @@
                 cursor: pointer;
                 display: inline-block;
                 margin-left: 15px;
-                position: relative;                
+                position: relative;
                 left: -1px;
               }
             }
