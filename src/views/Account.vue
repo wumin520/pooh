@@ -169,7 +169,7 @@
         }
         let rules = {
           title: [
-            { required: true, message: '请输入姓名/公司', trigger: 'change' }
+            { required: true, message: '请输入公司名', trigger: 'change' }
           ]
         }
         if (this.atype !== 2 && this.info.phone) {
