@@ -3,7 +3,7 @@
     <!-- 面包屑 -->
     <div class="breadcrumb">
       <span class="breadcrumb-item" @click="toAd()">
-        <span class="breadcrumb-item-inner">高额广告</span>
+        <span class="breadcrumb-item-inner">注册广告</span>
         <span class="breadcrumb-separator"></span>
       </span>
       <span class="breadcrumb-item">
@@ -396,7 +396,7 @@
     }
 
     .w600 {
-      width: 600px;
+      width: 350px;
     }
 
     .mgr-10 {

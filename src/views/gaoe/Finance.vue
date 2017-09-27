@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column prop="settle_status_text" label="状态" min-width="90">
       </el-table-column>
-      <el-table-column prop="amount" label="结算金额" min-width="140">
+      <el-table-column prop="amount" label="金额" min-width="140">
         <template scope="scope">
           <div>￥ {{ scope.row.amount | addCommas_money }}</div>
         </template>
