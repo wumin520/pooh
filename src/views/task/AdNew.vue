@@ -173,12 +173,12 @@
     </el-form>
 
     <!-- 取消弹窗 -->
-    <el-dialog title="提示" v-model="cancelDialogVisible" :show-close="showClose" custom-class="revoke-dialog" style="top: 30%;">
+    <el-dialog title="提示" custom-class="revoke-dialog qk-dialog-warning" v-model="cancelDialogVisible" :show-close="showClose" style="top: 30%;">
       <img class="logo" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
       <span class="qk-title">取消后您填写的信息将不再保留，是否确认取消？</span><br>
       <span slot="footer" class="dialog-footer">
-        <el-button class="cancle-button" size="small" style="width: 70px;" @click="cancelDialogVisible = false">取消</el-button>
-        <el-button class="goon-button" type="primary" style="width: 70px;" size="small" @click="toAd()">继续</el-button>
+        <el-button class="cancle-button" size="small" style="width: 70px;" @click="cancelDialogVisible = false">否</el-button>
+        <el-button class="goon-button" type="primary" style="width: 70px;" size="small" @click="toAd()">是</el-button>
       </span>
     </el-dialog>
 

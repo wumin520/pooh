@@ -4,7 +4,7 @@
       <div class="title">账户首页</div>
     </div>
 
-    <el-row class="cards">
+    <el-row class="cards gaoe-cards">
       <!-- 总览 -->
       <el-col :span="6">
         <card>
@@ -169,6 +169,23 @@
           padding-right: 0px;
         }
       }
+    }
+
+    .gaoe-cards {
+      .qk-dash-card .highlight {
+        margin-bottom: 0;
+      }
+    }
+
+    .el-select {
+      .el-input__inner {
+        height: 36px;
+      }
+    }
+
+    .el-select + .el-button {
+      height: 36px !important;
+      line-height: 8px;
     }
 
     .report-menus {
