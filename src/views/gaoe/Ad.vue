@@ -252,12 +252,12 @@
 
 
     <!--删除-->
-    <el-dialog title="删除" :show-close="false" v-model="dialogDeleteVisible" custom-class="deleDialog" style="top: 30%;">
+    <el-dialog title="删除" custom-class="deleDialog qk-dialog-warning" :show-close="false" v-model="dialogDeleteVisible" style="top: 30%;">
       <img class="logo-waring" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
       <span class="qk-title">此操作将删除该信息，是否继续？</span>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="dialogDeleteVisible = false" is-plaint>取消</el-button>
-        <el-button size="small" type="primary" @click="handleDelete()">继续</el-button>
+        <el-button size="small" @click="dialogDeleteVisible = false" is-plaint>否</el-button>
+        <el-button size="small" type="primary" @click="handleDelete()">是</el-button>
       </span>
     </el-dialog>
   </div>

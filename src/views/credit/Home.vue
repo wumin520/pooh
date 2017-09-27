@@ -4,7 +4,7 @@
       <div class="title">账户首页</div>
     </div>
 
-    <el-row class="cards">
+    <el-row class="cards credit-cards">
       <!-- 总览 -->
       <el-col :span="6">
         <card>
@@ -126,6 +126,12 @@
         &:last-of-type {
           padding-right: 0px;
         }
+      }
+    }
+
+    .credit-cards {
+      .qk-dash-card .highlight {
+        margin-bottom: 0;
       }
     }
 

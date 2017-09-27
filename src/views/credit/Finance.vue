@@ -44,12 +44,12 @@
     </el-table>
     <el-pagination v-if="total_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="total_count"></el-pagination>
 
-    <el-dialog title="撤销" v-model="dialogVisible" :show-close="showClose" custom-class="revoke-dialog" style="top: 30%;">
+    <el-dialog title="撤销" custom-class="revoke-dialog qk-dialog-warning" v-model="dialogVisible" :show-close="showClose" style="top: 30%;">
       <img class="logo" src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="">
       <span class="qk-title">此操作将撤销这条记录，是否继续？</span><br>
       <span slot="footer" class="dialog-footer">
-        <el-button class="cancle-button" size="small" @click="dialogVisible = false">取消</el-button>
-        <el-button class="goon-button" type="primary" size="small"@click="handleDelete()">继续</el-button>
+        <el-button class="cancle-button" size="small" @click="dialogVisible = false">否</el-button>
+        <el-button class="goon-button" type="primary" size="small"@click="handleDelete()">是</el-button>
       </span>
     </el-dialog>
     <el-dialog v-model="chargeSuccessDialogVisible" :show-close="showClose" custom-class="charge-success-dialog" style="top: 30%;">
@@ -60,14 +60,6 @@
         <el-button type="primary" style="width:109px;" size="small" @click="checkRecord()">查看记录</el-button>
       </span>
     </el-dialog>
-    <!--<el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
-      <img src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="" class="logo">
-      <span>此操作将撤销这条记录，是否继续？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleDelete()">撤销</el-button>
-      </span>
-    </el-dialog>-->
   </div>
 </template>
 <style lang="scss">
