@@ -61,7 +61,8 @@ const types = {
   UPDATE_ZS_LISTS: 'update_zs_lists',
   REMOVE_ZS_ITEM: 'remove_zs_item',
   REMOVE_KEYWORDS_ITEM: 'remove_keywords_item',
-  IS_NEW_APPID: 'is_new_appid'
+  IS_NEW_APPID: 'is_new_appid',
+  SET_AD_PRICE: 'set_ad_price'
 }
 
 // 更新应用状态
@@ -99,6 +100,10 @@ const mutations = {
     state.advertiser_id = payload.advertiser_id
     state.zs_free = payload.zs_free
     state.ad_price = payload.ad_price
+  },
+
+  [types.SET_AD_PRICE] (state, adPrice) { // 后台获取 更新专属任务单价
+    state.ad_price = adPrice
   },
 
   [types.UPDATE_ADFORM] (state, form) {
@@ -159,6 +164,7 @@ const actions = {
         if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
         commit(types.SET_NEW_TASK_PRE, payload)
         commit(types.RESET_FORM)
+        commit(types.SET_AD_PRICE, payload.ad_price)
       })
   },
 
@@ -167,6 +173,7 @@ const actions = {
     return api(path, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
+        commit(types.SET_AD_PRICE, payload.ad_price)
         if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
         dispatch('formatPreInfoForEditAndRenew', payload)
       })
@@ -183,6 +190,7 @@ const actions = {
     return api(path, {method: 'GET'})
       .then(res => res && res.payload)
       .then(payload => {
+        commit(types.SET_AD_PRICE, payload.ad_price)
         if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
         dispatch('formatPreInfoForEditAndRenew', payload)
       }).catch(err => {
@@ -199,6 +207,7 @@ const actions = {
       zs_free: payload.zs_free
     }
     commit(types.SET_NEW_TASK_PRE, info)
+    commit(types.SET_AD_PRICE, payload.task.ad_price)
     _.forEach(payload.task.zs_task, function (n) {
       n.univalent === 0 ? n.free = true : n.free = false
     })
