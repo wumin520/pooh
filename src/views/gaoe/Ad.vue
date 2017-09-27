@@ -471,6 +471,11 @@
         width: 100% !important;
       }
 
+      .el-table__empty-block {
+        overflow: hidden;
+        width: 100% !important;
+      }
+
       .aui-ellipsis {
         font-family: PingFangSC-Regular;
         display: -webkit-box;
