@@ -7,15 +7,27 @@ import adNew from './task/adNew'
 import finance from './task/finance'
 import ad from './task/ad'
 import priceSys from './task/priceSys'
-// 借钱
-import loanUser from './loan/user'
 
 import { URI_LOGOUT } from '@/constants'
 import { Message } from 'element-ui'
 import cookie from '../cookie'
 
+// 借钱
+import loanUser from './loan/user'
 import loanFinance from './loan/finance'
 import loanCharge from './loan/charge'
+
+// 信用卡
+import creditUser from './credit/user'
+import creditFinance from './credit/finance'
+import creditCharge from './credit/charge'
+
+// 高额
+import gaoeAd from './gaoe/ad.js'
+import gaoeAdNew from './gaoe/adNew'
+import gaoeUser from './gaoe/user'
+import gaoeCharge from './gaoe/charge'
+import gaoeFinance from './gaoe/finance'
 
 Vue.use(Vuex)
 
@@ -72,6 +84,12 @@ const mutations = {
       case 'dash_ad_new':
         routeName = 'dash_ad'
         break
+      case 'gaoe_dash_ad_new':
+        routeName = 'gaoe_dash_ad'
+        break
+      case 'credit_dash_finance_charge':
+        routeName = 'credit_dash_finance'
+        break
     }
     state.activeIndex = routeName
   },
@@ -124,9 +142,20 @@ export default new Vuex.Store({
     finance,
     ad,
     priceSys,
+    // 借钱
     loanFinance,
     loanCharge,
-    loanUser
+    loanUser,
+    // 高额
+    gaoeAdNew,
+    gaoeUser,
+    gaoeAd,
+    gaoeFinance,
+    gaoeCharge,
+    // 信用卡
+    creditUser,
+    creditCharge,
+    creditFinance
   },
   state,
   mutations,

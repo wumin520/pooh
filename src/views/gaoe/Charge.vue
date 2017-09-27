@@ -1,6 +1,6 @@
 <template>
   <div class="charge-container">
-   <!-- 面包屑 -->
+    <!-- 面包屑 -->
     <div class="breadcrumb">
       <span class="breadcrumb-item">
         <span class="breadcrumb-item-inner" @click="toFinance()">财务管理</span>
@@ -11,65 +11,16 @@
       </span>
     </div>
 
-    <el-tabs v-model="activeTabName" class="qk-tabs-image" type="card">
-      <el-tab-pane name="chinabank">
-        <span class="qk-tabs__item-image" slot="label"><img src="//qianka.b0.upaiyun.com/images/dad6498ed6cc685630beacababb08241.png" alt=""></span>
-      </el-tab-pane>
-      <el-tab-pane name="alipay">
-        <span class="qk-tabs__item-image" slot="label"><img src="//qianka.b0.upaiyun.com/images/ceec6fa324b37e93b9676ca3e841c96a.png" alt=""></span>
-      </el-tab-pane>
-    </el-tabs>
-
-    <!-- 充值优惠政策 -->
-    <p class="fs13-c3a">充值优惠政策</p>
-    <el-row type="flex" class="row-bg">
-      <el-col :span="8">
-        <div class="grid-content bg-purple mrg-l--0">
-          单笔充值<br>
-          ¥ 100,000 ~ 299,999
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="grid-content bg-purple">
-          单笔充值<br>
-          ¥ 300,000 ~ 499,999
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="grid-content bg-purple mrg-l--2">
-          单笔充值<br>
-          ¥ 500,000 及以上
-        </div>
-      </el-col>
-    </el-row>
-    <el-row type="flex" class="row-bg">
-      <el-col :span="8">
-        <div class="grid-content bg-purple-light mrg-l--0">
-          赠送<span class="fs18-c42">20%</span>等值金额
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="grid-content bg-purple-light">
-          赠送<span class="fs18-c42">25%</span>等值金额
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="grid-content bg-purple-light mrg-l--2">
-          赠送<span class="fs18-c42">30%</span>等值金额
-        </div>
-      </el-col>
-    </el-row>
-
     <div v-show="activeTabName === 'chinabank'" class="step fs16-c88 mrg-t40 mrg-b30">第一步：在线提交付款信息</div>
     <el-form v-show="activeTabName === 'chinabank'" ref="bankform" :model="info" :rules="rules">
-      <el-form-item prop="amount" class="w214" label="充值金额">
-        <el-input v-model="info.amount" placeholder="请输入充值金额"></el-input>元
+      <el-form-item prop="amount" class="w214" label="结算金额">
+        <el-input v-model="info.amount" placeholder="请输入结算金额"></el-input>元
       </el-form-item>
       <el-form-item prop="amount_check" class="w214" label="确认金额">
-        <el-input v-model="info.amount_check" placeholder="请再次输入充值金额"></el-input>元
+        <el-input v-model="info.amount_check" placeholder="请再次输入结算金额"></el-input>元
       </el-form-item>
-      <el-form-item prop="drawee" class="w214" label="付款人">
-        <el-input v-model="info.drawee" placeholder="请输入付款人/公司名称"></el-input>
+      <el-form-item prop="refer_drawee" class="w214" label="付款人">
+        <el-input v-model="info.refer_drawee" placeholder="请输入付款人/公司名称"></el-input>
       </el-form-item>
       <el-form-item class="w190" label="是否开票">
         <el-radio-group v-model="info.invoice_status">
@@ -78,7 +29,7 @@
         </el-radio-group>
       </el-form-item>
       <!--<template>-->
-        <div v-if="info.invoice_status == 1">
+      <div v-if="info.invoice_status == 1">
         <el-form-item prop="invoice_title" class="w660" style="width:350px" label="发票抬头">
           <el-input v-model="info.invoice_title" placeholder="请输入发票抬头"></el-input>
         </el-form-item>
@@ -91,12 +42,11 @@
         <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:350px">
           <el-input v-model="info.invoice_contact_address" placeholder="请输入快递地址"></el-input>
         </el-form-item>
-        </div>
+      </div>
       <!--</template>-->
-      <!-- 拿掉”备注“字段-->
-      <!--<el-form-item class="qk-form-item" label="备注信息（选填）">
-        <el-input v-model="info.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
-      </el-form-item>-->
+      <el-form-item class="qk-form-item" label="备注信息（选填）">
+        <el-input v-model="info.remarks" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
+      </el-form-item>
     </el-form>
 
     <el-form v-show="activeTabName !== 'chinabank'" class="alipay-form" ref="alipayform" :model="aliInfo" :rules="alirules">
@@ -118,7 +68,7 @@
         </el-radio-group>
       </el-form-item>
       <!--<template>-->
-        <div v-if="aliInfo.invoice_status == 1">
+      <div v-if="aliInfo.invoice_status == 1">
         <el-form-item prop="invoice_title" class="w660" style="width:350px" label="发票抬头">
           <el-input v-model="aliInfo.invoice_title" placeholder="请输入发票抬头"></el-input>
         </el-form-item>
@@ -131,12 +81,11 @@
         <el-form-item prop="invoice_contact_address" class="w660" label="快递地址" style="width:350px">
           <el-input v-model="aliInfo.invoice_contact_address" placeholder="请输入快递地址"></el-input>
         </el-form-item>
-        </div>
+      </div>
       <!--</template>-->
-      <!-- 拿掉“备注“字段 -->
-      <!--<el-form-item class="qk-form-item mrg-b40" label="备注信息（选填）">
+      <el-form-item class="qk-form-item mrg-b40" label="备注信息（选填）">
         <el-input v-model="aliInfo.remark" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
-      </el-form-item>-->
+      </el-form-item>
     </el-form>
 
     <div v-show="activeTabName === 'chinabank'" class="step fs16-c88 mrg-b30 mrg-t60">第二步：请将付款款项转入以下官方账户</div>
@@ -173,7 +122,7 @@
       <div slot="title">
         <div class="l-wrap"><img src="//qianka.b0.upaiyun.com/images/425ec42718c6ef5cbe6e6fe998b66d12.png"/></div>
         <div class="r-wrap mrg-l10"><span class="fs16-c28">提交成功！</span>
-        <div class="fs12-c88 mrg-t8">我们会在核实银行转账信息后为您充值指定金额</div></div>
+          <div class="fs12-c88 mrg-t8">我们会在核实银行转账信息后为您充值指定金额</div></div>
       </div>
       <div class="company-desc">公司名称：宁波钱咖广告传媒有限公司
         银行账户：3166 3803 0026 61224<br>
@@ -255,7 +204,7 @@
           line-height: 47px;
           text-align: center;
           color: #3a3a3a;
-	        box-shadow: inset 1px 0 0 0 #e8e8e8, inset 0 1px 0 0 #e8e8e8;
+          box-shadow: inset 1px 0 0 0 #e8e8e8, inset 0 1px 0 0 #e8e8e8;
           .fs18-c42 {
             font-size: 18px;
             color: #4A90E2;
@@ -561,7 +510,7 @@
 
     computed: {
       currentPageTitle () {
-        return this.$router.currentRoute.name === 'dash_finance_charge' ? '充值' : '编辑'
+        return this.$router.currentRoute.name === 'gaoe_dash_finance_charge' ? '结算' : '编辑'
       },
 
       rules () {
@@ -606,7 +555,7 @@
           amount_check: [
             { required: true, validator: checkCoastConfirm, trigger: 'blur' }
           ],
-          drawee: [
+          refer_drawee: [
             { required: true, message: '请输入付款人名称', trigger: 'change' }
           ]
         }
@@ -663,17 +612,17 @@
         return this.invoice_status === 0 ? aliRules : alirulesAdded
       },
 
-      ...mapState('charge', [
+      ...mapState('gaoeCharge', [
         'info',
         'aliInfo'
       ])
     },
 
-    fetchAction: 'charge/getInvoiceInfo',
+    fetchAction: 'gaoeCharge/getInvoiceInfo',
 
     methods: {
       toFinance () {
-        this.$router.push('/d/finance')
+        this.$router.push('/d/gaoe/finance')
       },
       submitForm () {
         if (this.activeTabName === 'chinabank') {
@@ -708,11 +657,11 @@
 
       backTo () {
         setTimeout(() => {
-          this.$router.push('/d/finance')
+          this.$router.push('/d/gaoe/finance')
         })
       },
 
-      ...mapActions('charge', [
+      ...mapActions('gaoeCharge', [
         'getInvoiceInfo',
         'submitInfo'
       ])

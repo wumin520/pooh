@@ -18,6 +18,18 @@ import LoanHome from '@/views/loan/Home'
 import LoanFinance from '@/views/loan/Finance'
 import LoanCharge from '@/views/loan/Charge'
 
+// 高额模块路由
+import GaoeHome from '@/views/gaoe/Home'
+import GaoeAd from '@/views/gaoe/Ad'
+import GaoeAdNew from '@/views/gaoe/AdNew'
+import GaoeFinance from '@/views/gaoe/Finance'
+import GaoeCharge from '@/views/gaoe/Charge'
+
+// 信用卡模块路由
+import CreditHome from '@/views/credit/Home'
+import CreditFinance from '@/views/credit/Finance'
+import CreditCharge from '@/views/credit/Charge'
+
 Vue.use(Router)
 
 export default new Router({
@@ -92,6 +104,7 @@ export default new Router({
           path: 'account',
           component: Account
         },
+        // 借钱模块路由
         {
           name: 'loan_dash_home',
           path: 'loan/home',
@@ -106,6 +119,58 @@ export default new Router({
           name: 'loan_dash_finance_charge',
           path: 'loan/finance/charge',
           component: LoanCharge
+        },
+        // 高额模块路由
+        {
+          name: 'gaoe_dash_home',
+          path: 'gaoe/home',
+          component: GaoeHome
+        },
+        {
+          name: 'gaoe_dash_ad',
+          path: 'gaoe/ad/:status',
+          component: GaoeAd
+        },
+        {
+          name: 'gaoe_dash_ad_new',
+          path: 'gaoe/ad/task/new',
+          component: GaoeAdNew // 新添加
+        },
+        {
+          name: 'gaoe_dash_ad_renew',
+          path: 'gaoe/ad/renew/:taskId',
+          component: GaoeAdNew // 续单
+        },
+        {
+          name: 'gaoe_dash_ad_edit',
+          path: 'gaoe/ad/edit/:taskId',
+          component: GaoeAdNew // 编辑
+        },
+        {
+          name: 'gaoe_dash_finance',
+          path: 'gaoe/finance',
+          component: GaoeFinance
+        },
+        {
+          name: 'gaoe_dash_finance_charge',
+          path: 'gaoe/finance/charge',
+          component: GaoeCharge
+        },
+        // 信用卡模块路由
+        {
+          name: 'credit_dash_home',
+          path: 'credit/home',
+          component: CreditHome
+        },
+        {
+          name: 'credit_dash_finance',
+          path: 'credit/finance',
+          component: CreditFinance
+        },
+        {
+          name: 'credit_dash_finance_charge',
+          path: 'credit/finance/charge',
+          component: CreditCharge
         }
       ]
     },

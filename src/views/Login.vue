@@ -201,6 +201,12 @@
               case '2':
                 this.$router.push('/d/home')
                 break
+              case '4':
+                this.$router.push('/d/gaoe/home')
+                break
+              case '5':
+                this.$router.push('/d/credit/home')
+                break
               case '7':
                 this.$router.push('/d/loan/home')
                 break
