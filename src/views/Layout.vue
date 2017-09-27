@@ -66,6 +66,10 @@
             background-color: rgba(58, 58, 58, 0.3) !important;
           }
         }
+
+        .underline {
+          text-decoration: underline;
+        }
       }
 
       .top-nav .logo {

@@ -8,6 +8,9 @@
       <el-form-item prop="title" label="公司名">
         <el-input v-model="info.title" placeholder="请输入公司名"></el-input>
       </el-form-item>
+      <el-form-item prop="contact" label="联系人（选填）">
+        <el-input v-model="info.contact" placeholder="请输入联系人"></el-input>
+      </el-form-item>
       <el-form-item prop="phone" label="">
         <slot><label class="el-form-item__label">{{atype == 2 ? '联系电话' : '联系电话（选填）'}}</label></slot>
         <el-input v-if="atype !== '2'" v-model="info.phone" placeholder="请输入联系电话"></el-input>
@@ -16,9 +19,6 @@
           <a @click="showBindPhoneDialog" href="javascript:;" class="c42 mrg-l31">
             {{info.mobile ? '修改手机' : '绑定手机'}}</a>
         </div>
-      </el-form-item>
-      <el-form-item prop="contact" label="联系人（选填）">
-        <el-input v-model="info.contact" placeholder="请输入联系人"></el-input>
       </el-form-item>
       <el-form-item prop="qq" label="联系QQ（选填）">
         <el-input v-model="info.qq" placeholder="请输入联系QQ"></el-input>

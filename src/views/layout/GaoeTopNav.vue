@@ -10,7 +10,7 @@
       <template slot="title"><span v-text="username"></span></template>
       <el-menu-item index="2-1">退出</el-menu-item>
     </el-submenu>
-    <el-menu-item index="3" class="pull-right">结算</el-menu-item>
+    <el-menu-item index="3" class="pull-right underline">结算</el-menu-item>
   </el-menu>
 </template>
 <script>

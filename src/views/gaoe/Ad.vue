@@ -3,7 +3,7 @@
     <!-- 面包屑 -->
     <div class="breadcrumb">
       <span class="breadcrumb-item">
-        <span class="breadcrumb-item-inner">高额广告</span>
+        <span class="breadcrumb-item-inner">注册广告</span>
         <span class="breadcrumb-separator" v-if="dateWeekTime != '' && dateWeekTime.length >=2 && dateWeekTime[0] != null"></span>
       </span>
       <span class="breadcrumb-item" v-if="dateWeekTime != '' && dateWeekTime.length >=2 && dateWeekTime[0] != null">
@@ -211,7 +211,7 @@
           <div class="right"  v-text="previewForm.redirect_url"></div>
         </div>
 
-        <div class="content-line">
+        <div class="content-line" style="border-top: 1px solid rgb(232, 232, 232);">
           <div class="left" >开始时间</div>
           <div class="right">{{ previewForm.begin_time }}</div>
         </div>
@@ -524,7 +524,7 @@
         &:hover .slider-wrap{
           opacity: 1;
           width: 300px;
-          transform: translateX(1px);
+          transform: translateX(11px);
         }
 
         .three-dot {
@@ -1046,7 +1046,7 @@
       },
       // 显示 续总数弹窗
       addNumber (row) {
-        this.taskName = row.task
+        this.taskName = row.title
         this.dialogContinueTotalVisible = true
         this.currentTaskId = row.id
       },
