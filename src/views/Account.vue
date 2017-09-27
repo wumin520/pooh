@@ -5,10 +5,11 @@
       <el-form-item label="平台账号">
         <div class="fs13-c3a break-line" v-text="info.username">wenchuanthesharpchin@gmail.com</div>
       </el-form-item>
-      <el-form-item prop="title" label="姓名/公司">
-        <el-input v-model="info.title" placeholder="请输入姓名/公司"></el-input>
+      <el-form-item prop="title" label="公司名">
+        <el-input v-model="info.title" placeholder="请输入公司名"></el-input>
       </el-form-item>
-      <el-form-item prop="phone" label="联系电话">
+      <el-form-item prop="phone" label="">
+        <slot><label class="el-form-item__label">{{atype == 2 ? '联系电话' : '联系电话（选填）'}}</label></slot>
         <el-input v-if="atype !== '2'" v-model="info.phone" placeholder="请输入联系电话"></el-input>
         <div v-if="atype == 2" class="phone-wrap">
             <span>{{info.mobile ? info.mobile : '未绑定手机'}}</span>

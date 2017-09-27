@@ -20,7 +20,7 @@
                   <el-input class="qk-input__border-bottom" v-model="form.username" placeholder="平台账号，请输入电子邮箱"></el-input>
                 </el-form-item>
                 <el-form-item class="qk-form-item"  label="" prop="displayName" style="margin-bottom: 65px;">
-                  <el-input class="qk-input__border-bottom"  v-model="form.displayName" placeholder="姓名/公司"></el-input>
+                  <el-input class="qk-input__border-bottom"  v-model="form.displayName" placeholder="公司名"></el-input>
                 </el-form-item>
 
                 <el-form-item class="qk-form-item"  label="" prop="password">
@@ -197,7 +197,7 @@
             { validator: validateEmail, trigger: 'blur,change' }
           ],
           displayName: [
-            { required: true, message: '请输入姓名/公司', trigger: 'blur' },
+            { required: true, message: '请输入公司名', trigger: 'blur' },
             { min: 5, message: '长度至少为 5 个字符', trigger: 'blur' },
             { max: 50, message: '长度在 50 个字符以内', trigger: 'blur' }
           ],
