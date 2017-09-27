@@ -197,8 +197,7 @@
 
     filters: {
       index (val) {
-        return parseFloat(val) > 0
-          ? (typeof val === 'string' ? '¥ ' + val : val)
+        return val ? (typeof val === 'string' ? '¥ ' + val : val)
           : '-'
       },
 
