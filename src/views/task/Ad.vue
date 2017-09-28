@@ -30,25 +30,27 @@
       <el-button class="searchIOS-btn" type="primary" @click="searchTask()">搜索</el-button>
       <el-button class="addAd-btn" @click="toAddAd()"><img class="add-logo" src="//qianka.b0.upaiyun.com/images/62ebcde46a8f43cedce613491089a1b0.png" alt=""> 添加新广告</el-button>
     </div>
-
-    <!-- tabs -->
-    <el-tabs v-model="activeName" class="qk-tabs-text" type="card" @tab-click="handleClick">
-      <el-tab-pane name="tab1" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span class="tag">投放中</span><span class="sub-tag">{{ task_statcnt.ok | formatZero }}</span></span>
-      </el-tab-pane>
-      <el-tab-pane name="tab2" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span>待审核</span><span>{{ task_statcnt.pending | formatZero }}</span></span>
-      </el-tab-pane>
-      <el-tab-pane name="tab3" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span>审核失败</span><span>{{ task_statcnt.rejected | formatZero }}</span></span>
-      </el-tab-pane>
-      <el-tab-pane name="tab4" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span>暂停</span><span>{{ task_statcnt.paused | formatZero }}</span></span>
-      </el-tab-pane>
-      <el-tab-pane name="tab5" :disabled="loading">
-        <span class="qk-tabs__item-text"  slot="label"><span>完成</span><span>{{ task_statcnt.ended | formatZero }}</span></span>
-      </el-tab-pane>
-    </el-tabs>
+    <div style="position: relative">
+      <!-- tabs -->
+      <el-tabs v-model="activeName" class="qk-tabs-text" type="card" @tab-click="handleClick">
+        <el-tab-pane name="tab1" :disabled="loading">
+          <span class="qk-tabs__item-text"  slot="label"><span class="tag">投放中</span><span class="sub-tag">{{ task_statcnt.ok | formatZero }}</span></span>
+        </el-tab-pane>
+        <el-tab-pane name="tab2" :disabled="loading">
+          <span class="qk-tabs__item-text"  slot="label"><span>待审核</span><span>{{ task_statcnt.pending | formatZero }}</span></span>
+        </el-tab-pane>
+        <el-tab-pane name="tab3" :disabled="loading">
+          <span class="qk-tabs__item-text"  slot="label"><span>审核失败</span><span>{{ task_statcnt.rejected | formatZero }}</span></span>
+        </el-tab-pane>
+        <el-tab-pane name="tab4" :disabled="loading">
+          <span class="qk-tabs__item-text"  slot="label"><span>暂停</span><span>{{ task_statcnt.paused | formatZero }}</span></span>
+        </el-tab-pane>
+        <el-tab-pane name="tab5" :disabled="loading">
+          <span class="qk-tabs__item-text"  slot="label"><span>完成</span><span>{{ task_statcnt.ended | formatZero }}</span></span>
+        </el-tab-pane>
+      </el-tabs>
+      <div class="idfa-1-idfa-2">IDFA1：成功点击   IDFA2：成功完成</div>
+    </div>
 
     <!--<el-pagination-->
       <!--v-if="tableData.length > 0"-->
@@ -380,6 +382,17 @@
   height: 100%;
   padding: 43px 35px 150px 35px;
   position: relative;
+
+  .idfa-1-idfa-2 {
+    width: 213px;
+    height: 18px;
+    font-size: 13px;
+    text-align: right;
+    color: #b5b5b5;
+    position: absolute;
+    right: 0;
+    bottom: 24px;
+  }
 
   .breadcrumb {
     height: 22px;
