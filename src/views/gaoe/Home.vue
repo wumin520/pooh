@@ -27,7 +27,7 @@
       <el-col :span="6">
         <card>
           <div slot="title">未结算消耗</div>
-          <div slot="highlight">{{ consume.unliquidated | index }}</div>
+          <div slot="highlight">{{ consume.unsettled_amount | index }}</div>
         </card>
       </el-col>
     </el-row>
