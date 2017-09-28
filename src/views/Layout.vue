@@ -50,7 +50,7 @@
           }
         }
         .layout-account {
-          width: 150px;
+          width: 267px;
 
           .el-submenu__title  {
             width: 0px;
