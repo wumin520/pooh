@@ -52,12 +52,15 @@
         .layout-account {
           width: auto;
           max-width: 267px;
-          /*.el-submenu__title  {*/
-            /*width: 0px;*/
-          /*}*/
+          padding: 0;
+          .el-submenu__title  {
+            padding: 0 20px;
+          }
 
           &:hover {
-            background-color: rgba(58, 58, 58, 0.3) !important;
+            .el-submenu__title {
+              background-color: rgba(58, 58, 58, 0.3) !important;
+            }
           }
         }
         .layout-charge {
