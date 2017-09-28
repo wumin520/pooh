@@ -51,7 +51,6 @@
         }
         .layout-account {
           width: auto;
-          min-width: 150px;
           max-width: 267px;
           padding: 0;
           .el-submenu__title  {
