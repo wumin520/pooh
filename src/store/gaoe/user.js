@@ -73,7 +73,7 @@ const getters = {
       yesterday_amount: state.yesterday_amount,
       sevendays_amount: state.sevendays_amount,
       month_amount: state.month_amount,
-      unliquidated: state.unliquidated
+      unsettled_amount: state.navbar.unsettled_amount
     }
   },
 
