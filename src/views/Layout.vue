@@ -50,11 +50,11 @@
           }
         }
         .layout-account {
-          width: 267px;
-
-          .el-submenu__title  {
-            width: 0px;
-          }
+          width: auto;
+          max-width: 267px;
+          /*.el-submenu__title  {*/
+            /*width: 0px;*/
+          /*}*/
 
           &:hover {
             background-color: rgba(58, 58, 58, 0.3) !important;
