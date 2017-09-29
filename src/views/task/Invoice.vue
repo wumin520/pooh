@@ -27,7 +27,7 @@
       <el-table-column label="操作" min-width="190">
         <template scope="scope">
           <a class="link-go" type="text" @click="preview(scope.row)">详情</a>
-          <a class="link-go" type="text" v-if="scope.row.status == 2" @click="reapply(cope.row)">重新申请</a>
+          <a class="link-go" type="text" v-if="scope.row.status == 2" @click="reapply(scope.row)">重新申请</a>
           <a class="link-go" type="text" v-if="scope.row.status !== 1"@click="cancel(scope.$index, scope.row)">删除</a>
         </template>
       </el-table-column>
@@ -51,9 +51,9 @@
         </div>
         <div class="content-line">
           <div class="left">发票抬头</div>
-          <div class="right" v-text="invoice.invoice_title"></div>
+          <div class="right" v-text="invoice.drawee"></div>
         </div>
-        <div class="content-line">
+        <div class="content-line" style="border-top: 1px solid #E8E8E8;">
           <div class="left">社会统一信用代码</div>
           <div class="right" v-text="invoice.unified_social_credit_code"></div>
         </div>
@@ -73,7 +73,7 @@
           <div class="left">联系电话</div>
           <div class="right" v-text="invoice.contact"></div>
         </div>
-        <div class="content-line">
+        <div class="content-line" style="border-top: 1px solid #E8E8E8;">
           <div class="left">收件地址</div>
           <div class="right" v-text="invoice.address"></div>
         </div>
@@ -293,7 +293,12 @@
       },
 
       reapply (row) {
-        this.$router.push('/d/finance/invoice/new')
+        this.$router.push({
+          path: '/d/finance/invoice/edit',
+          query: {
+            id: row.id
+          }
+        })
       },
 
       cancel (index, row) {

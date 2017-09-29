@@ -16,9 +16,6 @@ const initState = () => ({
     // remark: '', 拿掉”备注“字段
     invoice_status: 0,
     invoice_title: 'we',
-    invoice_contact_name: '',
-    invoice_contact_phone: '',
-    invoice_contact_address: '',
     is_save_invoice: 1
   },
   aliInfo: {

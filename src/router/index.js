@@ -105,6 +105,11 @@ export default new Router({
           path: 'finance/invoice/new',
           component: AddInvoice
         },
+        {
+          name: 'dash_finance_invoice_edit',
+          path: 'finance/invoice/edit',
+          component: AddInvoice
+        },
         // 该路由已废弃
         // {
         //   name: 'dash_finance_edit',

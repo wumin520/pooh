@@ -9,18 +9,21 @@
         <span class="breadcrumb-item-inner">申请开票</span>
       </span>
     </div>
+    <div class="fail-reason" v-if="show_fail_reason">
+      <div>申请失败原因：{{admin_remarks}}</div>
+    </div>
     <div class="invoice-info">
       <!--开票信息-->
       <div class="title">开票信息</div>
       <el-form ref="invoiceform" :model="adForm" label-position="top" class="invoice-form" :rules="rules">
         <el-form-item label="发票类型" prop="invoice_type">
           <el-radio-group v-model="adForm.invoice_type" class="w266">
-            <el-radio-button class="el-icon-check" label="1">增值税普通发票</el-radio-button>
-            <el-radio-button class="el-icon-check" label="2">增值税专用发票</el-radio-button>
+            <el-radio-button class="el-icon-check" :label="1">增值税普通发票</el-radio-button>
+            <el-radio-button class="el-icon-check" :label="2">增值税专用发票</el-radio-button>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="发票抬头" prop="drawee_id">
+        <el-form-item label="发票抬头" prop="drawee_id" v-if="invoice_title.length > 1">
           <el-select v-model="adForm.drawee_id">
             <el-option
               v-for="(rt, index) in invoice_title"
@@ -29,6 +32,10 @@
               :value="rt.id">
             </el-option>
           </el-select>
+        </el-form-item>
+
+         <el-form-item label="发票抬头" prop="drawee_id" v-if="invoice_title.length == 1">
+          <div>{{invoice_title[0].name}}</div>
         </el-form-item>
 
         <el-form-item label="开票金额" prop="amount">
@@ -50,16 +57,16 @@
           <el-input v-model="adForm.unified_social_credit_code" placeholder="请输入抬头的企业社会统一信用代码"></el-input>
         </el-form-item>
 
-        <el-form-item label="开户银行" v-if="adForm.invoice_type == 1" prop="bank_name">
+        <el-form-item label="开户银行" v-if="adForm.invoice_type == 2" prop="bank_name">
           <el-input v-model="adForm.bank_name" placeholder="请输入您开户行许可证上的开户银行名称"></el-input>
         </el-form-item>
 
-        <el-form-item label="银行账号" v-if="adForm.invoice_type == 1" prop="bank_number">
+        <el-form-item label="银行账号" v-if="adForm.invoice_type == 2" prop="bank_number">
           <el-input v-model="adForm.bank_number" placeholder="请输入您开户行许可证上的开户银行账号"></el-input>
         </el-form-item>
 
         <label class="save-check" style="margin-bottom: 60px;">
-          <input type="checkbox"><span>保存为默认开票信息</span>
+          <input type="checkbox" checked="checked" @click="isDefault('invoice')"><span>保存为默认开票信息</span>
         </label>
 
         <!--寄送信息-->
@@ -78,12 +85,12 @@
         </el-form-item>
 
         <el-form-item label="备注信息（选填）" prop="remarks">
-          <el-input v-model="info.remarks" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
+          <el-input v-model="adForm.remarks" class="remark" placeholder="请输入备注信息" type="textarea" resize="none"></el-input>
         </el-form-item>
 
-        <div class="save-check" style="margin-bottom: 30px;">
-          <input type="checkbox"><span>保存为默认寄送信息</span>
-        </div>
+        <label class="save-check" style="margin-bottom: 30px;">
+          <input type="checkbox" checked="checked" @click="isDefault('address')"><span>保存为默认寄送信息</span>
+        </label>
 
         <div class="warm-remind">
           <div>温馨提示：</div>
@@ -144,6 +151,23 @@
 
       .breadcrumb-item:last-child {
         cursor: text;
+      }
+    }
+
+    .fail-reason {
+      width: 350px;
+      height: 60px;
+      background-color: #ffffff;
+      border: dotted 1px #de4948;
+      margin-top: -13px;
+      margin-bottom: 30px;
+      font-size: 13px;
+      line-height: 60px;
+      color: #de4948;
+      font-family: PingFangSC-Semibold;
+
+      div:first-child {
+        margin-left: 15px;
       }
     }
 
@@ -238,7 +262,14 @@
         info: {},
         fullscreenLoading: false,
         cancelDialogVisible: false,
-        submitButtonDisable: false  // 提交按钮是否禁用
+        submitButtonDisable: false,  // 提交按钮是否禁用
+        show_fail_reason: 0
+      }
+    },
+
+    watch: {
+      'adForm.invoice_type': function (v) {
+        this.updateInvoiceType()
       }
     },
 
@@ -261,32 +292,78 @@
       }
     },
 
+    mounted () {
+      let path = this.$route.name
+      if (path === 'dash_finance_invoice_edit') {
+        let id = this.$route.query.id
+        this.show_fail_reason = 1
+        this.getInvoiceDetail(id)
+      } else {
+        this.getInvoiceOptional()
+      }
+    },
+
     computed: {
       rules () {
+        let checkPhone = (rule, value, callback) => {
+          if (!/^1[3|4|5|8]\d{9}$/.test(value)) {
+            callback(new Error('手机号格式不正确'))
+          } else {
+            callback()
+          }
+        }
+
         let rules = {
-          drawee_id: [{required: true, message: '请选择发票抬头', trigger: 'blur'}],
+          drawee_id: [{type: 'number', required: true, message: '请选择发票抬头', trigger: 'blur'}],
           invoice_category: [{type: 'number', required: true, message: '请选择发票内容', trigger: 'blur'}],
-          unified_social_credit_code: [{required: true, message: '请输入社会统一信用代码', trigger: 'blur'}],
-          recipient_name: [{required: true, message: '请输入收件人姓名', trigger: 'blur'}],
-          contact: [{required: true, message: '请输入手机号码', trigger: 'blur'}],
-          address: [{required: true, message: '请输入收件地址', trigger: 'blur'}]
+          unified_social_credit_code: [
+            {required: true, message: '请输入社会统一信用代码', trigger: 'blur'},
+            {max: 30, message: '长度在 30 个字符以内', trigger: 'blur'}
+          ],
+          recipient_name: [
+            {required: true, message: '请输入收件人姓名', trigger: 'blur'},
+            {max: 10, message: '长度在 10 个字符以内', trigger: 'blur'}
+          ],
+          contact: [
+            {required: true, message: '请输入手机号码', trigger: 'blur'},
+            {validator: checkPhone, trigger: 'blur'}
+          ],
+          address: [
+            {required: true, message: '请输入收件地址', trigger: 'blur'},
+            {max: 50, message: '长度在 20 个字符以内', trigger: 'blur'}
+          ]
         }
 
         let rulesAdded = {...rules,
-          bank_name: [{required: true, message: '请输入开户银行', trigger: 'blur'}],
-          bank_number: [{required: true, message: '请输入银行账号', trigger: 'blur'}]
+          bank_name: [
+            {required: true, message: '请输入开户银行', trigger: 'blur'},
+            {max: 30, message: '长度在 30 个字符以内', trigger: 'blur'}
+          ],
+          bank_number: [
+            {required: true, message: '请输入银行账号', trigger: 'blur'},
+            {max: 30, message: '长度在 30 个字符以内', trigger: 'blur'}
+          ]
         }
+
         return this.invoice_type === 1 ? rules : rulesAdded
       },
 
       ...mapState('invoice', [
         'invoice_title',
         'invoice_category',
-        'adForm'
+        'adForm',
+        'admin_remarks'
       ])
     },
 
     methods: {
+      isDefault (type) {
+        if (type === 'invoice') {
+          this.adForm.is_invoice_default === 1 ? this.adForm.is_invoice_default = 0 : this.adForm.is_invoice_default = 1
+        } else {
+          this.adForm.is_address_default === 1 ? this.adForm.is_address_default = 0 : this.adForm.is_address_default = 1
+        }
+      },
       submitForm () {
         this.$refs['invoiceform'].validate((valid) => {
           if (valid) {
@@ -311,6 +388,9 @@
       },
 
       ...mapActions('invoice', [
+        'getInvoiceOptional',
+        'getInvoiceDetail',
+        'updateInvoiceType',
         'addInvoice'
       ])
     }

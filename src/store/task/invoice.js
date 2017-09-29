@@ -1,8 +1,9 @@
 import {
   URI_INVOICE_LIST,
   URI_INVOICE_CANCEL,
-  URI_INVOICE_PREVIEW,
-  URI_INVOICE_CREATE
+  URI_INVOICE_DETAIL,
+  URI_INVOICE_CREATE,
+  URI_INVOICE_DATA
 } from '@/constants'
 
 import { Message } from 'element-ui'
@@ -15,31 +16,10 @@ const initState = () => ({
   invoice_count: 0,
   // 预览详情
   invoice: {},
-  invoice_title: [{ // 发票抬头
-    id: '60',
-    name: '这是公司一'
-  }, {
-    id: '61',
-    name: '这是公司二'
-  }],
-  invoice_category: [
-    {
-      value: 1,
-      name: '信息服务费'
-    },
-    {
-      value: 2,
-      name: '广告费'
-    },
-    {
-      value: 3,
-      name: '技术服务费'
-    },
-    {
-      value: 4,
-      name: '推广费'
-    }
-  ],
+  invoice_title: [], // 发票抬头
+  invoice_category: [],
+  invoice_common: {}, // 普通发票信息
+  invoice_special: {}, // 专用发票信息
   // 开票提交的表单
   adForm: {
     invoice_type: 1, // 发票类型
@@ -49,19 +29,23 @@ const initState = () => ({
     unified_social_credit_code: '', // 社会统一信用代码
     bank_name: '', // 开户银行
     bank_number: '', // 银行账号
-    is_invoice_default: 0, // 是否保存为默认开票信息 0:否 1:是
+    is_invoice_default: 1, // 是否保存为默认开票信息 0:否 1:是
     recipient_name: '', // 收件人姓名
     contact: '', // 手机号码
     address: '', // 收件地址
     remarks: '', // 备注信息
-    is_address_default: 0 // 是否保存为默认寄送信息 0:否 1:是
-  }
+    is_address_default: 1 // 是否保存为默认寄送信息 0:否 1:是
+  },
+  admin_remarks: ''
 })
 
 const types = {
   SYNC: 'sync',
+  GET_OPTIONAL: 'get_optional',
+  UPDATE_INVOICE_TYPE: 'update_invoice_type',
   SPLICE_INVOICE_DATA: 'splice_invoice_data',
-  PREVIEW_DETAIL: 'preview_detail'
+  PREVIEW_DETAIL: 'preview_detail',
+  INVOICE_DETAIL: 'invoice_detail'
 }
 
 const state = initState()
@@ -77,6 +61,36 @@ const mutations = {
     })
   },
 
+  [types.GET_OPTIONAL] (state, payload) {
+    state.invoice_title = payload.invoice_title
+    state.invoice_category = payload.invoice_category
+    state.invoice_common = payload.invoice_common
+    state.invoice_special = payload.invoice_special
+    // 下拉框默认
+    state.adForm.drawee_id = payload.invoice_common.drawee_id
+    state.adForm.invoice_category = payload.invoice_common.invoice_category
+    state.adForm.unified_social_credit_code = payload.invoice_common.unified_social_credit_code
+    // 默认寄送地址
+    state.adForm.recipient_name = payload.send_address.recipient_name
+    state.adForm.contact = payload.send_address.contact
+    state.adForm.address = payload.send_address.address
+    state.adForm.remarks = payload.send_address.remarks
+  },
+
+  [types.UPDATE_INVOICE_TYPE] (state) {
+    if (state.adForm.invoice_type === 2) {
+      state.adForm.drawee_id = state.invoice_special.drawee_id
+      state.adForm.invoice_category = state.invoice_special.invoice_category
+      state.adForm.unified_social_credit_code = state.invoice_special.unified_social_credit_code
+      state.adForm.bank_name = state.invoice_special.bank_name
+      state.adForm.bank_number = state.invoice_special.bank_number
+    } else {
+      state.adForm.drawee_id = state.invoice_common.drawee_id
+      state.adForm.invoice_category = state.invoice_common.invoice_category
+      state.adForm.unified_social_credit_code = state.invoice_common.unified_social_credit_code
+    }
+  },
+
   [types.SPLICE_INVOICE_DATA] (state, index) {
     state.invoice_list.splice(index, 1)
   },
@@ -85,10 +99,43 @@ const mutations = {
     state.invoice = payload.invoice
     state.invoice_title = payload.invoice_title
     state.invoice_category = payload.invoice_category
+  },
+
+  [types.INVOICE_DETAIL] (state, payload) {
+    state.invoice_title = payload.invoice_title
+    state.invoice_category = payload.invoice_category
+
+    // _.extend(state.detail, _.pick(payload, _.keys(state.detail)))
+    // 表单内容
+    state.adForm.invoice_type = payload.invoice.invoice_type
+    state.adForm.drawee_id = payload.invoice.drawee_id
+    state.adForm.amount = payload.invoice.amount
+    state.adForm.invoice_category = payload.invoice.invoice_category
+    state.adForm.unified_social_credit_code = payload.invoice.unified_social_credit_code
+    state.adForm.bank_name = payload.invoice.bank_name
+    state.adForm.bank_number = payload.invoice.bank_number
+    state.adForm.invoice_category = payload.invoice.invoice_category
+    state.adForm.recipient_name = payload.invoice.recipient_name
+    state.adForm.contact = payload.invoice.contact
+    state.adForm.address = payload.invoice.address
+    state.adForm.remarks = payload.invoice.remarks
   }
 }
 
 const actions = {
+  getInvoiceOptional ({commit, dispatch}) {
+    return api(URI_INVOICE_DATA, {method: 'GET'})
+      .then(res => res.payload)
+      .then((payload) => {
+        if (payload.navbar) dispatch('updateNavbar', payload, { root: true })
+        commit(types.GET_OPTIONAL, payload)
+      })
+  },
+
+  updateInvoiceType ({commit}) {
+    commit(types.UPDATE_INVOICE_TYPE)
+  },
+
   addInvoice ({commit}, form) {
     return api(URI_INVOICE_CREATE, {
       method: 'POST',
@@ -106,9 +153,10 @@ const actions = {
   },
 
   previewDetial ({commit}, id) {
-    return api(URI_INVOICE_PREVIEW + '?id=' + id, {method: 'GET'})
+    return api(URI_INVOICE_DETAIL + '?id=' + id, {method: 'GET'})
       .then(res => res.payload)
       .then((payload) => {
+        payload.invoice.invoice_type_text = payload.invoice_type === 1 ? '增值税普通发票' : '增值税专用发票'
         commit(types.PREVIEW_DETAIL, payload)
       })
   },
@@ -130,6 +178,15 @@ const actions = {
           message: err.err_msg,
           iconClass: 'qk-warning'
         })
+      })
+  },
+
+  getInvoiceDetail ({commit}, id) {
+    return api(URI_INVOICE_DETAIL + '?id=' + id, {method: 'GET'})
+      .then(res => res.payload)
+      .then((payload) => {
+        payload.invoice.invoice_type_text = payload.invoice_type === 1 ? '增值税普通发票' : '增值税专用发票'
+        commit(types.INVOICE_DETAIL, payload)
       })
   }
 }
