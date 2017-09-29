@@ -31,6 +31,9 @@ const state = {
 
 const mutations = {
   [types.SYNC_TASK] (state, task) {
+    // 修护safari的Date格式错误，转化格式为YYYY/MM/DD HH:MM:SS
+    task.start_date = task.start_date.replace(/-/g, '/')
+    task.end_date = task.end_date.replace(/-/g, '/')
     let startDate = task.start_date + ' ' + task.start_time
     let endDate = task.end_date + ' ' + task.end_time
     let form = Object.assign({}, {...task}, {
