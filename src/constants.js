@@ -16,6 +16,10 @@ export const URI_BIND_MOBILE = '/v2/api/mobile/bind'
 export const URI_VALIDATE_MOBILE = '/v2/api/mobile/check_code'
 export const URI_SEND_CHECKCODE = '/v2/api/mobile/send_code'
 export const URI_CHECK_APPID = '/v2/api/task/check_appid'
+export const URI_INVOICE_LIST = '/v2/api/invoice/list'
+export const URI_INVOICE_CANCEL = '/v2/api/invoice/delete'
+export const URI_INVOICE_PREVIEW = '/v2/api/invoice/detail'
+export const URI_INVOICE_CREATE = '/v2/api/invoice/create'
 
 // Report Types
 export const LW = 'LW' // 最近7天

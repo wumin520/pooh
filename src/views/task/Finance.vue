@@ -1,24 +1,17 @@
 <template>
   <div class="finance-container">
     <p class="title">财务管理</p>
-    <div class="balance-wrap">
-      <div class="fs14-c3a">当前余额</div>
-      <div class="money">¥ {{navbar.balance}}</div>
-      <el-button size="small" class="w76-h30" type="primary" @click="charge()">充值</el-button>
+    <div class="button-wrapper">
+      <el-button size="small" class="w110-h36" type="primary" @click="charge()">充值</el-button>
+      <!--<el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>-->
+      <el-button size="small" class="w110-h36" @click="invoice()">开票记录</el-button>
+      <el-button size="small" class="w110-h36" type="primary" @click="addInvoice()">申请开票</el-button>
     </div>
-    <el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>
 
     <el-table :class="{'nodata': payments.length === 0 }"  :data="payments" stripe border class="table-wrapper" style="width: 100%;">
       <el-table-column prop="date" label="日期" min-width="152">
       </el-table-column>
        <el-table-column prop="pay_type" label="付款方式" min-width="110">
-      </el-table-column>
-       <el-table-column prop="drawee" label="付款人" min-width="206">
-          <template scope="scope">
-            <div>{{ decodeURI(scope.row.drawee) }}</div>
-          </template>
-      </el-table-column>
-       <el-table-column prop="invoice" :formatter="invoiceFormatter" label="发票" min-width="72">
       </el-table-column>
        <el-table-column prop="operation_number" label="操作编号" min-width="90">
       </el-table-column>
@@ -65,14 +58,6 @@
         <el-button type="primary" style="width:109px;" size="small" @click="checkRecord()">查看记录</el-button>
       </span>
     </el-dialog>
-    <!--<el-dialog title="撤销" v-model="dialogVisible" size="fixed390" top="38%">
-      <img src="//qianka.b0.upaiyun.com/images/833ad156825ac0811aa84f2c29f6f94e.png" alt="" class="logo">
-      <span>此操作将撤销这条记录，是否继续？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleDelete()">撤销</el-button>
-      </span>
-    </el-dialog>-->
   </div>
 </template>
 <style lang="scss">
@@ -82,9 +67,21 @@
     min-width: 1000px;
     padding: 50px 35px 150px 35px;
 
-    .w76-h30 {
-      width: 76px;
-      height: 30px;
+    .button-wrapper {
+      margin-bottom: 30px;
+
+      button:nth-child(2) {
+        float: right;
+      }
+
+      button:nth-child(3) {
+        float: right;
+      }
+    }
+
+    .w110-h36 {
+      width: 110px;
+      height: 36px;
     }
 
     .fs14-c3a {
@@ -100,22 +97,6 @@
       font-family: PingFangSC-Light;
       line-height: 22px;
       color: #888888;
-    }
-
-    .balance-wrap {
-      width: 250px;
-      height: 138px;
-      padding: 17px 20px;
-      border: 1px dashed #DDDDDD;
-      margin-bottom: 40px;
-
-      .money {
-        font-size: 22px;
-        line-height: 30px;
-        color: #4A90E2;
-        letter-spacing: 0;
-        margin: 8px 0 13px 0;
-      }
     }
 
     .el-pagination {
@@ -338,6 +319,14 @@
 
       charge () {
         this.$router.push('/d/finance/charge')
+      },
+
+      addInvoice () {
+        this.$router.push('/d/finance/invoice/new')
+      },
+
+      invoice () {
+        this.$router.push('/d/finance/invoice')
       },
 
       ...mapActions('finance', [

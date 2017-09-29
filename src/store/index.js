@@ -7,6 +7,7 @@ import adNew from './task/adNew'
 import finance from './task/finance'
 import ad from './task/ad'
 import priceSys from './task/priceSys'
+import invoice from './task/invoice'
 
 import { URI_LOGOUT } from '@/constants'
 import { Message } from 'element-ui'
@@ -142,6 +143,7 @@ export default new Vuex.Store({
     finance,
     ad,
     priceSys,
+    invoice,
     // 借钱
     loanFinance,
     loanCharge,
