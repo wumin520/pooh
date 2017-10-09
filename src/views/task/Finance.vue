@@ -4,8 +4,8 @@
     <div class="button-wrapper">
       <el-button size="small" class="w110-h36" type="primary" @click="charge()">充值</el-button>
       <!--<el-pagination v-if="payments_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="payments_count"></el-pagination>-->
-      <el-button size="small" class="w110-h36" @click="invoice()">开票记录</el-button>
-      <el-button size="small" class="w110-h36" type="primary" @click="addInvoice()">申请开票</el-button>
+      <el-button size="small" class="w110-h36" @click="invoice()" v-if="invoice_flag">开票记录</el-button>
+      <el-button size="small" class="w110-h36" type="primary" @click="addInvoice()" v-if="invoice_flag">申请开票</el-button>
     </div>
 
     <el-table :class="{'nodata': payments.length === 0 }"  :data="payments" stripe border class="table-wrapper" style="width: 100%;">
@@ -267,6 +267,7 @@
         'payments',
         'navbar',
         'payments_count',
+        'invoice_flag',
         'limit'
       ])
     },

@@ -3,7 +3,8 @@ import {
   URI_INVOICE_CANCEL,
   URI_INVOICE_DETAIL,
   URI_INVOICE_CREATE,
-  URI_INVOICE_DATA
+  URI_INVOICE_DATA,
+  UIR_INVOICE_UPDATE
 } from '@/constants'
 
 import { Message } from 'element-ui'
@@ -40,6 +41,7 @@ const initState = () => ({
 })
 
 const types = {
+  INIT: 'init',
   SYNC: 'sync',
   GET_OPTIONAL: 'get_optional',
   UPDATE_INVOICE_TYPE: 'update_invoice_type',
@@ -53,6 +55,10 @@ const state = initState()
 const getters = {}
 
 const mutations = {
+  [types.INIT] (state) {
+    _.extend(state, initState())
+  },
+
   [types.SYNC] (state, payload) {
     state.invoice_list = payload.invoice_list
     _.forEach(state.invoice_list, function (n) {
@@ -78,13 +84,13 @@ const mutations = {
   },
 
   [types.UPDATE_INVOICE_TYPE] (state) {
-    if (state.adForm.invoice_type === 2) {
+    if (state.adForm.invoice_type === 2 && state.invoice_special.drawee_id) {
       state.adForm.drawee_id = state.invoice_special.drawee_id
       state.adForm.invoice_category = state.invoice_special.invoice_category
       state.adForm.unified_social_credit_code = state.invoice_special.unified_social_credit_code
       state.adForm.bank_name = state.invoice_special.bank_name
       state.adForm.bank_number = state.invoice_special.bank_number
-    } else {
+    } else if (state.adForm.invoice_type === 1 && state.invoice_common.drawee_id) {
       state.adForm.drawee_id = state.invoice_common.drawee_id
       state.adForm.invoice_category = state.invoice_common.invoice_category
       state.adForm.unified_social_credit_code = state.invoice_common.unified_social_credit_code
@@ -104,26 +110,16 @@ const mutations = {
   [types.INVOICE_DETAIL] (state, payload) {
     state.invoice_title = payload.invoice_title
     state.invoice_category = payload.invoice_category
-
-    // _.extend(state.detail, _.pick(payload, _.keys(state.detail)))
-    // 表单内容
-    state.adForm.invoice_type = payload.invoice.invoice_type
-    state.adForm.drawee_id = payload.invoice.drawee_id
-    state.adForm.amount = payload.invoice.amount
-    state.adForm.invoice_category = payload.invoice.invoice_category
-    state.adForm.unified_social_credit_code = payload.invoice.unified_social_credit_code
-    state.adForm.bank_name = payload.invoice.bank_name
-    state.adForm.bank_number = payload.invoice.bank_number
-    state.adForm.invoice_category = payload.invoice.invoice_category
-    state.adForm.recipient_name = payload.invoice.recipient_name
-    state.adForm.contact = payload.invoice.contact
-    state.adForm.address = payload.invoice.address
-    state.adForm.remarks = payload.invoice.remarks
+    state.admin_remarks = payload.invoice.admin_remarks
+    _.extend(state.adForm, _.pick(payload.invoice, _.keys(state.adForm)))
+    state.adForm.amount = payload.available_invoice
+    state.adForm.id = payload.id
   }
 }
 
 const actions = {
   getInvoiceOptional ({commit, dispatch}) {
+    commit(types.INIT)
     return api(URI_INVOICE_DATA, {method: 'GET'})
       .then(res => res.payload)
       .then((payload) => {
@@ -138,6 +134,13 @@ const actions = {
 
   addInvoice ({commit}, form) {
     return api(URI_INVOICE_CREATE, {
+      method: 'POST',
+      body: form
+    })
+  },
+
+  updateInvoice ({commit}, form) {
+    return api(UIR_INVOICE_UPDATE, {
       method: 'POST',
       body: form
     })
@@ -185,6 +188,7 @@ const actions = {
     return api(URI_INVOICE_DETAIL + '?id=' + id, {method: 'GET'})
       .then(res => res.payload)
       .then((payload) => {
+        payload.id = id
         payload.invoice.invoice_type_text = payload.invoice_type === 1 ? '增值税普通发票' : '增值税专用发票'
         commit(types.INVOICE_DETAIL, payload)
       })

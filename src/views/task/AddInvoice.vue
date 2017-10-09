@@ -24,7 +24,7 @@
         </el-form-item>
 
         <el-form-item label="发票抬头" prop="drawee_id" v-if="invoice_title.length > 1">
-          <el-select v-model="adForm.drawee_id">
+          <el-select v-model="adForm.drawee_id" class="w350">
             <el-option
               v-for="(rt, index) in invoice_title"
               :key="index"
@@ -187,6 +187,10 @@
           padding-top: 0;
         }
 
+        .w350 {
+          width: 350px;
+        }
+
         .w190 {
           width: 190px;
         }
@@ -263,13 +267,16 @@
         fullscreenLoading: false,
         cancelDialogVisible: false,
         submitButtonDisable: false,  // 提交按钮是否禁用
-        show_fail_reason: 0
+        show_fail_reason: 0,
+        path: this.$route.name
       }
     },
 
     watch: {
       'adForm.invoice_type': function (v) {
-        this.updateInvoiceType()
+        if (this.path !== 'dash_finance_invoice_edit') {
+          this.updateInvoiceType()
+        }
       }
     },
 
@@ -293,8 +300,7 @@
     },
 
     mounted () {
-      let path = this.$route.name
-      if (path === 'dash_finance_invoice_edit') {
+      if (this.path === 'dash_finance_invoice_edit') {
         let id = this.$route.query.id
         this.show_fail_reason = 1
         this.getInvoiceDetail(id)
@@ -367,18 +373,33 @@
       submitForm () {
         this.$refs['invoiceform'].validate((valid) => {
           if (valid) {
-            this.addInvoice(this.adForm).then((res) => {
-              Message({
-                message: '提交申请成功',
-                iconClass: 'qk-warning'
+            if (this.path !== 'dash_finance_invoice_edit') {
+              this.addInvoice(this.adForm).then((res) => {
+                Message({
+                  message: '提交申请成功',
+                  iconClass: 'qk-warning'
+                })
+                this.$router.push('/d/finance/invoice')
+              }).catch((err) => {
+                Message({
+                  message: err.err_msg,
+                  iconClass: 'qk-warning'
+                })
               })
-              this.$router.push('/d/finance/invoice')
-            }).catch((err) => {
-              Message({
-                message: err.err_msg,
-                iconClass: 'qk-warning'
+            } else {
+              this.updateInvoice(this.adForm).then((res) => {
+                Message({
+                  message: '提交申请成功',
+                  iconClass: 'qk-warning'
+                })
+                this.$router.push('/d/finance/invoice')
+              }).catch((err) => {
+                Message({
+                  message: err.err_msg,
+                  iconClass: 'qk-warning'
+                })
               })
-            })
+            }
           }
         })
       },
@@ -391,7 +412,8 @@
         'getInvoiceOptional',
         'getInvoiceDetail',
         'updateInvoiceType',
-        'addInvoice'
+        'addInvoice',
+        'updateInvoice'
       ])
     }
   }

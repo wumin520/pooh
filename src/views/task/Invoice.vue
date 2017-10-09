@@ -53,9 +53,9 @@
           <div class="left">发票抬头</div>
           <div class="right" v-text="invoice.drawee"></div>
         </div>
-        <div class="content-line" style="border-top: 1px solid #E8E8E8;">
-          <div class="left">社会统一信用代码</div>
-          <div class="right" v-text="invoice.unified_social_credit_code"></div>
+        <div class="content-line" style="border-top: 1px solid #E8E8E8; height: 64px;">
+          <div class="left left-long">社会统一信用代码</div>
+          <div class="right right-long" v-text="invoice.unified_social_credit_code"></div>
         </div>
         <div class="content-line">
           <div class="left">开户银行</div>
@@ -167,6 +167,12 @@
             left: 0;
             background: #F9F9F9;
             box-shadow: inset 0 0px 0 0 #E8E8E8, inset 1px 0 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+
+            &.left-long {
+              padding-right: 18px;
+              padding-top: 14px;
+              line-height: 18px;
+            }
           }
           .right {
             width: 100%;
@@ -174,6 +180,11 @@
             padding-left: 120px + 20px;
             padding-right: 20px;
             box-shadow: inset 0 0px 0 0 #E8E8E8, inset 0 -1px 0 0 #E8E8E8, inset -1px 0 0 0 #E8E8E8;
+
+            &.right-long {
+              height: 64px;
+              line-height: 64px;
+            }
           }
         }
 
