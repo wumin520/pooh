@@ -268,7 +268,8 @@
         cancelDialogVisible: false,
         submitButtonDisable: false,  // 提交按钮是否禁用
         show_fail_reason: 0,
-        path: this.$route.name
+        path: this.$route.name,
+        submitLock: 0 // 防止多次提交
       }
     },
 
@@ -372,33 +373,40 @@
         }
       },
       submitForm () {
+        if (this.submitLock > 0) return
         this.$refs['invoiceform'].validate((valid) => {
           if (valid) {
             if (this.path !== 'dash_finance_invoice_edit') {
+              this.submitLock = 1
               this.addInvoice(this.adForm).then((res) => {
                 Message({
                   message: '提交申请成功',
                   iconClass: 'qk-warning'
                 })
+                this.submitLock = 0
                 this.$router.push('/d/finance/invoice')
               }).catch((err) => {
                 Message({
                   message: err.err_msg,
                   iconClass: 'qk-warning'
                 })
+                this.submitLock = 0
               })
             } else {
+              this.submitLock = 1
               this.updateInvoice(this.adForm).then((res) => {
                 Message({
                   message: '提交申请成功',
                   iconClass: 'qk-warning'
                 })
+                this.submitLock = 0
                 this.$router.push('/d/finance/invoice')
               }).catch((err) => {
                 Message({
                   message: err.err_msg,
                   iconClass: 'qk-warning'
                 })
+                this.submitLock = 0
               })
             }
           }
