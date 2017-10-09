@@ -34,7 +34,7 @@
           </el-select>
         </el-form-item>
 
-         <el-form-item label="发票抬头" prop="drawee_id" v-if="invoice_title.length == 1">
+        <el-form-item label="发票抬头" prop="drawee_id" v-if="invoice_title.length == 1">
           <div>{{invoice_title[0].name}}</div>
         </el-form-item>
 

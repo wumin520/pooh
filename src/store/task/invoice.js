@@ -25,7 +25,7 @@ const initState = () => ({
   adForm: {
     invoice_type: 1, // 发票类型
     drawee_id: '', // 开票人
-    amount: '3000', // 开票金额
+    amount: '', // 开票金额
     invoice_category: '', // 发票内容
     unified_social_credit_code: '', // 社会统一信用代码
     bank_name: '', // 开户银行
@@ -81,6 +81,8 @@ const mutations = {
     state.adForm.contact = payload.send_address.contact
     state.adForm.address = payload.send_address.address
     state.adForm.remarks = payload.send_address.remarks
+    // 开票金额
+    state.adForm.amount = payload.available_invoice
   },
 
   [types.UPDATE_INVOICE_TYPE] (state) {
