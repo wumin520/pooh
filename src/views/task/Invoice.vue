@@ -78,8 +78,8 @@
           <div class="right" v-text="invoice.address"></div>
         </div>
         <div class="content-line">
-          <div class="left">收件人姓名</div>
-          <div class="right" v-text="invoice.recipient_name"></div>
+          <div class="left">快递信息</div>
+          <div class="right" v-text="invoice.admin_remarks"></div>
         </div>
       </div>
     </el-dialog>
