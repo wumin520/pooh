@@ -336,8 +336,9 @@
           ],
           address: [
             {required: true, message: '请输入收件地址', trigger: 'blur'},
-            {max: 50, message: '长度在 20 个字符以内', trigger: 'blur'}
-          ]
+            {max: 50, message: '长度在 50 个字符以内', trigger: 'blur'}
+          ],
+          remarks: [{max: 50, message: '长度在 50 个字符以内', trigger: 'blur'}]
         }
 
         let rulesAdded = {...rules,
