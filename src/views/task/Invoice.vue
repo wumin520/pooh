@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column label="操作" min-width="190">
         <template scope="scope">
-          <a class="link-go" type="text" @click="preview(scope.row)">详情</a>
+          <a class="link-go" type="text" v-if="scope.row.status !== 2" @click="preview(scope.row)">详情</a>
           <a class="link-go" type="text" v-if="scope.row.status == 2" @click="reapply(scope.row)">重新申请</a>
           <a class="link-go" type="text" v-if="scope.row.status !== 1"@click="cancel(scope.$index, scope.row)">删除</a>
         </template>
@@ -79,7 +79,7 @@
         </div>
         <div class="content-line">
           <div class="left">快递信息</div>
-          <div class="right" v-text="invoice.admin_remarks"></div>
+          <div class="right" v-text="invoice.logistics_info"></div>
         </div>
       </div>
     </el-dialog>

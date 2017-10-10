@@ -37,7 +37,7 @@ const initState = () => ({
     remarks: '', // 备注信息
     is_address_default: 1 // 是否保存为默认寄送信息 0:否 1:是
   },
-  admin_remarks: ''
+  fail_reason: ''
 })
 
 const types = {
@@ -112,7 +112,7 @@ const mutations = {
   [types.INVOICE_DETAIL] (state, payload) {
     state.invoice_title = payload.invoice_title
     state.invoice_category = payload.invoice_category
-    state.admin_remarks = payload.invoice.admin_remarks
+    state.fail_reason = payload.invoice.fail_reason
     _.extend(state.adForm, _.pick(payload.invoice, _.keys(state.adForm)))
     state.adForm.amount = payload.available_invoice
     state.adForm.id = payload.id

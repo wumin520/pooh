@@ -10,7 +10,7 @@
       </span>
     </div>
     <div class="fail-reason" v-if="show_fail_reason">
-      <div>申请失败原因：{{remarks}}</div>
+      <div>申请失败原因：{{fail_reason}}</div>
     </div>
     <div class="invoice-info">
       <!--开票信息-->
@@ -360,7 +360,7 @@
         'invoice_title',
         'invoice_category',
         'adForm',
-        'admin_remarks'
+        'fail_reason'
       ])
     },
 
