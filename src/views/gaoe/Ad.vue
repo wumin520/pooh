@@ -1,5 +1,5 @@
 <template>
-  <div class="ad-container">
+  <div class="ad-gaoe-container">
     <!-- 面包屑 -->
     <div class="breadcrumb">
       <span class="breadcrumb-item">
@@ -277,7 +277,7 @@
     }
   }
 
-  .ad-container {
+  .ad-gaoe-container {
     width: 100%;
     min-width: 1000px;
     height: 100%;
