@@ -10,8 +10,7 @@
       </span>
     </div>
     <div class="fail-reason" v-if="show_fail_reason">
-      <div class="placeholder"></div>
-      <div>申请失败原因：{{fail_reason}}</div>
+      <span>申请失败原因：{{fail_reason}}</span>
     </div>
     <div class="invoice-info">
       <!--开票信息-->
@@ -157,7 +156,7 @@
 
     .fail-reason {
       width: 350px;
-      height: 84px;
+      padding: 21px 10px 21px 10px;
       background-color: #ffffff;
       border: dotted 1px #de4948;
       margin-top: -13px;
@@ -167,18 +166,8 @@
       font-family: PingFangSC-Semibold;
       vertical-align: middle;
 
-      .placeholder {
-        display: inline-block;
-        vertical-align: middle;
-        height: 84px;
-        width: 5px;
-      }
-
-      div:nth-child(2) {
-        width: 330px;
-        line-height: 21px;
-        display: inline-block;
-        vertical-align: middle;
+      span {
+        line-height: 20px;
       }
     }
 
