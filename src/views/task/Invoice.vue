@@ -303,6 +303,10 @@
           })
       },
 
+      toFinance () {
+        this.$router.push('/d/finance')
+      },
+
       reapply (row) {
         this.$router.push({
           path: '/d/finance/invoice/edit',

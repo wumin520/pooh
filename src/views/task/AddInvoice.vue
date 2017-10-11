@@ -10,6 +10,7 @@
       </span>
     </div>
     <div class="fail-reason" v-if="show_fail_reason">
+      <div class="placeholder"></div>
       <div>申请失败原因：{{fail_reason}}</div>
     </div>
     <div class="invoice-info">
@@ -94,8 +95,8 @@
 
         <div class="warm-remind">
           <div>温馨提示：</div>
-          <div>1.申请开票时，发票的抬头需与付款人账号信息一致</div>
-          <div>3.提交开票申请后，可在充值详情查看开票状态以及备注</div>
+          <div>1.开票金额根据实际消耗金额计算</div>
+          <div>2.提交开票申请后，可在开票记录中查看最新开票进度</div>
         </div>
 
         <el-form-item class="submit-wrapper">
@@ -156,18 +157,28 @@
 
     .fail-reason {
       width: 350px;
-      height: 60px;
+      height: 84px;
       background-color: #ffffff;
       border: dotted 1px #de4948;
       margin-top: -13px;
       margin-bottom: 30px;
       font-size: 13px;
-      line-height: 60px;
       color: #de4948;
       font-family: PingFangSC-Semibold;
+      vertical-align: middle;
 
-      div:first-child {
-        margin-left: 15px;
+      .placeholder {
+        display: inline-block;
+        vertical-align: middle;
+        height: 84px;
+        width: 10px;
+      }
+
+      div:nth-child(2) {
+        width: 330px;
+        line-height: 21px;
+        display: inline-block;
+        vertical-align: middle;
       }
     }
 
@@ -414,6 +425,10 @@
       },
 
       toInvoice () {
+        this.$router.push('/d/finance')
+      },
+
+      toFinance () {
         this.$router.push('/d/finance')
       },
 
