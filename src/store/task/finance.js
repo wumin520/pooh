@@ -11,6 +11,7 @@ const initState = () => ({
   payments: [],
   navbar: {},
   payments_count: 0,
+  invoice_flag: 0, // 是否展示开票入口
   limit: 30
 })
 

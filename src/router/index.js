@@ -12,6 +12,8 @@ import AdNew from '@/views/task/AdNew'
 import Finance from '@/views/task/Finance'
 import Charge from '@/views/task/Charge'
 import Price from '@/views/task/Price'
+import Invoice from '@/views/task/Invoice'
+import AddInvoice from '@/views/task/AddInvoice'
 
 // 借钱模块
 import LoanHome from '@/views/loan/Home'
@@ -92,6 +94,21 @@ export default new Router({
           name: 'dash_finance_price',
           path: 'finance/price',
           component: Price
+        },
+        {
+          name: 'dash_finance_invoice',
+          path: 'finance/invoice',
+          component: Invoice
+        },
+        {
+          name: 'dash_finance_invoice_new',
+          path: 'finance/invoice/new',
+          component: AddInvoice
+        },
+        {
+          name: 'dash_finance_invoice_edit',
+          path: 'finance/invoice/edit',
+          component: AddInvoice
         },
         // 该路由已废弃
         // {
