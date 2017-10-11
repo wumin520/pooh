@@ -171,7 +171,7 @@
         display: inline-block;
         vertical-align: middle;
         height: 84px;
-        width: 10px;
+        width: 5px;
       }
 
       div:nth-child(2) {

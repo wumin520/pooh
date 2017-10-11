@@ -27,8 +27,8 @@
       <el-table-column label="操作" min-width="190">
         <template scope="scope">
           <a class="link-go" type="text" v-if="scope.row.status !== 2" @click="preview(scope.row)">详情</a>
-          <a class="link-go" type="text" v-if="scope.row.status == 2" @click="reapply(scope.row)">重新申请</a>
           <a class="link-go" type="text" v-if="scope.row.status !== 1"@click="cancel(scope.$index, scope.row)">删除</a>
+          <a class="link-go" type="text" v-if="scope.row.status == 2" @click="reapply(scope.row)">重新申请</a>
         </template>
       </el-table-column>
     </el-table>

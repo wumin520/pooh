@@ -82,6 +82,8 @@
     .w110-h36 {
       width: 110px;
       height: 36px;
+      font-size: 12px;
+      letter-spacing: 1px;
     }
 
     .fs14-c3a {
