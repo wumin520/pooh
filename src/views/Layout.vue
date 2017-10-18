@@ -84,6 +84,16 @@
 
     .content {
       display: flex;
+
+      .sidebar {
+        position: fixed;
+        bottom: 0;
+        top: 60px;
+      }
+
+      .sidebar + div {
+        margin-left: 180px;
+      }
     }
   }
 </style>

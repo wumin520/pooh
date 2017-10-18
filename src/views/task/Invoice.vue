@@ -35,7 +35,7 @@
     <el-pagination v-if="invoice_count > limit" layout="prev, pager, next" @current-change="currentChange" :page-size="limit" :total="invoice_count"></el-pagination>
 
     <!-- 预览弹窗 -->
-    <el-dialog title='广告预览' v-model="dialogPreviewVisible" class="el-dialog__wrapper previewDialog">
+    <el-dialog title='开票详情' v-model="dialogPreviewVisible" class="el-dialog__wrapper previewDialog">
       <div class="preview-content" id="preview-content">
         <div class="content-line" style="border-top: 1px solid #E8E8E8;">
           <div class="left">申请日期</div>
