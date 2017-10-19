@@ -23,7 +23,7 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="发票抬头" prop="drawee_id">
+        <el-form-item style="height: 67px;" label="发票抬头" prop="drawee_id">
           <el-select v-if="invoice_title.length > 1" v-model="adForm.drawee_id" class="w350">
             <el-option
               v-for="(rt, index) in invoice_title"
@@ -40,7 +40,7 @@
         <!--</el-form-item>-->
 
         <el-form-item label="开票金额" prop="amount">
-          <div class="c3a">{{adForm.amount | addCommas_money}}</div>
+          <div style="height: 40px;" class="c3a">{{adForm.amount | addCommas_money}}</div>
         </el-form-item>
 
         <el-form-item label="发票内容" prop="invoice_category">
