@@ -289,7 +289,6 @@
     filters: {
       //  x,xxx.00
       addCommas_money: function (value) {
-        if (!value) return ''
         value += ''
         const x = value.split('.')
         var x1 = x[0]
