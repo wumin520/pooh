@@ -109,7 +109,7 @@ const actions = {
     })
     .then(res => res.json())
     .then(res => {
-      $router.push('/../')
+      location.href = '/../'
     })
     .catch(err => {
       Message({
