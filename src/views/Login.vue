@@ -166,7 +166,7 @@
           username: [
             { required: true, message: '请输入邮箱地址', trigger: 'blur' },
             { min: 5, max: 50, message: '长度在 50 个字符以内', trigger: 'blur' },
-            { validator: validateEmail, trigger: 'blur,change' }
+            { validator: validateEmail, trigger: 'blur' }
           ],
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },

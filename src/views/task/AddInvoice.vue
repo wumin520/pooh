@@ -23,8 +23,8 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="发票抬头" prop="drawee_id" v-if="invoice_title.length > 1">
-          <el-select v-model="adForm.drawee_id" class="w350">
+        <el-form-item style="height: 67px;" label="发票抬头" prop="drawee_id">
+          <el-select v-if="invoice_title.length > 1" v-model="adForm.drawee_id" class="w350">
             <el-option
               v-for="(rt, index) in invoice_title"
               :key="index"
@@ -32,18 +32,19 @@
               :value="rt.id">
             </el-option>
           </el-select>
+          <div v-if="invoice_title.length == 1">{{invoice_title[0].name}}</div>
         </el-form-item>
 
-        <el-form-item label="发票抬头" prop="drawee_id" v-if="invoice_title.length == 1">
-          <div>{{invoice_title[0].name}}</div>
-        </el-form-item>
+        <!--<el-form-item label="发票抬头" prop="drawee_id" v-if="invoice_title.length == 1">-->
+          <!--<div>{{invoice_title[0].name}}</div>-->
+        <!--</el-form-item>-->
 
         <el-form-item label="开票金额" prop="amount">
-          <div>￥{{adForm.amount | addCommas_money}}</div>
+          <div style="height: 40px;" class="c3a">{{adForm.amount | addCommas_money}}</div>
         </el-form-item>
 
         <el-form-item label="发票内容" prop="invoice_category">
-          <el-select v-model="adForm.invoice_category">
+          <el-select  v-model="adForm.invoice_category">
             <el-option
               v-for="(rt, index) in invoice_category"
               :key="index"
@@ -119,6 +120,10 @@
 <style lang='scss'>
   .invoice-new-container {
     padding: 50px 0 150px 35px;
+
+    .c3a {
+      color: #3A3A3A;
+    }
 
     .breadcrumb {
       height: 22px;
@@ -284,6 +289,7 @@
     filters: {
       //  x,xxx.00
       addCommas_money: function (value) {
+        if (!value) return ''
         value += ''
         const x = value.split('.')
         var x1 = x[0]
@@ -296,7 +302,7 @@
         if (ret.indexOf('.') === -1) {
           ret = ret + '.00'
         }
-        return ret
+        return '￥' + ret
       }
     },
 

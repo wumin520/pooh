@@ -37,7 +37,7 @@ const state = {
   atype: '',
   navbar: {
     username: '',
-    balance: '0.00',
+    balance: '',
     balance_threshold: '0.00',
     unsettled_amount: '0.00'
   }
@@ -109,7 +109,7 @@ const actions = {
     })
     .then(res => res.json())
     .then(res => {
-      $router.push('/login')
+      $router.push('/../')
     })
     .catch(err => {
       Message({

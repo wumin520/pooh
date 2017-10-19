@@ -15,7 +15,7 @@
         <slot><label class="el-form-item__label">{{atype == 2 ? '联系电话' : '联系电话（选填）'}}</label></slot>
         <el-input v-if="atype !== '2'" v-model="info.phone" placeholder="请输入联系电话"></el-input>
         <div v-if="atype == 2" class="phone-wrap">
-            <span>{{info.mobile ? info.mobile : '未绑定手机'}}</span>
+            <span class="c3a">{{info.mobile ? info.mobile : '未绑定手机'}}</span>
           <a @click="showBindPhoneDialog" href="javascript:;" class="c42 mrg-l31">
             {{info.mobile ? '修改手机' : '绑定手机'}}</a>
         </div>
@@ -45,6 +45,10 @@
 <style lang="scss">
   .account-container {
     padding: 50px 0 150px 35px;
+
+    .c3a {
+      color: #3A3A3A;
+    }
 
     .phone-wrap {
       display: inline-block;
