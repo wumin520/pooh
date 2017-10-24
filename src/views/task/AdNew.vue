@@ -848,6 +848,7 @@
       // 删除关键词
       removeKeyWords (keyTime) {
         this.removeKeyWordsItem(keyTime)
+        this.planAnalysis()
       },
 
       // 添加专属任务
