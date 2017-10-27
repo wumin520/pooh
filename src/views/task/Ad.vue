@@ -49,7 +49,7 @@
           <span class="qk-tabs__item-text"  slot="label"><span>完成</span><span>{{ task_statcnt.ended | formatZero }}</span></span>
         </el-tab-pane>
       </el-tabs>
-      <div class="idfa-1-idfa-2">IDFA1：成功点击   IDFA2：成功完成</div>
+      <div class="idfa-1-idfa-2">IDFA1=成功点击<span style="display: inline-block;width:20px;"></span>IDFA2=成功完成</div>
     </div>
 
     <!--<el-pagination-->
