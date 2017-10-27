@@ -384,7 +384,7 @@
   position: relative;
 
   .idfa-1-idfa-2 {
-    width: 213px;
+    /*width: 213px;*/
     height: 18px;
     font-size: 13px;
     text-align: right;
